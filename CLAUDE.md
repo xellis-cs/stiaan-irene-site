@@ -75,7 +75,7 @@ Aesthetic: soft watercolour, dandelion motif, feminine, calm.
 
 ## Head / meta
 - The canonical link and the og:url / og:image tags spell out the FULL
-  address (https://stiaankoegelenberg.github.io/irene-ellis-art/) — sharing
+  address (https://xellis-cs.github.io/stiaan-irene-site/) — sharing
   previews are built by other servers, so they cannot be relative. If the
   site ever moves to a custom domain or another host, change all three.
 
