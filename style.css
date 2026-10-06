@@ -1339,8 +1339,8 @@ nav[tabindex]:focus-visible {
   width: 118px;
   height: 118px;
   max-width: none;
-  left: -12px;
-  top: -30px;
+  left: -10px;
+  top: -22px;
   border-radius: 0;
 }
 .social__text {
