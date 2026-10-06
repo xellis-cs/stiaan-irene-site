@@ -52,6 +52,8 @@
   --font-display: "Pinyon Script", cursive;
   --font-serif: "Libre Caslon Text", "Iowan Old Style", Georgia, serif;
   --font-ui: "Libre Franklin", "Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif;
+  /* (the served Libre Franklin has no tabular figures — tnum — so only the
+     Caslon day numbers can be asked to line up; asking Franklin does nothing) */
 
   /* --- The book's size ---
      The board keeps a margin all round (--board-pad) and room at the sides
@@ -497,7 +499,6 @@ nav[tabindex]:focus-visible {
   right: calc(var(--page-pad) + 40px);
 }
 .folio__num {
-  font-variant-numeric: tabular-nums;
   color: var(--color-ink-soft);
 }
 .folio__mark {
@@ -1096,7 +1097,6 @@ nav[tabindex]:focus-visible {
   font: 500 var(--text-small) / 1.3 var(--font-ui);
   letter-spacing: 0.04em;
   color: var(--color-ink-soft);
-  font-variant-numeric: tabular-nums;
 }
 .workshop__topic {
   grid-area: topic;
@@ -1368,7 +1368,6 @@ nav[tabindex]:focus-visible {
   font: 400 var(--text-label) / 1 var(--font-ui);
   letter-spacing: 0.14em;
   color: var(--color-light-muted);
-  font-variant-numeric: tabular-nums;
 }
 .arrow {
   display: inline-flex;
