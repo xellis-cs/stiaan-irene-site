@@ -1642,7 +1642,7 @@ nav[tabindex]:focus-visible {
   color: var(--color-light-muted);
 }
 .arrow--print {
-  color: var(--color-light);
+  color: var(--color-light); /* (the base .arrow colour, kept for clarity) */
 }
 
 /* ============================================================
@@ -1870,22 +1870,24 @@ nav[tabindex]:focus-visible {
   .turnbar__count {
     display: none;
   }
-  .arrow {
+  /* only the page-turn arrows: the loose print's own arrows keep the
+     round, light base style on the dark board */
+  .turnbar .arrow {
     width: 52px;
     height: 100%;
     border-radius: 0;
     color: var(--color-text);
     flex: none;
   }
-  .arrow--prev {
+  .turnbar .arrow--prev {
     order: -1;
     border-right: 1px solid rgba(44, 44, 44, 0.16);
   }
-  .arrow--next {
+  .turnbar .arrow--next {
     order: 1;
     border-left: 1px solid rgba(44, 44, 44, 0.16);
   }
-  .arrow:hover {
+  .turnbar .arrow:hover {
     background: rgba(253, 253, 253, 0.5);
   }
   /* the narrowest phones (320px): slimmer arrows give the four labels 16px
