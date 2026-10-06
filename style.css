@@ -638,11 +638,18 @@ nav[tabindex]:focus-visible {
   display: flex;
   flex-direction: column;
   padding-top: calc(var(--u) * 7);
-  /* page__body--scroll in the HTML is only a safety net: at 200% zoom on a
-     wide laptop (a 760x450 window in the two-page layout) the offer and
-     the slip would otherwise run off the page. At any ordinary size nothing
-     scrolls here. */
+  /* page__body--scroll in the HTML is only a safety net for SHORT windows
+     (200% zoom on a wide laptop: a 760x450 window still in the two-page
+     layout), where the offer and the slip would otherwise run off the
+     page. At any ordinary height the body stays open so the seeds drawn
+     in its margin are not clipped. */
+  overflow: visible;
   padding-right: 0;
+}
+@media (max-height: 560px) {
+  .page--title .page__body {
+    overflow-y: auto;
+  }
 }
 .wordmark {
   font: 400 var(--text-wordmark) / 1.02 var(--font-display);

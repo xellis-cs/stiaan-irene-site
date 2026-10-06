@@ -191,7 +191,9 @@
     pagesOf(current).forEach(function (p) {
       var body = p.querySelector(".page__body--scroll");
       if (!body) return;
-      var more = body.scrollHeight > body.clientHeight + 2;
+      // a body whose overflow is left visible (the title page at ordinary
+      // heights) never scrolls, however its content measures
+      var more = getComputedStyle(body).overflowY !== "visible" && body.scrollHeight > body.clientHeight + 2;
       body.classList.toggle("is-scrollable", more);
       body.classList.toggle("is-at-end", !more || body.scrollTop + body.clientHeight >= body.scrollHeight - 2);
     });
