@@ -568,6 +568,14 @@ nav[tabindex]:focus-visible {
   stroke-linecap: round;
 }
 
+/* "The dates are on the next page": only a phone needs telling */
+.next-page {
+  display: none;
+  margin-top: var(--space-2);
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
 /* "What to expect": a ruled list, no bullets */
 .expect {
   list-style: none;
@@ -1764,6 +1772,9 @@ nav[tabindex]:focus-visible {
   }
   .notify__controls .field {
     flex-basis: 100%;
+  }
+  .next-page {
+    display: block;
   }
 
   /* the index collapses to a slim strip of paper along the bottom */

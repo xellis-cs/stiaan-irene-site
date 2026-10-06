@@ -95,19 +95,34 @@
     var first = spread.querySelector("[data-page]");
     return Math.max(0, pages.indexOf(first));
   }
+  // The #hash a view is known by. A spread's id, except on a phone, where a
+  // right-hand page that carries an id of its own (the dates page is
+  // #workshop-dates) is named by that id, so a reload, the Back button or a
+  // copied link come back to THAT page and not to the spread's first page.
   function hashFor(view) {
     var s = spreadOf(view);
-    return s ? s.id : "";
+    if (!s) return "";
+    var page = pagesOf(view)[0];
+    if (single() && page && page !== s.querySelector("[data-page]")) {
+      var own = page.querySelector("[id]:not(input):not(button):not(select):not(textarea):not(form)");
+      if (own) return own.id;
+    }
+    return s.id;
   }
   function viewForHash(hash) {
     var id = (hash || "").replace(/^#/, "");
     if (!id) return 0;
-    id = ALIASES[id] || id;
+    // an old name only stands in when nothing on the page has that id
+    if (!document.getElementById(id) && ALIASES[id]) id = ALIASES[id];
     var spread = document.getElementById(id);
     if (spread && spread.hasAttribute("data-spread")) return viewForSpread(spread);
-    // a link to something inside a page (an id on the page) opens that page
+    // a link to something inside a page (an id on the page) opens that page:
+    // on a phone the very page it is on, on a computer its spread
     var inside = spread && spread.closest("[data-spread]");
-    if (inside) return viewForSpread(inside);
+    if (inside) {
+      if (single()) return Math.max(0, pages.indexOf(spread.closest("[data-page]")));
+      return viewForSpread(inside);
+    }
     return null;
   }
 

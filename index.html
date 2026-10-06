@@ -171,10 +171,12 @@
                   Beginner-friendly watercolour workshops and original artwork,
                   made with heart in South Africa.
                 </p>
-                <!-- THE PRIMARY ACTION: a paper slip pinned to the page. It is a
-                     link to the Programme spread; book.js turns the pages to
-                     get there instead of jumping. -->
-                <a class="slip" href="#programme">
+                <!-- THE PRIMARY ACTION: a paper slip pinned to the page. It
+                     links to the dates themselves (#workshop-dates): on a
+                     computer that is the Programme spread, on a phone the
+                     dates page itself. book.js turns the pages to get there
+                     instead of jumping. -->
+                <a class="slip" href="#workshop-dates">
                   <svg class="slip__pin" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="12" cy="9" r="5.5" />
                     <circle class="slip__pin-light" cx="10" cy="7.2" r="1.6" />
@@ -272,6 +274,9 @@
                   are made for beginners — no experience needed — in small groups
                   with time for everyone. Pick a date to book your place.
                 </p>
+                <!-- Phones only: here the dates are one page on, so say so
+                     rather than asking for a date that is not in view. -->
+                <p class="next-page">The dates are on the next page.</p>
                 <!-- VENUE AND COST — Stiaan: fill these in once Irene confirms
                      them. Replace the sentence below with something like
                      "At <venue>, <town> · R<amount> per person, materials
@@ -510,7 +515,7 @@
                   </li>
                 </ul>
                 <p class="turn-back">
-                  Looking for a date? <a href="#programme">Turn to the Programme.</a>
+                  Looking for a date? <a href="#workshop-dates">Turn to the Programme.</a>
                 </p>
                 <!-- The colophon — the small print at the back of a catalogue -->
                 <footer class="colophon">
