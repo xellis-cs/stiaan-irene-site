@@ -70,7 +70,7 @@
   );
   --u: calc(var(--book-h) / 100);
   --page-pad: clamp(22px, calc(var(--u) * 5.6), 56px); /* a page's margin */
-  --gutter-pad: clamp(18px, calc(var(--u) * 3), 30px); /* extra room at the coil */
+  --gutter-pad: 30px; /* extra room at the coil, so the rings never sit on words */
 
   /* --- Type scale --- measured in --u so it grows with the page */
   --text-body: clamp(15px, calc(var(--u) * 2.05), 21px);
@@ -1646,9 +1646,12 @@ nav[tabindex]:focus-visible {
 }
 
 /* ============================================================
-   PHONES — one page at a time, the coil along the left edge
+   PHONES AND UPRIGHT TABLETS — one page at a time, the coil along the
+   left edge. The SAME media query is written in book.js (SINGLE): if one
+   changes, change the other, or the styles will show single pages while
+   the script turns spreads.
    ============================================================ */
-@media (max-width: 720px) {
+@media (max-width: 720px), (max-width: 1000px) and (orientation: portrait) {
   :root {
     --board-pad: 10px;
     --board-side: 10px;
