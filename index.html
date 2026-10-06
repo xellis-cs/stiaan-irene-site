@@ -68,6 +68,16 @@
          album in gallery-data.js; if that list changes, change this too (a
          stale preload only wastes one request, it breaks nothing). -->
     <link rel="preload" as="image" href="images/portfolio/Category%201/download.jpg" />
+    <!-- Until book.js has run, only the title spread is drawn. On a slow
+         connection the styles can arrive seconds before the scripts, and
+         without this every page would paint on top of every other for that
+         while. Only pages book.js has not yet marked (no data-state) are
+         held back, and only when scripts are on (html.js), so the no-script
+         layout below is untouched. -->
+    <style>
+      .js .page:not([data-state]) { display: none; }
+      .js #title .page:not([data-state]) { display: block; }
+    </style>
     <link rel="stylesheet" href="style.css" />
     <!-- Marks the page as "JavaScript is on" before anything is drawn. The
          book layout (one spread at a time, pages that turn) only applies to
