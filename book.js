@@ -209,7 +209,7 @@
 
   // ---- folios: the page numbers at every foot ----------------------------
   // Written here rather than by hand so adding a page never means
-  // renumbering the rest. The title page carries no number, as in a book.
+  // renumbering the rest. The title spread carries no number, as in a book.
   pages.forEach(function (page, i) {
     var folio = document.createElement("p");
     folio.className = "folio";
@@ -232,7 +232,9 @@
       mark.textContent = "Irene Ellis Art";
       folio.appendChild(mark);
     }
-    if (i === 0) folio.classList.add("folio--title");
+    // the title spread carries no folio on either page, as in a book:
+    // neither the title page nor the frontispiece facing it
+    if (spread && spread.id === "title") folio.classList.add("folio--title");
     page.appendChild(folio);
 
     // the shade that darkens a page as it stands up during a turn
