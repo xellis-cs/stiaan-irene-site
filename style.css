@@ -501,6 +501,22 @@ nav[tabindex]:focus-visible {
 .folio__num {
   color: var(--color-ink-soft);
 }
+.folio__group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+/* "continues": only while the page beside it still has more below */
+.folio__more {
+  display: none;
+  color: var(--color-accent-ink);
+}
+.folio__more::before {
+  content: "· ";
+}
+.page__body--scroll.is-scrollable:not(.is-at-end) ~ .folio .folio__more {
+  display: inline;
+}
 .folio__mark {
   pointer-events: auto;
   text-decoration: none;
@@ -599,7 +615,7 @@ nav[tabindex]:focus-visible {
   max-width: 66ch;
 }
 .expect li {
-  padding: var(--space-3) 0;
+  padding: 10px 0;
   border-top: 1px solid rgba(44, 44, 44, 0.18);
   line-height: 1.5;
 }
@@ -1039,9 +1055,7 @@ nav[tabindex]:focus-visible {
 .workshops__empty {
   grid-column: 1 / -1;
   max-width: 44ch;
-  margin: var(--space-3) 0 0;
-  padding-top: var(--space-4);
-  border-top: 1px solid rgba(44, 44, 44, 0.24);
+  margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-body);
   line-height: 1.5;
@@ -1134,12 +1148,13 @@ nav[tabindex]:focus-visible {
   transition: transform 150ms ease-out;
 }
 
-/* "Be the first to hear": one field and its button on one line */
+/* "Be the first to hear": one field and its button on one line, under
+   "What to expect" on the Programme's left page */
 .notify {
   margin-top: var(--space-2);
 }
 .notify .small-title {
-  margin-top: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 2.4);
 }
 .notify__text {
   max-width: 60ch;

@@ -72,10 +72,12 @@
   function couldNotLoad() {
     var empty = grid.querySelector("[data-workshops-empty]");
     if (!empty) return;
-    empty.textContent =
-      "The dates could not be loaded just now. Leave your email under " +
-      "\u201cBe the first to hear\u201d and Irene will tell you when they are " +
-      "announced, or try again in a moment.";
+    var link = empty.querySelector("a"); // the link to the notify form stays
+    empty.textContent = "The dates could not be loaded just now. Leave your email under ";
+    if (link) empty.appendChild(link);
+    empty.appendChild(
+      document.createTextNode(" and Irene will tell you when they are announced, or try again in a moment.")
+    );
   }
 
   fetch(URL_BASE + "/rest/v1/site_content?id=eq.main&select=data", {

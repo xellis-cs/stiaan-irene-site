@@ -304,6 +304,42 @@
                     waiting for you on the day.
                   </li>
                 </ul>
+
+                <!-- "Be the first to hear": one email field, the second thing
+                     a visitor can do here, so it sits on this page where it is
+                     in view without scrolling (the dates page may run long).
+                     Saved to the notify_list table (notify.js,
+                     supabase-setup.sql); Irene reads the list in /admin.
+                     data-source is stored with the address, saying which form
+                     it came from. -->
+                <form class="notify" id="notify" data-notify-form data-source="workshop-dates" novalidate>
+                  <h3 class="small-title">Be the first to hear about new dates</h3>
+                  <p class="notify__text">
+                    Just a note when new dates go up, no newsletter.
+                  </p>
+                  <div class="notify__row">
+                    <label class="field-label" for="notify-email">Email address</label>
+                    <div class="notify__controls">
+                      <input
+                        class="field"
+                        id="notify-email"
+                        type="email"
+                        name="email"
+                        inputmode="email"
+                        autocomplete="email"
+                        required
+                      />
+                      <!-- a trap for bots: people never see this field (it sits off
+                           screen, out of the tab order), so anything typed into it
+                           means the sender was a script. Its name is deliberately
+                           meaningless — a name like "website" gets filled in by
+                           browsers' autofill, which would drop real sign-ups. -->
+                      <input class="trap" type="text" name="iea_extra_field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field empty" />
+                      <button type="submit" class="button notify__submit">Notify me</button>
+                    </div>
+                  </div>
+                  <p class="notify__status status" role="status" aria-live="polite"></p>
+                </form>
               </div>
             </article>
             <article class="page page--right" data-page>
@@ -330,40 +366,6 @@
                     </p>
                   </div>
                 </div>
-
-                <!-- "Be the first to hear": one email field. Saved to the
-                     notify_list table (notify.js, supabase-setup.sql); Irene
-                     reads the list in /admin. data-source is stored with the
-                     address, saying which form it came from. -->
-                <form class="notify" id="notify" data-notify-form data-source="workshop-dates" novalidate>
-                  <h3 class="small-title">Be the first to hear about new dates</h3>
-                  <p class="notify__text">
-                    Leave your email and Irene will let you know when the next
-                    workshops are announced. Nothing else, no newsletter.
-                  </p>
-                  <div class="notify__row">
-                    <label class="field-label" for="notify-email">Email address</label>
-                    <div class="notify__controls">
-                      <input
-                        class="field"
-                        id="notify-email"
-                        type="email"
-                        name="email"
-                        inputmode="email"
-                        autocomplete="email"
-                        required
-                      />
-                      <!-- a trap for bots: people never see this field (it sits off
-                           screen, out of the tab order), so anything typed into it
-                           means the sender was a script. Its name is deliberately
-                           meaningless — a name like "website" gets filled in by
-                           browsers' autofill, which would drop real sign-ups. -->
-                      <input class="trap" type="text" name="iea_extra_field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field empty" />
-                      <button type="submit" class="button notify__submit">Notify me</button>
-                    </div>
-                  </div>
-                  <p class="notify__status status" role="status" aria-live="polite"></p>
-                </form>
               </div>
             </article>
           </section>

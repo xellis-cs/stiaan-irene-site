@@ -220,14 +220,26 @@
     var num = document.createElement("span");
     num.className = "folio__num";
     num.textContent = String(i + 1);
+    // "continues": shown by the styles only while the page has more below
+    // its edge (the body wears .is-scrollable and not .is-at-end), so a
+    // visitor is told the page goes on rather than left to guess from a fade
+    var more = document.createElement("span");
+    more.className = "folio__more";
+    more.textContent = "continues";
+    var group = document.createElement("span");
+    group.className = "folio__group";
     if (page.classList.contains("page--right")) {
       var sec = document.createElement("span");
       sec.className = "folio__section";
       sec.textContent = title;
-      folio.appendChild(sec);
+      group.appendChild(sec);
+      group.appendChild(more);
+      folio.appendChild(group);
       folio.appendChild(num);
     } else {
-      folio.appendChild(num);
+      group.appendChild(num);
+      group.appendChild(more);
+      folio.appendChild(group);
       var mark = document.createElement("a");
       mark.className = "folio__mark";
       mark.href = "#title";
@@ -533,6 +545,18 @@
       var body = p.querySelector(".page__body");
       if (body) body.scrollTop = 0;
     });
+    if (opts.anchor) reveal(opts.anchor);
+  }
+
+  // A link to something inside a page (#notify, #workshop-dates) also scrolls
+  // that page's own scroller so the thing is in view, since the page starts
+  // at its top. Only the page scrolls: the board and the book never move.
+  function reveal(el) {
+    var body = el.closest && el.closest(".page__body--scroll");
+    if (!body || !body.contains(el)) return;
+    var top = el.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop;
+    body.scrollTop = Math.max(0, top - 8);
+    body.classList.toggle("is-at-end", body.scrollTop + body.clientHeight >= body.scrollHeight - 2);
   }
 
   function turn(dir) {
@@ -555,7 +579,13 @@
     var view = viewForHash(a.getAttribute("href"));
     if (view === null) return;
     e.preventDefault();
-    goTo(view);
+    var target = document.getElementById(a.getAttribute("href").slice(1));
+    var anchor = target && !target.hasAttribute("data-spread") ? target : null;
+    if (view === current && !turning) {
+      if (anchor) reveal(anchor); // already on the page: just show the thing
+      return;
+    }
+    goTo(view, { anchor: anchor });
   });
 
   // Keyboard. Not while typing in a field, and not while a slip or a print
@@ -800,7 +830,14 @@
   // ---- start -------------------------------------------------------------------------
   var startView = viewForHash(location.hash);
   if (startView === null) startView = 0;
-  goTo(startView, { instant: true, history: "replace", silent: true, force: true });
+  var startEl = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+  goTo(startView, {
+    instant: true,
+    history: "replace",
+    silent: true,
+    force: true,
+    anchor: startEl && !startEl.hasAttribute("data-spread") ? startEl : null,
+  });
   fillCoil();
   window.addEventListener("load", function () {
     fillCoil();
