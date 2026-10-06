@@ -878,21 +878,6 @@ nav[tabindex]:focus-visible {
   font: 400 var(--text-small) / 1.35 var(--font-ui);
   color: var(--color-ink-muted);
 }
-/* the same label on the dark board (the loose print) */
-.label--light {
-  border-top-color: rgba(241, 223, 214, 0.3);
-  color: var(--color-light);
-}
-.label--light .label__line--num {
-  color: #d9a0a0; /* the rose on the board: 6.6:1 */
-}
-.label--light .label__line--title {
-  color: var(--color-light);
-}
-.label--light .label__line--quiet {
-  color: var(--color-light-muted);
-}
-
 .plate-noscript {
   font-style: italic;
   color: var(--color-ink-soft);
@@ -1639,24 +1624,38 @@ nav[tabindex]:focus-visible {
   max-width: min(94vw, 920px);
   width: fit-content; /* hugs the print, so the close control sits on its corner */
 }
+/* The print is ONE object: the picture on a white museum mount, with its
+   label written on the mount beneath it. (The label used to sit on the
+   dimmed page behind, where the pink paper and the running head showed
+   through at 1.9 to 3.6:1; on the mount it measures 8.2:1 and up.) */
 .print {
   display: grid;
   grid-template-columns: minmax(0, max-content); /* as wide as the picture */
   justify-content: center;
   justify-items: start;
-  gap: var(--space-4);
+  gap: 0;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
 }
 .print__img {
   max-width: 100%;
-  max-height: calc(94vh - 170px);
+  max-height: calc(94vh - 190px);
   width: auto;
   height: auto;
-  padding: 10px;
+  padding: 10px 10px 0;
   background: var(--color-white);
-  box-shadow: 0 30px 60px -16px rgba(0, 0, 0, 0.8), 0 6px 14px -4px rgba(0, 0, 0, 0.5);
 }
 .print .label {
   justify-self: stretch;
+  margin-top: 0;
+  padding: var(--space-2) 10px 10px;
+  border-top: 0;
+  background: var(--color-white);
+  color: var(--color-text);
+}
+/* the hairline under the picture is drawn on the mount, inset like the picture */
+.print .label .label__line--num {
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(44, 44, 44, 0.22);
 }
 .print__nav {
   display: flex;
@@ -1930,7 +1929,7 @@ nav[tabindex]:focus-visible {
     padding: var(--space-6) var(--space-5) var(--space-5);
   }
   .print__img {
-    max-height: calc(94vh - 190px);
+    max-height: calc(94vh - 210px);
   }
 }
 
