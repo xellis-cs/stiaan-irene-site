@@ -201,10 +201,13 @@
          sketchbook, open flat. Each <section class="spread"> is a pair of
          facing pages; each <article class="page"> is one page. book.js shows
          one spread at a time on a computer and one page at a time on a phone,
-         and turns them. Everything is in this file from the start — nothing
-         is fetched to show a page — so search engines and screen readers get
-         the whole book, and so do visitors with JavaScript switched off (for
-         them the pages simply stack down the screen).
+         and turns them. All the WORDS are in this file from the start, so
+         search engines and screen readers get them, and so do visitors with
+         JavaScript switched off (for them the pages simply stack down the
+         screen). The PICTURES are not: plates.js draws every plate from the
+         list in gallery-data.js, so without scripts a plate page shows a note
+         instead, and booking (which saves to the database) needs scripts too
+         — the no-script line under the dates offers email instead.
          =================================================================== -->
     <div class="board">
       <main class="book" id="main" data-book aria-label="Irene Ellis's sketchbook">
@@ -421,6 +424,16 @@
                       and she will tell you first.
                     </p>
                   </div>
+                  <!-- Without JavaScript the dates cannot load and a date
+                       button cannot open the slip, so booking goes by email
+                       (the address is the site's own contact address). -->
+                  <noscript>
+                    <p class="workshops__empty">
+                      To book, email
+                      <a href="mailto:ireneellisart613@gmail.com">ireneellisart613@gmail.com</a>
+                      with the date you would like.
+                    </p>
+                  </noscript>
                 </div>
               </div>
             </article>
