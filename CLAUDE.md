@@ -73,6 +73,12 @@ Aesthetic: soft watercolour, dandelion motif, feminine, calm.
   to sales@ireneellisart.co.za later — placeholder for now).
 - Ignore the old Wix link entirely; it's not part of this site.
 
+## Head / meta
+- The canonical link and the og:url / og:image tags spell out the FULL
+  address (https://stiaankoegelenberg.github.io/irene-ellis-art/) — sharing
+  previews are built by other servers, so they cannot be relative. If the
+  site ever moves to a custom domain or another host, change all three.
+
 ## Sections (single-page, in order)
 0. Skip link + sticky header (see "Navigation")
 1. Hero — "Irene Ellis Art" title, the three roles, one line on what Irene
@@ -152,13 +158,20 @@ Aesthetic: soft watercolour, dandelion motif, feminine, calm.
   done in the Supabase table editor.
 
 ## Database tables (supabase-setup.sql — run once in the SQL Editor)
-- `signups` — bookings. `notify_list` — emails from the "new dates" forms
-  (one per address). `messages` — Get In Touch. All three share one rule:
+- `signups` — bookings. `notify_list` — emails from the "new dates" form
+  (one per address; `source` records which form, in case a second is added). `messages` — Get In Touch. All three share one rule:
   anyone may INSERT, only a signed-in admin may SELECT, nobody updates or
   deletes from the web. `site_content` — the dates the editor saves; anyone
   may read, only signed-in may write.
 - Every form script sends `Prefer: return=minimal`, never shows the raw
   database error, and says plainly "not set up yet" if its table is missing.
+- The notify and message forms carry a hidden bot-trap field named
+  `iea_extra_field` (off screen, out of the tab order). A filled trap shows
+  success and stores nothing. Never give it a real-sounding name like
+  "website" — browsers' autofill fills those in and real people get dropped.
+- Admin lists go through `IEA_loadProtected`, which checks the session's
+  expiry and, on an expired token (or a 401), clears it and brings the login
+  screen back with a message rather than a load error.
 
 ## Ring-bound book styling (binding, holes, cascade)
 - The whole page reads as the LEFT page of a ring-bound book. A charcoal wire
