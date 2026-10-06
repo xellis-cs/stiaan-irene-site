@@ -243,6 +243,11 @@ aliases (the `ALIASES` map in book.js).
 - Ignore the old Wix link entirely; it's not part of this site.
 - Nothing is invented: no testimonials, prices, venue, sizes or years.
 
+## `_headers`
+- Caching rules in Netlify / Cloudflare Pages syntax. GitHub Pages ignores
+  the file; it is only read if the site ever moves to one of those hosts.
+  Its comment explains why the HTML, CSS and JS are never cached long.
+
 ## Head / meta
 - The canonical link and the og:url / og:image tags spell out the FULL
   address (https://xellis-cs.github.io/stiaan-irene-site/) — sharing

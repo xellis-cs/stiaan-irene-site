@@ -551,6 +551,8 @@ nav[tabindex]:focus-visible {
 .folio__mark {
   pointer-events: auto;
   text-decoration: none;
+  padding: 12px 0; /* a 24px-tall target on an 11px line */
+  margin: -12px 0;
 }
 .folio__mark:hover {
   color: var(--color-text);
@@ -1447,6 +1449,7 @@ nav[tabindex]:focus-visible {
   z-index: 4;
 }
 .tab {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1474,9 +1477,6 @@ nav[tabindex]:focus-visible {
   font-weight: 600;
   transform: translateX(5px);
   box-shadow: 4px 3px 8px -1px rgba(0, 0, 0, 0.5), inset 1px 0 0 rgba(0, 0, 0, 0.06);
-}
-.tab {
-  position: relative;
 }
 
 /* The arrows under the book, with the page count between them */
@@ -1806,6 +1806,9 @@ nav[tabindex]:focus-visible {
     --u: calc(var(--book-h) / 100);
     --page-pad: clamp(16px, 4vw, 22px); /* the outer margin; the coil side keeps its 38px */
     --gutter-pad: 38px;
+    /* the display type, a notch tighter on a small page */
+    --text-wordmark: clamp(2.8rem, 15vw, 4rem);
+    --text-spread-title: clamp(2.1rem, 11vw, 3rem);
   }
   @supports (height: 100dvh) {
     :root {
@@ -1904,11 +1907,6 @@ nav[tabindex]:focus-visible {
     display: none;
   }
 
-  /* the type, a notch tighter on a small page */
-  :root {
-    --text-wordmark: clamp(2.8rem, 15vw, 4rem);
-    --text-spread-title: clamp(2.1rem, 11vw, 3rem);
-  }
   .page--title .page__body {
     padding-top: calc(var(--u) * 5);
   }
