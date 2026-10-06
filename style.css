@@ -470,44 +470,6 @@ nav[tabindex]:focus-visible {
   flex-direction: column;
   justify-content: center;
 }
-/* The picture pages do not scroll, so when the room runs out (a laptop at
-   150% zoom, a long title) the PICTURE gives way, never the words: the
-   figure is a column whose image may shrink in both directions while its
-   label keeps its full height. The --u ceilings further down still rule
-   at ordinary sizes; max-height: 100% only bites when the page is short. */
-#artist .page--left .page__body {
-  display: flex;
-  flex-direction: column;
-}
-.plate--portrait,
-.plate--hero {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  flex: 0 1 auto;
-  min-height: 0;
-  max-width: 100%;
-}
-.plate--portrait .plate__lift,
-.plate--hero .plate__lift {
-  flex: 0 1 auto;
-  min-height: 0;
-  max-width: 100%;
-}
-.plate--portrait .plate__img,
-.plate--hero .plate__img {
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-.plate--portrait .label,
-.plate--hero .label {
-  flex: 0 0 auto;
-  width: 100%;
-  min-width: 0;
-}
-
 /* The folio at the foot of every page: number and running title */
 .folio {
   position: absolute;
@@ -823,14 +785,41 @@ nav[tabindex]:focus-visible {
   background: #e9dcd3; /* the paper shows while the picture arrives */
 }
 
-/* the big pictures size to the room they have: a plate alone on its page
-   (every plate is) may take 70 hundredths of the book's height; the
-   portrait shares its page with the spread title */
+/* The big pictures size to the room they have. Two ceilings, the lower
+   wins: the DESIGN ceiling (a plate alone on its page may take 70
+   hundredths of the book's height; the portrait, which shares its page
+   with the spread title, 58) and the ROOM ceiling — the page body less the
+   words that must stay visible (the title and the label), worked out from
+   the same variables the type is set in. At ordinary sizes the design
+   ceiling is the lower one; on a laptop zoomed to 150% or 200% the words
+   keep their minimum size while the page shrinks, and then the room
+   ceiling takes over, so the picture gives way and the label never slides
+   under the folio. The picture pages do not scroll (WCAG 1.4.4). */
+:root {
+  --page-room: calc(var(--book-h) - var(--page-pad) * 2.5);
+  /* a three-line label (number, "Untitled", album) with its rule and gaps */
+  --label-room: calc(var(--text-label) * 1.3 + var(--text-small) * 1.35 * 2 + 27px);
+  /* the portrait's label: up to four lines of the small serif (the roles
+     line wraps once when the picture is narrow) */
+  --portrait-label-room: calc(var(--text-small) * 1.35 * 4 + 30px);
+  --plate-ceiling: 70;
+  --portrait-ceiling: 58;
+}
 .plate--hero .plate__img {
-  max-height: calc(var(--u) * 70);
+  max-height: min(calc(var(--u) * var(--plate-ceiling)), calc(var(--page-room) - var(--label-room) - var(--space-4)));
 }
 .plate--portrait .plate__img {
-  max-height: calc(var(--u) * 58);
+  max-height: min(
+    calc(var(--u) * var(--portrait-ceiling)),
+    calc(var(--page-room) - var(--text-spread-title) - var(--u) * 1.6 - var(--portrait-label-room) - var(--space-4))
+  );
+}
+/* The portrait's label keeps a floor width of its own, as a wall label
+   does: otherwise a narrow picture (a zoomed laptop) would narrow the
+   label, wrap the roles onto more lines, and need the picture narrower
+   still. 220px holds the roles line to two lines. */
+.plate--portrait .label {
+  min-width: max(220px, 100%);
 }
 
 /* An album's title page: name, one line, "Plates I to V" — and room left
@@ -1814,11 +1803,9 @@ nav[tabindex]:focus-visible {
   .message__row {
     grid-template-columns: minmax(0, 1fr);
   }
-  .plate--hero .plate__img {
-    max-height: calc(var(--u) * 74);
-  }
-  .plate--portrait .plate__img {
-    max-height: calc(var(--u) * 62);
+  :root {
+    --plate-ceiling: 74;
+    --portrait-ceiling: 62;
   }
   .notify__controls .field {
     flex-basis: 100%;
