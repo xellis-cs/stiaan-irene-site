@@ -152,6 +152,9 @@
       ok = false;
     }
     if (!ok) {
+      // the hints are live regions, so each one is announced as it is
+      // written; the status line sums it up for whoever missed them
+      say("Please fill in the highlighted fields.", "error");
       var first = form.querySelector('[aria-invalid="true"]');
       if (first) first.focus();
     }

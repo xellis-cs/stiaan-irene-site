@@ -39,6 +39,7 @@
     // clear the red ring as soon as the person starts fixing the address
     field.addEventListener("input", function () {
       field.removeAttribute("aria-invalid");
+      field.removeAttribute("aria-describedby");
       if (statusEl && statusEl.classList.contains("notify__status--error")) say("");
     });
 
@@ -48,6 +49,7 @@
 
       if (!looksLikeEmail(email)) {
         field.setAttribute("aria-invalid", "true");
+        if (statusEl && statusEl.id) field.setAttribute("aria-describedby", statusEl.id);
         say("Please check the email address.", "error");
         field.focus();
         return;

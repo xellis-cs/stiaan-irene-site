@@ -394,7 +394,7 @@
                       <button type="submit" class="button notify__submit">Notify me</button>
                     </div>
                   </div>
-                  <p class="notify__status status" role="status" aria-live="polite"></p>
+                  <p class="notify__status status" id="notify-status" role="status" aria-live="polite"></p>
                 </form>
               </div>
             </article>
@@ -531,7 +531,7 @@
                        it, dropping real messages. -->
                   <input class="trap" type="text" name="iea_extra_field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field empty" />
                   <div class="message__foot">
-                    <p class="contact__status status" role="status" aria-live="polite"></p>
+                    <p class="contact__status status" id="contact-status" role="status" aria-live="polite"></p>
                     <button type="submit" class="button">Send message</button>
                   </div>
                 </form>
@@ -671,18 +671,18 @@
         <div class="signup__fields" data-signup-fields>
           <div class="group">
             <label class="field-label" for="signup-name">Name</label>
-            <input class="field signup__field" id="signup-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" required />
-            <p class="hint" id="signup-name-hint"></p>
+            <input class="field signup__field" id="signup-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" required aria-describedby="signup-name-hint" />
+            <p class="hint" id="signup-name-hint" role="alert"></p>
           </div>
           <div class="group">
             <label class="field-label" for="signup-surname">Surname</label>
-            <input class="field signup__field" id="signup-surname" name="surname" type="text" autocomplete="family-name" autocapitalize="words" required />
-            <p class="hint" id="signup-surname-hint"></p>
+            <input class="field signup__field" id="signup-surname" name="surname" type="text" autocomplete="family-name" autocapitalize="words" required aria-describedby="signup-surname-hint" />
+            <p class="hint" id="signup-surname-hint" role="alert"></p>
           </div>
           <div class="group">
             <label class="field-label" for="signup-phone">Cellphone number</label>
-            <input class="field signup__field" id="signup-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 082 123 4567" required />
-            <p class="hint" id="signup-phone-hint"></p>
+            <input class="field signup__field" id="signup-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 082 123 4567" required aria-describedby="signup-phone-hint" />
+            <p class="hint" id="signup-phone-hint" role="alert"></p>
           </div>
           <div class="group">
             <label class="field-label" for="signup-attendees">How many people</label>
@@ -692,7 +692,7 @@
               <button type="button" class="stepper__btn" data-step="-1" aria-label="One fewer person">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" /></svg>
               </button>
-              <input class="field stepper__count signup__field" id="signup-attendees" name="attendees" type="number" inputmode="numeric" min="1" max="6" value="1" />
+              <input class="field stepper__count signup__field" id="signup-attendees" name="attendees" type="number" inputmode="numeric" min="1" max="6" value="1" aria-describedby="signup-attendees-hint" />
               <button type="button" class="stepper__btn" data-step="1" aria-label="One more person">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
               </button>
