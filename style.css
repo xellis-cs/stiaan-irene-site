@@ -2085,6 +2085,131 @@ html:not(.js) .folio {
 }
 
 /* ============================================================
+   PRINT — the whole book, page after page, on white paper
+   The board, the coil, the corners and the index are screen furniture;
+   on paper every page is laid out in order, nothing hidden, the plates
+   printed in their colours. (The rules mirror the no-JavaScript block
+   above, which lays the pages out the same way; keep the two in step.)
+   ============================================================ */
+@media print {
+  html,
+  body,
+  .board {
+    background: #fff;
+    color: #000;
+  }
+  .board {
+    position: static;
+    display: block;
+    padding: 0;
+    overflow: visible;
+  }
+  .book,
+  .index {
+    width: auto;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .book__pages {
+    position: static;
+    perspective: none;
+  }
+  .book__pages::before,
+  .book__pages::after,
+  .coil,
+  .corner,
+  .index,
+  .cast,
+  .page__shade,
+  .page::before,
+  .seed,
+  .skip-link,
+  .loose,
+  .next-page {
+    display: none !important;
+  }
+  .spread {
+    display: block;
+  }
+  .page,
+  .page[data-state] {
+    display: block !important;
+    visibility: visible !important;
+    position: static;
+    width: auto;
+    padding: 0 0 var(--space-6);
+    transform: none;
+    opacity: 1 !important;
+    background: #fff;
+    break-inside: avoid;
+  }
+  .page--right {
+    break-after: page; /* each spread ends a printed sheet */
+  }
+  .page__body,
+  .page--left .page__body,
+  .page--right .page__body,
+  .page__body--scroll {
+    position: static;
+    height: auto;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    padding: 0;
+  }
+  .folio {
+    position: static;
+    margin-top: var(--space-4);
+    color: #000;
+  }
+  .folio__more,
+  .folio__admin {
+    display: none !important;
+  }
+  .page--title .page__body {
+    padding-top: 0;
+  }
+  .slip {
+    transform: none;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  .plate__img,
+  .social__pic {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact; /* the paintings in their colours */
+  }
+  .plate__lift {
+    box-shadow: none;
+  }
+  .plate--hero .plate__img,
+  .plate--portrait .plate__img {
+    max-height: 60vh;
+  }
+  .workshop::after {
+    display: none; /* the arrows mean nothing on paper */
+  }
+  .field,
+  .button,
+  .stepper {
+    display: none; /* nor do the forms */
+  }
+  .notify,
+  .message {
+    display: none;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* ============================================================
    REDUCED MOTION — the pages still change; nothing slides or lifts
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
