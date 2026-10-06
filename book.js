@@ -93,6 +93,9 @@
   function clamp(v) {
     return Math.max(0, Math.min(viewCount() - 1, v));
   }
+  function sectionOf(spread) {
+    return spread ? spread.id.replace(/(-\d+)+$/, "") : "";
+  }
   // the first view that shows a given spread
   function viewForSpread(spread) {
     if (!single()) return Math.max(0, spreads.indexOf(spread));
@@ -152,10 +155,12 @@
     spreads.forEach(function (s) {
       s.classList.toggle("is-current", s === spread);
     });
-    // the index: the tab of the spread on show is the open one
+    // the index: the tab of the SECTION on show is the open one. A section
+    // is a spread's id without its numbers, so plates-1, plates-1-2 and
+    // plates-3 are all "plates" and the Plates tab stays out for all of them.
     tabs.forEach(function (t) {
       var v = viewForHash(t.getAttribute("href"));
-      var isHere = v !== null && spreadOf(v) === spread;
+      var isHere = v !== null && sectionOf(spreadOf(v)) === sectionOf(spread);
       if (isHere) t.setAttribute("aria-current", "page");
       else t.removeAttribute("aria-current");
     });
