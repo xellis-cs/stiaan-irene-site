@@ -1,8 +1,8 @@
-// Workshop sign-ups — the booking form inside the dark panel, wired to the
+// Workshop sign-ups — the booking form on the loose slip, wired to the
 // database.
 //
-// A visitor clicks a workshop date, the panel opens with that date restated
-// in a chip, they fill in their details and press "Book my place"; the
+// A visitor presses a workshop date, book.js lays the slip over the book
+// with that date restated in a chip, they fill in their details and press "Book my place"; the
 // booking lands in the `signups` table, where the admin page reads it. Only
 // inserting is allowed from here: the database's row rules let anyone add a
 // sign-up but let nobody read the list back without signing in, so one
@@ -35,9 +35,9 @@
 
   var MAX_PEOPLE = 6;
 
-  // Which date was clicked. The panel is opened by a workshop button, and the
-  // page stack copies those buttons into its title band, so this listens on the
-  // document rather than on the buttons themselves — a copy works like the
+  // Which date was clicked. content.js redraws the date buttons once the
+  // saved dates arrive from the database, so this listens on the document
+  // rather than on the buttons themselves — a redrawn button works like the
   // original. Read from the button's own text, which is what the visitor saw.
   var picked = null;
   document.addEventListener("click", function (e) {
@@ -194,12 +194,13 @@
     setPeople(1);
     btn.disabled = false;
   }
-  // "Book another date": close the panel so they can pick one. The fold-X
-  // button is the one place that knows how to close, so press it.
+  // "Book another date": put the slip away so they can pick one. The slip's
+  // own close control is the one place that knows how to close it, so press
+  // it (book.js listens for it).
   var again = form.querySelector("[data-signup-again]");
   if (again) {
     again.addEventListener("click", function () {
-      var close = document.querySelector(".showcase__back");
+      var close = document.querySelector("[data-booking-close]");
       if (close) close.click();
       reset();
     });

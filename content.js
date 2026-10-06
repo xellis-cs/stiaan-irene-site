@@ -12,10 +12,8 @@
 (function () {
   var URL_BASE = window.SUPABASE_URL;
   var KEY = window.SUPABASE_ANON_KEY;
-  // Inside the SECTION, deliberately. The page stack copies this grid into its
-  // title band and inserts that copy earlier in the document, so a plain
-  // document-wide query finds the copy — and writing there is pointless: the
-  // stack rebuilds its copies from the real one and the change vanishes.
+  // The grid lives inside #workshop-dates on the Programme page (index.html);
+  // keep that id on the element that holds .workshops__grid.
   var section = document.getElementById("workshop-dates");
   var grid = section && section.querySelector(".workshops__grid");
   if (!grid || !URL_BASE || !KEY) return;
@@ -26,8 +24,8 @@
     });
   }
 
-  // One date, in the same shape the hand-written markup uses — the sign-up
-  // panel, the page stack and the styles all key off these exact classes.
+  // One date, in the same shape the hand-written markup uses — the booking
+  // slip (signup.js) and the styles key off these exact classes.
   function dateButton(d) {
     var day = esc(d.date);
     var weekday = esc(d.day);
@@ -53,7 +51,7 @@
         var dates = (m.dates || []).map(dateButton).join("");
         if (!dates && !String(m.name || "").trim()) return "";
         return (
-          '<div class="workshops__month reveal">' +
+          '<div class="workshops__month">' +
           '<p class="workshops__month-name">' + esc(m.name) + "</p>" +
           '<div class="workshops__dates">' + dates + "</div>" +
           "</div>"
@@ -63,14 +61,7 @@
     if (!html) return false; // nothing worth showing: keep the built-in dates
     grid.innerHTML = html;
 
-    // Hand the new months to the reveal observer, or they stay invisible.
-    var reveal = window.IEA_REVEAL;
-    grid.querySelectorAll(".reveal").forEach(function (el) {
-      if (reveal) reveal.observe(el);
-      else el.classList.add("is-visible");
-    });
-    // The page stack copies this grid into its title band and measures the
-    // section's height off it, so tell it to look again.
+    // Anything that measures or copies the months can look again now.
     document.dispatchEvent(new CustomEvent("content:updated"));
     return true;
   }
