@@ -42,6 +42,20 @@
   --color-light: #f1dfd6; /* text on the board */
   --color-light-muted: rgba(241, 223, 214, 0.72); /* 6.7:1 on the board */
 
+  /* --- Rules --- the hairlines, at three strengths and no more: soft
+     between list items and dates, plain under headings and labels, strong
+     under a page heading and around a quiet button. Six slightly different
+     strengths read as uneven; three read as a system. */
+  --rule-soft: rgba(44, 44, 44, 0.16);
+  --rule: rgba(44, 44, 44, 0.24);
+  --rule-strong: rgba(44, 44, 44, 0.4);
+
+  /* --- The coil --- its colours live here, not in the SVG, so a palette
+     change reaches it (the geometry stays hand-tuned in index.html) */
+  --coil-wire: #3a322d;
+  --coil-hole: #2a2826; /* through the page to the board */
+  --coil-highlight: #6b615b;
+
   /* --- Type roles — three families, three jobs ---
      display: Pinyon Script, for the wordmark and the spread titles ONLY
      serif:   Libre Caslon Text, for everything that is read: the story,
@@ -575,7 +589,7 @@ nav[tabindex]:focus-visible {
   color: var(--color-text);
   padding: calc(var(--u) * 1.2) 0 var(--space-2);
   margin: 0 0 calc(var(--u) * 2.4);
-  border-bottom: 1px solid rgba(44, 44, 44, 0.4);
+  border-bottom: 1px solid var(--rule-strong);
 }
 
 /* A subheading inside a page */
@@ -621,11 +635,11 @@ nav[tabindex]:focus-visible {
 }
 .expect li {
   padding: 10px 0;
-  border-top: 1px solid rgba(44, 44, 44, 0.18);
+  border-top: 1px solid var(--rule-soft);
   line-height: 1.5;
 }
 .expect li:last-child {
-  border-bottom: 1px solid rgba(44, 44, 44, 0.18);
+  border-bottom: 1px solid var(--rule-soft);
 }
 .expect strong {
   font-weight: 700;
@@ -930,7 +944,7 @@ nav[tabindex]:focus-visible {
   gap: 3px;
   margin-top: var(--space-3);
   padding-top: var(--space-2);
-  border-top: 1px solid rgba(44, 44, 44, 0.22);
+  border-top: 1px solid var(--rule);
   justify-self: stretch;
   /* counts for nothing when the plate's width is worked out, then takes
      the picture's full width — so a long line wraps under the picture
@@ -1048,7 +1062,7 @@ nav[tabindex]:focus-visible {
 .button--quiet {
   background: transparent;
   color: var(--color-text);
-  box-shadow: inset 0 0 0 1px rgba(44, 44, 44, 0.45);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
 }
 .button--quiet:hover {
   background: rgba(44, 44, 44, 0.06);
@@ -1112,7 +1126,7 @@ nav[tabindex]:focus-visible {
   color: var(--color-ink-soft);
   padding-bottom: var(--space-1);
   margin: var(--space-3) 0 0;
-  border-bottom: 1px solid rgba(44, 44, 44, 0.24);
+  border-bottom: 1px solid var(--rule);
 }
 .workshops__dates {
   display: grid;
@@ -1132,7 +1146,7 @@ nav[tabindex]:focus-visible {
   min-height: 48px;
   padding: var(--space-2) var(--space-1) var(--space-2) 0;
   border: 0;
-  border-bottom: 1px solid rgba(44, 44, 44, 0.16);
+  border-bottom: 1px solid var(--rule-soft);
   background: transparent;
   text-align: left;
   font-family: var(--font-serif);
@@ -1255,7 +1269,7 @@ nav[tabindex]:focus-visible {
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-3) 0;
-  border-bottom: 1px solid rgba(44, 44, 44, 0.16);
+  border-bottom: 1px solid var(--rule-soft);
   text-decoration: none;
 }
 .social__link:hover .social__name {
@@ -1312,7 +1326,7 @@ nav[tabindex]:focus-visible {
 .colophon {
   margin-top: calc(var(--u) * 4);
   padding-top: var(--space-4);
-  border-top: 1px solid rgba(44, 44, 44, 0.24);
+  border-top: 1px solid var(--rule);
   font: 400 var(--text-small) / 1.5 var(--font-ui);
   color: var(--color-ink-soft);
   max-width: 52ch;
@@ -1325,7 +1339,7 @@ nav[tabindex]:focus-visible {
   pointer-events: auto;
   margin-left: var(--space-4);
   color: var(--color-ink-muted);
-  text-decoration-color: rgba(44, 44, 44, 0.3);
+  text-decoration-color: var(--rule-strong);
 }
 .folio__admin:hover {
   color: var(--color-text);
@@ -1334,7 +1348,17 @@ nav[tabindex]:focus-visible {
 /* ============================================================
    THE FURNITURE — coil, corners, tabs, arrows
    ============================================================ */
-/* The wire coil down the gutter, above the pages */
+/* The wire coil down the gutter, above the pages. The ring drawings in
+   index.html carry fallback colours; these rules give them the tokens. */
+.coil-wire {
+  stroke: var(--coil-wire);
+}
+.coil-hole {
+  fill: var(--coil-hole);
+}
+.coil-light {
+  stroke: var(--coil-highlight);
+}
 .coil {
   position: absolute;
   top: 7px;
@@ -1593,8 +1617,8 @@ nav[tabindex]:focus-visible {
   gap: var(--space-2);
   flex-wrap: wrap;
   padding: var(--space-2) 0;
-  border-top: 1px solid rgba(44, 44, 44, 0.24);
-  border-bottom: 1px solid rgba(44, 44, 44, 0.24);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   font-size: var(--text-body);
 }
 .signup__chip.is-set {
@@ -1745,7 +1769,7 @@ nav[tabindex]:focus-visible {
 /* the hairline under the picture is drawn on the mount, inset like the picture */
 .print .label .label__line--num {
   padding-top: var(--space-2);
-  border-top: 1px solid rgba(44, 44, 44, 0.22);
+  border-top: 1px solid var(--rule);
 }
 .print__nav {
   display: flex;
@@ -1984,11 +2008,11 @@ nav[tabindex]:focus-visible {
   }
   .turnbar .arrow--prev {
     order: -1;
-    border-right: 1px solid rgba(44, 44, 44, 0.16);
+    border-right: 1px solid var(--rule-soft);
   }
   .turnbar .arrow--next {
     order: 1;
-    border-left: 1px solid rgba(44, 44, 44, 0.16);
+    border-left: 1px solid var(--rule-soft);
   }
   .turnbar .arrow:hover {
     background: rgba(253, 253, 253, 0.5);
