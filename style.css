@@ -628,6 +628,11 @@ nav[tabindex]:focus-visible {
   display: flex;
   flex-direction: column;
   padding-top: calc(var(--u) * 7);
+  /* page__body--scroll in the HTML is only a safety net: at 200% zoom on a
+     wide laptop (a 760x450 window in the two-page layout) the offer and
+     the slip would otherwise run off the page. At any ordinary size nothing
+     scrolls here. */
+  padding-right: 0;
 }
 .wordmark {
   font: 400 var(--text-wordmark) / 1.02 var(--font-display);
