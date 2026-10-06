@@ -373,7 +373,8 @@ nav[tabindex]:focus-visible {
 .page.is-landing {
   z-index: 6;
   will-change: transform, opacity;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  /* no shadow on the moving page itself: the .cast layers and the page's
+     shade already throw the turn's shadow, with the light from above */
 }
 .is-turning .page,
 .is-turning .corner {
