@@ -217,6 +217,17 @@ Aesthetic: soft watercolour, dandelion motif, feminine, calm.
 - Keyboard: a skip link is the first Tab stop; every control shares one
   rose-red :focus-visible ring (style.css, "SHARED BITS").
 
+## Design skill — /impeccable (in .claude/skills)
+- The Impeccable design skill (impeccable.style, v4.5.0) is committed under
+  `.claude/skills/impeccable/` with its four helper agents in
+  `.claude/agents/`, so `/impeccable critique`, `/impeccable audit`,
+  `/impeccable polish` and the rest work in every Claude Code session on this
+  repo, including cloud sessions. It was copied from the `plugin/skills`
+  folder of github.com/pbakaus/impeccable; to update, copy that folder again.
+- Its optional engine (detector rules, live browser mode) is a binary the
+  launcher downloads from GitHub Releases on first run. Where that host is
+  blocked the skill says so and carries on with the written guidance alone.
+
 ## How I want you to work with me
 - I am a beginner learning as I build. Explain choices simply.
 - Work one section or one concern at a time. Do not build ahead.
