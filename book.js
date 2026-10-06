@@ -40,12 +40,19 @@
 
   // ---- KNOBS ---------------------------------------------------------
   var TURN_MS = 720; // how long a turn takes on a computer
-  var TURN_MS_SINGLE = 520; // and on a phone (one page, a shorter sweep)
+  var TURN_MS_SINGLE = 600; // and on a phone (one page; the low end of the 600–800ms the design asks)
   // The easing is an exponential ease-out: the page leaves fast and settles
-  // slowly, like a page let go. Bigger = snappier start. At 5 the page is
-  // standing on its edge about a fifth of the way through the turn.
-  var TURN_SNAP = 5;
+  // slowly, like a page let go. Bigger = snappier start. At 3.5 the page is
+  // standing on its edge about a quarter of the way through the turn and
+  // visibly settles over the last tenth; at 5 it flicked over in the first
+  // fifth and then sat still for half a second.
+  var TURN_SNAP = 3.5;
   var TURN_SNAP_SINGLE = 3;
+  // The hand gets the book back a little before the motion fully ends: the
+  // corners fade back in and the dates take clicks while the landing page
+  // settles its last few degrees, instead of every press in that window
+  // being silently dropped.
+  var TURN_RELEASE = 0.85;
   var SWIPE_MIN = 48; // px of sideways travel that counts as a swipe
   var WHEEL_MIN = 160; // accumulated wheel movement that counts as "deliberate"
   var WHEEL_LOCK = 1100; // ms before the wheel may turn another page
@@ -398,6 +405,11 @@
       turning = false;
       done();
     }
+    // release the pointer gate early (see TURN_RELEASE); `turning` stays
+    // true until finish() so a request in that window queues correctly
+    window.setTimeout(function () {
+      if (!finished) book.classList.remove("is-turning");
+    }, ms * TURN_RELEASE);
     // the first animation is as long as all the others
     var lead = anims[0];
     if (!lead) return finish();
