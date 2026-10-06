@@ -542,9 +542,18 @@
   // The mouse wheel or trackpad. A page whose text can still scroll keeps
   // the wheel for itself; otherwise a deliberate amount of movement turns
   // the page, and then the wheel rests for a moment so one flick is one page.
+  //
+  // One gesture, one job: a trackpad flick that scrolled the story keeps
+  // streaming small "momentum" events for a second or two after the text
+  // has reached its end. Those must never add up to a page turn — so once a
+  // gesture has been given to the text, every event that follows within
+  // 200ms of the last (no trackpad pauses that long mid-gesture) belongs to
+  // the same gesture and is ignored for turning. The next fresh flick, after
+  // a pause, turns the page as before.
   var wheelSum = 0;
   var wheelLockUntil = 0;
-  var wheelTimer = null;
+  var lastWheelAt = 0;
+  var wheelHeld = false; // true while the current gesture belongs to the text
   var lastInnerScroll = 0;
   book.addEventListener(
     "scroll",
@@ -557,6 +566,7 @@
     "wheel",
     function (e) {
       if (document.querySelector("dialog[open]")) return;
+      var now = performance.now();
       var scroller = e.target.closest && e.target.closest(".page__body--scroll");
       var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
       if (scroller && Math.abs(e.deltaY) >= Math.abs(e.deltaX)) {
@@ -564,20 +574,31 @@
         var canUp = scroller.scrollTop > 0;
         if ((e.deltaY > 0 && canDown) || (e.deltaY < 0 && canUp)) {
           wheelSum = 0;
+          wheelHeld = true;
+          lastWheelAt = now;
           return; // the page is scrolling; leave it alone
         }
         // it has just reached its end: give the hand a moment before a
         // continued scroll turns the page
-        if (performance.now() - lastInnerScroll < 500) return;
+        if (now - lastInnerScroll < 500) {
+          wheelHeld = true;
+          lastWheelAt = now;
+          return;
+        }
       }
       e.preventDefault();
-      var now = performance.now();
+      if (wheelHeld) {
+        if (now - lastWheelAt < 200) {
+          lastWheelAt = now;
+          return; // still the gesture that scrolled the text
+        }
+        wheelHeld = false;
+      }
+      // movement only adds up within one gesture: a pause of 320ms starts afresh
+      if (now - lastWheelAt > 320) wheelSum = 0;
+      lastWheelAt = now;
       if (now < wheelLockUntil) return;
       wheelSum += delta;
-      window.clearTimeout(wheelTimer);
-      wheelTimer = window.setTimeout(function () {
-        wheelSum = 0;
-      }, 320);
       if (Math.abs(wheelSum) >= WHEEL_MIN) {
         turn(wheelSum > 0 ? 1 : -1);
         wheelSum = 0;
