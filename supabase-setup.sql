@@ -118,3 +118,36 @@ create policy "only signed-in can read the list"
 
 -- No update or delete from the website or admin: removing an address (someone
 -- asks to be taken off) is done in the Supabase table editor.
+
+
+-- ---------------------------------------------------------------------------
+-- Messages — the Get In Touch form on the website (contact.js). Same rules
+-- again: anyone may send one, only the signed-in admin may read them (the
+-- "Messages" panel in /admin). Run this once in the SQL Editor.
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.messages (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  surname text,
+  email text not null,
+  message text not null
+);
+
+alter table public.messages enable row level security;
+
+drop policy if exists "anyone can send a message" on public.messages;
+create policy "anyone can send a message"
+  on public.messages for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "only signed-in can read messages" on public.messages;
+create policy "only signed-in can read messages"
+  on public.messages for select
+  to authenticated
+  using (true);
+
+-- No update or delete: a message that has been dealt with is removed in the
+-- Supabase table editor, if at all.

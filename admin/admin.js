@@ -790,3 +790,92 @@ window.IEA_when = function (iso) {
   }
   if (editorView && !editorView.hidden) load();
 })();
+
+// --- Messages: what people sent through Get In Touch --------------------------
+(function () {
+  var list = document.querySelector("[data-messages-list]");
+  var statusEl = document.querySelector("[data-messages-status]");
+  var refreshBtn = document.querySelector("[data-messages-refresh]");
+  var editorView = document.querySelector('[data-view="editor"]');
+  if (!list) return;
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg || "";
+  }
+
+  function render(rows) {
+    if (!rows.length) {
+      list.innerHTML = '<p class="inbox__empty">No messages yet.</p>';
+      return;
+    }
+    list.innerHTML =
+      '<p class="inbox__count">' +
+      rows.length +
+      (rows.length === 1 ? " message" : " messages") +
+      ", newest first</p>" +
+      '<ul class="inbox__list">' +
+      rows
+        .map(function (r) {
+          var who = ((r.name || "") + " " + (r.surname || "")).trim() || "No name given";
+          // the email is a mailto link, so a click opens a reply in Irene's own
+          // mail with the sender filled in. Everything typed by a stranger is
+          // escaped before it goes on the page.
+          return (
+            '<li class="inbox__row"><span class="inbox__main"><strong>' +
+            esc(who) +
+            "</strong> · " +
+            '<a href="mailto:' +
+            esc(encodeURIComponent(r.email || "")) +
+            '">' +
+            esc(r.email) +
+            "</a></span>" +
+            '<span class="inbox__meta">' +
+            esc(window.IEA_when(r.created_at)) +
+            "</span>" +
+            '<p class="inbox__body">' +
+            esc(r.message) +
+            "</p></li>"
+          );
+        })
+        .join("") +
+      "</ul>";
+  }
+
+  var loading = false;
+  function load() {
+    if (loading) return;
+    loading = true;
+    setStatus("Loading…");
+    window.IEA_loadProtected("messages", "created_at.desc", function (state, rows) {
+      loading = false;
+      if (state === "signed-out") {
+        setStatus("Sign in to see the messages.");
+        return;
+      }
+      if (state === "missing") {
+        setStatus("The messages table doesn’t exist in Supabase yet — run supabase-setup.sql.");
+        list.innerHTML = "";
+        return;
+      }
+      if (state === "error") {
+        setStatus("Couldn’t load the messages. Try Refresh in a moment.");
+        return;
+      }
+      setStatus("");
+      render(rows);
+    });
+  }
+
+  if (refreshBtn) refreshBtn.addEventListener("click", load);
+  if (editorView && "MutationObserver" in window) {
+    new MutationObserver(function () {
+      if (!editorView.hidden) load();
+    }).observe(editorView, { attributes: true, attributeFilter: ["hidden"] });
+  }
+  if (editorView && !editorView.hidden) load();
+})();

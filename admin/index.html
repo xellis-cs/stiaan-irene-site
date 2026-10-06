@@ -244,6 +244,23 @@
         <div class="inbox" data-notify-list></div>
       </section>
 
+      <!-- ================= MESSAGES ================= -->
+      <!-- What people send through Get In Touch on the website. Read-only;
+           loaded by admin.js once signed in. Reply from your own email. -->
+      <section class="panel">
+        <div class="panel__head">
+          <h2>Messages</h2>
+          <button type="button" class="btn" data-messages-refresh>Refresh</button>
+        </div>
+        <p class="hint">
+          Messages sent through the website's Get In Touch form, newest first.
+          Click a sender's email to reply from your own mail. Only you can see
+          these.
+        </p>
+        <p class="inbox__status" data-messages-status></p>
+        <div class="inbox" data-messages-list></div>
+      </section>
+
       <!-- ================= PORTFOLIO ================= -->
       <section class="panel">
         <div class="panel__head"><h2>Portfolio albums</h2></div>

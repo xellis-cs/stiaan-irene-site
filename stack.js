@@ -33,7 +33,13 @@
   var NARROW = 900;
   var DOCK = 0.55; // a docked title's size, next to the section's own
   var DOCK_GAP = 10; // space above a docked title inside its slot
-  var MIN_ROOM = 150; // px the full band must leave free, or it's disabled
+  var MIN_ROOM = 150; // px the band must leave free, or the effect is disabled
+  // A short screen docks too. The full-size band (the sticky header plus
+  // three script titles) is about 600px; on a 900px-tall laptop screen that
+  // left too little under it for the held contact form and the footer, so the
+  // form was pushed up over its own title. Below this much free room the
+  // titles dock, as they do on a narrow screen, and the form scrolls normally.
+  var ROOM_FULL = 420;
   var TOOLBAR = 140; // a height change up to this is a phone's address bar
   // Depth: every part stacked ON TOP of a strip washes its title a little
   // further toward its own background, the way distance pales a thing in the
@@ -205,8 +211,9 @@
     measuredH = VH;
 
     // Pass 1 — how tall is each band? Its own title block decides that.
-    compact = window.innerWidth < NARROW;
-    var C = headerH(); // running band height = the slot where the next strip sticks
+    // Both sizes are measured first, so the full band's height can decide
+    // whether the screen has room for it at all.
+    var fullBand = headerH();
     parts.forEach(function (p) {
       p.T = docTop(p.page);
       var h2 = p.titles[p.titles.length - 1]; // the script title, under the eyebrow
@@ -217,9 +224,14 @@
       });
       // Docked, a slot holds only the shrunken title. At full size it holds the
       // whole title block, laid out exactly as the section draws it.
-      p.S = compact
-        ? DOCK_GAP + h2.offsetHeight * DOCK + PAD
-        : bot - p.T + PAD; // strip runs from the section's top edge
+      p.fullS = bot - p.T + PAD; // strip runs from the section's top edge
+      p.dockS = DOCK_GAP + h2.offsetHeight * DOCK + PAD;
+      fullBand += p.fullS;
+    });
+    compact = window.innerWidth < NARROW || VH - fullBand < ROOM_FULL;
+    var C = headerH(); // running band height = the slot where the next strip sticks
+    parts.forEach(function (p) {
+      p.S = compact ? p.dockS : p.fullS;
       C += p.S;
     });
 
