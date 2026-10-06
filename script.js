@@ -206,13 +206,26 @@
     rafId = requestAnimationFrame(step);
   }
 
+  // How much of the top of the screen the sticky header takes, so a section
+  // lands just under it rather than under it. The hero is the exception: the
+  // header is hidden there, and we want the very top of the page.
+  window.IEA_HEADER_OFFSET = function (target) {
+    var header = document.querySelector(".site-header");
+    if (!header || (target && target.id === "hero")) return 0;
+    return header.offsetHeight;
+  };
+
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    // the skip link is for keyboards: let the browser jump and move focus
+    if (link.classList.contains("skip-link")) return;
     link.addEventListener("click", function (e) {
       var id = link.getAttribute("href");
       if (id.length < 2) return; // bare "#", nothing to scroll to
       var target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
+      // a link inside the phone menu closes the menu as it goes
+      document.dispatchEvent(new CustomEvent("menu:close"));
       // natural layout position: stack.js records it on the sections it pins,
       // since a stuck sticky page isn't where its content lives in the scroll
       var top;
@@ -225,7 +238,11 @@
         for (var n = target; n; n = n.offsetParent) {
           top += n.offsetTop + (n.offsetParent ? n.offsetParent.clientTop : 0);
         }
+        // navTop (above) already allows for the header — stack.js starts its
+        // band below it. A plain section needs the allowance made here.
+        top -= window.IEA_HEADER_OFFSET(target);
       }
+      top = Math.max(0, top);
       if (reduce) {
         window.scrollTo(0, top);
         history.pushState(null, "", id);
@@ -259,6 +276,65 @@
         }
       }, 620);
     }
+  });
+})();
+
+// Site header — the slim bar slides in once the hero has scrolled off the
+// screen and parks itself again when you scroll back up to the top. On a
+// phone its links live behind a Menu button (a plain show/hide: the button's
+// aria-expanded tells a screen reader which state it is in).
+(function () {
+  var header = document.querySelector("[data-site-header]");
+  var hero = document.getElementById("hero");
+  if (!header || !hero) return;
+
+  var shown = false;
+  var ticking = false;
+  function check() {
+    ticking = false;
+    // Show once the bottom of the hero has gone under the top of the screen
+    // (less the header's own height, so it slides in as the pills leave).
+    var want = hero.getBoundingClientRect().bottom <= header.offsetHeight;
+    if (want !== shown) {
+      shown = want;
+      header.classList.toggle("is-shown", shown);
+      if (!shown) closeMenu();
+    }
+  }
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(check);
+      }
+    },
+    { passive: true }
+  );
+  window.addEventListener("resize", check);
+  check();
+
+  var toggle = header.querySelector("[data-menu-toggle]");
+  function setMenu(open) {
+    header.classList.toggle("is-menu-open", open);
+    if (toggle) toggle.setAttribute("aria-expanded", String(open));
+  }
+  function closeMenu() {
+    if (header.classList.contains("is-menu-open")) setMenu(false);
+  }
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      setMenu(!header.classList.contains("is-menu-open"));
+    });
+  }
+  // the smooth-scroll links ask for this as they go; Escape closes it too,
+  // and so does a tap anywhere outside the bar
+  document.addEventListener("menu:close", closeMenu);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeMenu();
+  });
+  document.addEventListener("click", function (e) {
+    if (!header.contains(e.target)) closeMenu();
   });
 })();
 

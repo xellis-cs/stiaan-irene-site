@@ -91,6 +91,187 @@ body {
   padding-bottom: 32px;
 }
 
+/* Native in-page jumps (JavaScript off, or a shared #link) land just below
+   the sticky header instead of under it. script.js does the same maths for
+   its smooth scroll. */
+html {
+  scroll-padding-top: 72px;
+}
+
+/* ============================================================
+   SHARED BITS — focus rings, the skip link, the two pill buttons
+   ============================================================ */
+/* One focus style for every control, shown only for keyboard focus
+   (:focus-visible), so mouse clicks never leave a ring behind. Deliberately
+   a rose-red double ring: visible on the pale pinks AND on the dark panels. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #a8465a;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(253, 253, 253, 0.85);
+}
+
+/* Hidden off the top of the page until it is tabbed to, then it drops in. */
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 200;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--color-dark);
+  color: var(--color-blush);
+  font: 600 var(--text-sm) / 1.2 var(--font-ui);
+  text-decoration: none;
+  transform: translateY(calc(-100% - 24px));
+  transition: transform 0.2s ease;
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* The two pill buttons used for calls to action: a solid dark one (the
+   thing we most want pressed) and a quiet outlined one. Both are at least
+   44px tall so they are easy to hit with a thumb. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 12px 26px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font: 600 var(--text-sm) / 1.2 var(--font-ui);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+    color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.btn--primary {
+  background: var(--color-dark);
+  border-color: var(--color-dark);
+  color: var(--color-blush);
+  box-shadow: 0 14px 28px -18px rgba(42, 40, 38, 0.7);
+}
+.btn--primary:hover {
+  background: #3a3532;
+  border-color: #3a3532;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px -16px rgba(42, 40, 38, 0.7);
+}
+.btn--ghost {
+  background: rgba(253, 253, 253, 0.45);
+  border-color: rgba(44, 44, 44, 0.26);
+  color: var(--color-text);
+}
+.btn--ghost:hover {
+  background: var(--color-pink);
+  border-color: var(--color-pink);
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   SITE HEADER — the slim sticky bar (markup at the top of index.html)
+   ============================================================ */
+:root {
+  --site-header-h: 60px; /* stack.js reads the real height; this is the design size */
+}
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Under the binding coil (z 60) and the page-stack edges (z 55), so the
+     rings keep running over the top of it like a real spine — but above
+     every section and the sticky title band. */
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-height: var(--site-header-h);
+  /* the right padding is the binding's width plus a breath, so nothing
+     ever sits under the rings */
+  padding: 0 calc(104px + var(--space-3)) 0 clamp(28px, 4vw, 56px);
+  background: rgba(253, 251, 249, 0.86);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(70, 62, 58, 0.14);
+  box-shadow: 0 10px 30px -24px rgba(70, 62, 58, 0.5);
+  /* parked off the top of the screen; script.js adds .is-shown once the
+     hero has scrolled away */
+  transform: translateY(-100%);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+.site-header.is-shown {
+  transform: none;
+  opacity: 1;
+}
+/* out of the way while the dark showcase is open — it is a dialog, and the
+   page behind it should go quiet */
+body.is-showcase-open .site-header {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.site-header__brand {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  line-height: 1;
+  color: #111;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 8px 6px 10px; /* a 44px-tall hit area around the script */
+  margin-left: -6px;
+}
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1vw, 12px);
+  margin-left: auto;
+}
+.site-header__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: var(--radius-pill);
+  font: 500 var(--text-sm) / 1.2 var(--font-ui);
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.site-header__nav a:hover {
+  background: var(--color-blush);
+}
+/* the one solid pill in the bar */
+.site-header__nav .site-header__cta {
+  margin-left: var(--space-2);
+  padding: 10px 20px;
+  background: var(--color-dark);
+  color: var(--color-blush);
+  font-weight: 600;
+}
+.site-header__nav .site-header__cta:hover {
+  background: #3a3532;
+}
+/* the Menu button only exists on phones */
+.site-header__menu {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .skip-link,
+  .btn {
+    transition: none;
+  }
+}
+
 /* Cascading page-stack edges (left + bottom + rounded corner). Overlay
    only, drawn by script.js at document size; below the binding, above
    the content backgrounds. Never blocks clicks. */
@@ -281,6 +462,24 @@ body {
   color: var(--color-pink);
   font-style: normal;
 }
+/* The value line under the roles: what Irene offers, in the reading serif
+   so it sits quietly beneath the italic roles rather than competing. */
+.hero__intro {
+  max-width: 46em; /* wide enough for the line to sit on one row on a laptop */
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+/* The two calls to action, side by side (wrapping on a narrow screen) */
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
 
 /* --- Navigation: spread along the bottom --- */
 .hero__nav {
@@ -323,6 +522,8 @@ body {
   .js-reveal .hero__word--2.reveal { transition-delay: 0.3s; }
   .js-reveal .hero__word--3.reveal { transition-delay: 0.5s; }
   .js-reveal .hero__tagline.reveal { transition-delay: 0.7s; }
+  .js-reveal .hero__intro.reveal { transition-delay: 0.85s; }
+  .js-reveal .hero__actions.reveal { transition-delay: 1s; }
 }
 
 /* Respect people who prefer less motion: show everything, still. */
@@ -1639,19 +1840,101 @@ a.contact__box--social:focus-visible {
     height: 0;
     overflow: hidden;
   }
-  /* The four buttons as a tidy 2 x 2 grid of equal pills */
+  /* The four pills along the base of the hero used to wrap into a 2 x 2
+     grid here. Now that the sticky header carries a Menu on phones, and
+     the hero has its two calls to action, the pills come off the phone
+     hero — the title gets its room back. */
   .hero__nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 0 var(--phone-pad-r) 44px var(--phone-pad-l);
+    display: none;
   }
-  .hero__nav a {
-    padding: 15px 6px;
-    font-size: 0.74rem;
-    letter-spacing: 0.14em;
-    text-align: center;
-    white-space: nowrap;
+  .hero__intro {
+    font-size: 1.1rem;
+    margin-top: 14px;
+  }
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 28px;
+    padding-bottom: 36px;
+  }
+
+  /* --- Site header on a phone: brand + Menu; the links drop down --- */
+  .site-header {
+    --site-header-h: 56px;
+    gap: 12px;
+    /* clear of the half-size coil (52px) on the right */
+    padding: 0 calc(52px + 8px) 0 var(--phone-pad-l);
+  }
+  .site-header__brand {
+    font-size: 1.5rem;
+  }
+  .site-header__menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 8px 14px;
+    border: 1px solid rgba(44, 44, 44, 0.22);
+    border-radius: var(--radius-pill);
+    background: rgba(253, 253, 253, 0.5);
+    font: 600 0.82rem/1 var(--font-ui);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  /* three little bars, drawn with borders and a shadow — no icon file */
+  .site-header__menu-bars {
+    position: relative;
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor;
+  }
+  .site-header__menu[aria-expanded="true"] {
+    background: var(--color-pink);
+    border-color: var(--color-pink);
+  }
+  /* The links become a sheet hanging under the bar. It is "hidden" with
+     visibility + opacity + a small slide rather than display:none, so it
+     can animate in. */
+  .site-header__nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    margin: 0;
+    padding: 12px var(--phone-pad-r) 16px var(--phone-pad-l);
+    background: rgba(253, 251, 249, 0.97);
+    border-bottom: 1px solid rgba(70, 62, 58, 0.14);
+    box-shadow: 0 24px 40px -28px rgba(70, 62, 58, 0.5);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
+  }
+  .site-header.is-menu-open .site-header__nav {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s;
+  }
+  .site-header__nav a {
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+  .site-header__nav .site-header__cta {
+    margin: 8px 0 0;
+    justify-content: center;
   }
 
   /* --- About --- */

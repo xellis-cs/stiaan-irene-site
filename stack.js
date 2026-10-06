@@ -61,6 +61,14 @@
   var root = document.documentElement;
   var main = document.querySelector("main");
   if (!main) return;
+  // The sticky site header (index.html) sits over the top of the screen
+  // whenever the band is in play, so the band starts just below it rather
+  // than fighting it for the same strip. Measured, not assumed: a phone's
+  // header is shorter than a computer's.
+  var header = document.querySelector(".site-header");
+  function headerH() {
+    return header ? header.offsetHeight : 0;
+  }
 
   // Sections in document order (before wrapping), so each part knows the
   // section directly above it — needed to find the line drawn at its seam.
@@ -198,7 +206,7 @@
 
     // Pass 1 — how tall is each band? Its own title block decides that.
     compact = window.innerWidth < NARROW;
-    var C = 0; // running band height = the slot where the next strip sticks
+    var C = headerH(); // running band height = the slot where the next strip sticks
     parts.forEach(function (p) {
       p.T = docTop(p.page);
       var h2 = p.titles[p.titles.length - 1]; // the script title, under the eyebrow
@@ -219,7 +227,7 @@
     if (!enabled) return; // plain scrolling page, left exactly as it is
 
     // Pass 2 — the slots, now that every band's height is known.
-    C = 0;
+    C = headerH();
     parts.forEach(function (p) {
       p.T = docTop(p.page);
       p.H = p.page.offsetHeight;

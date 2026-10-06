@@ -3,7 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Irene Ellis Art</title>
+    <title>Irene Ellis Art — Watercolour workshops and original art</title>
+    <!-- What search engines and link previews show. The description is the
+         one line a stranger reads before deciding to click, so it says what
+         Irene offers, not just her name. -->
+    <meta
+      name="description"
+      content="Irene Ellis is a South African artist offering beginner-friendly watercolour workshops and original artwork. See upcoming dates and book your place."
+    />
+    <meta name="theme-color" content="#f1dfd6" />
+    <link rel="canonical" href="https://stiaankoegelenberg.github.io/irene-ellis-art/" />
+
+    <!-- Link preview card (WhatsApp, Facebook, Instagram DMs, iMessage all read
+         these "Open Graph" tags; X/Twitter reads its own copies). The image
+         has to be a FULL address — a relative path shows up blank in a chat. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Irene Ellis Art" />
+    <meta property="og:title" content="Irene Ellis Art — Watercolour workshops and original art" />
+    <meta
+      property="og:description"
+      content="Beginner-friendly watercolour workshops and original artwork by South African artist Irene Ellis. See upcoming dates and book your place."
+    />
+    <meta property="og:url" content="https://stiaankoegelenberg.github.io/irene-ellis-art/" />
+    <meta property="og:image" content="https://stiaankoegelenberg.github.io/irene-ellis-art/images/irene-ellis.jpg" />
+    <meta property="og:image:alt" content="Portrait of Irene Ellis" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Irene Ellis Art — Watercolour workshops and original art" />
+    <meta
+      name="twitter:description"
+      content="Beginner-friendly watercolour workshops and original artwork by South African artist Irene Ellis."
+    />
+    <meta name="twitter:image" content="https://stiaankoegelenberg.github.io/irene-ellis-art/images/irene-ellis.jpg" />
+
+    <!-- Browser-tab icon: one dandelion seed (the same shape as the #seed
+         symbol in the hero), written straight into the page as an SVG so
+         there is no extra file to fetch — and no 404 for a missing
+         favicon.ico. The strokes are thicker than the hero's so it still
+         reads at 16px. -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 56'%3E%3Cg fill='none' stroke='%238f5f50' stroke-width='2.6' stroke-linecap='round'%3E%3Cline x1='20' y1='48' x2='20' y2='20'/%3E%3Cline x1='20' y1='20' x2='5' y2='14.5'/%3E%3Cline x1='20' y1='20' x2='7.4' y2='10.2'/%3E%3Cline x1='20' y1='20' x2='10.8' y2='6.9'/%3E%3Cline x1='20' y1='20' x2='15' y2='4.8'/%3E%3Cline x1='20' y1='20' x2='20' y2='4'/%3E%3Cline x1='20' y1='20' x2='25' y2='4.8'/%3E%3Cline x1='20' y1='20' x2='29.2' y2='6.9'/%3E%3Cline x1='20' y1='20' x2='32.6' y2='10.2'/%3E%3Cline x1='20' y1='20' x2='35' y2='14.5'/%3E%3C/g%3E%3Cellipse cx='20' cy='51' rx='3.4' ry='4.6' fill='%238f5f50'/%3E%3C/svg%3E"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +55,40 @@
     <link rel="stylesheet" href="showcase.css" />
   </head>
   <body>
-    <main>
+    <!-- For keyboard and screen-reader users: the first Tab press offers a
+         jump straight past the hero. Invisible until it has focus. -->
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ===================================================================
+         SITE HEADER — a slim bar that slides in once the hero has scrolled
+         away, so the navigation and "Book a workshop" are always one tap
+         away. Hidden while the hero is on screen (the hero has its own
+         pills), and while the dark showcase is open. script.js toggles
+         .is-shown; stack.js starts its title band just below it.
+         The right padding keeps everything clear of the binding coil.
+         =================================================================== -->
+    <header class="site-header" data-site-header>
+      <a class="site-header__brand" href="#hero">Irene Ellis Art</a>
+      <button
+        type="button"
+        class="site-header__menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-menu-toggle
+      >
+        <span class="site-header__menu-bars" aria-hidden="true"></span>
+        Menu
+      </button>
+      <nav class="site-header__nav" id="site-nav" aria-label="Site">
+        <a href="#about">About</a>
+        <a href="#workshop-dates">Workshops</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+        <a class="site-header__cta" href="#workshop-dates">Book a workshop</a>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
       <section id="hero">
         <!-- Decorative watercolour wash + drifting dandelion seeds.
              aria-hidden keeps it out of the way of screen readers. -->
@@ -64,6 +138,16 @@
             Artist <span class="hero__dot">·</span> Motivational Speaker
             <span class="hero__dot">·</span> Master of Ceremony
           </p>
+          <!-- The one line that says what a visitor can actually DO here.
+               The three roles above are who Irene is; this is what she offers. -->
+          <p class="hero__intro reveal">
+            Beginner-friendly watercolour workshops and original artwork,
+            made with heart in South Africa.
+          </p>
+          <div class="hero__actions reveal">
+            <a class="btn btn--primary" href="#workshop-dates">Book a workshop</a>
+            <a class="btn btn--ghost" href="#portfolio">See the portfolio</a>
+          </div>
         </div>
 
         <nav class="hero__nav" aria-label="Primary">
