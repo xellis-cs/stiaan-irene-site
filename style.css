@@ -138,7 +138,7 @@
      headings in the sans, a lighter tracking for the buttons, and none at
      all for anything in sentence case */
   --track-label: 0.14em;
-  --track-button: 0.08em;
+  --track-button: 0.1em;
 
   /* --- Spacing scale --- multiples of 4px, so gaps rhyme across pages */
   --space-1: 4px;
