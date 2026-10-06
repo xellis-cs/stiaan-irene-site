@@ -524,6 +524,14 @@ nav[tabindex]:focus-visible {
   margin: 0 0 calc(var(--u) * 1.6);
   text-wrap: balance;
 }
+/* Pinyon's ampersand is drawn at lowercase height, a small knot between
+   two words; set a third larger it reaches just under the capitals.
+   line-height 0 keeps it from pushing the title's line box. */
+.spread-title .amp {
+  font-size: 1.35em;
+  line-height: 0;
+  vertical-align: -0.04em;
+}
 
 /* A right-hand page's heading: a small tracked line with a hairline under it */
 .page-title {
