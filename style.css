@@ -1804,8 +1804,12 @@ nav[tabindex]:focus-visible {
     border-radius: 2px;
     box-shadow: none;
     background: transparent;
-    letter-spacing: 0.06em;
-    font-size: 10.5px;
+    /* Four words share the strip between the two arrows (204px at 320 wide,
+       274px at 390), so the labels stay short ("Dates", not "Programme")
+       rather than the type going under the 11px floor. Measured: every
+       label fits its cell at 360 and 390 with no clipping. */
+    letter-spacing: 0.02em;
+    font-size: var(--text-label);
     white-space: nowrap;
     transition: none;
   }
@@ -1851,6 +1855,13 @@ nav[tabindex]:focus-visible {
   }
   .arrow:hover {
     background: rgba(253, 253, 253, 0.5);
+  }
+  /* the narrowest phones (320px): slimmer arrows give the four labels 16px
+     more; 44px is still a full tap target */
+  @media (max-width: 340px) {
+    .turnbar .arrow {
+      width: 44px;
+    }
   }
 
   .loose {
