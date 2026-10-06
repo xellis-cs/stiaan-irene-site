@@ -266,6 +266,16 @@
       var t = i / N;
       out.push({ t: t, p: ease(t, k) });
     }
+    // Two extra samples either side of the hand-over (p = 0.49 and 0.51), so
+    // the swap of the two pages is a true step and not an 18ms crossfade in
+    // which a grey sliver of the edge-on page pokes above the book.
+    [0.49, 0.51].forEach(function (p) {
+      var t = -Math.log2(1 - p * (1 - Math.pow(2, -k))) / k;
+      out.push({ t: t, p: p });
+    });
+    out.sort(function (a, b) {
+      return a.t - b.t;
+    });
     return out;
   }
   function hump(x) {
