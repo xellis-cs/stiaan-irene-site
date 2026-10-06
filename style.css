@@ -1699,7 +1699,7 @@ nav[tabindex]:focus-visible {
 }
 .print__img {
   max-width: 100%;
-  max-height: calc(94vh - 190px);
+  max-height: calc(94vh - 240px); /* room below for the label and arrows, above for the close X */
   width: auto;
   height: auto;
   padding: 10px 10px 0;
@@ -1986,7 +1986,7 @@ nav[tabindex]:focus-visible {
     padding: var(--space-6) var(--space-5) var(--space-5);
   }
   .print__img {
-    max-height: calc(94vh - 210px);
+    max-height: calc(94vh - 250px);
   }
 }
 
