@@ -1489,38 +1489,44 @@ nav[tabindex]:focus-visible {
 .loose[open] {
   display: block;
 }
+/* The close control is a small rose-red X written IN the corner of the
+   sheet (the booking slip) or on the board above the print — not a black
+   disc floating off the corner, which is the one thing on a paper slip
+   that is not paper. 44px of it can be pressed. */
 .loose__close {
   position: absolute;
-  top: -14px;
-  right: -14px;
+  top: 4px;
+  right: 4px;
   width: 44px;
   height: 44px;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--color-dark);
-  color: var(--color-light);
+  background: transparent;
+  color: var(--color-red);
   cursor: pointer;
-  box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.5);
   z-index: 2;
+  transition: background-color 150ms ease-out;
 }
 .loose__close svg {
   width: 20px;
   height: 20px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 1.6;
   stroke-linecap: round;
 }
 .loose__close:hover {
-  background: var(--color-dark-2);
+  background: rgba(44, 44, 44, 0.07);
 }
+/* over the print: on the board, above the mount's top-right corner */
 .loose__close--dark {
-  background: var(--color-tan);
-  color: var(--color-text);
+  top: -50px;
+  right: 0;
+  color: var(--color-light);
 }
 .loose__close--dark:hover {
-  background: var(--color-white);
+  background: rgba(241, 223, 214, 0.12);
 }
 
 /* The booking slip: a sheet of tan paper laid over the book */
@@ -1964,8 +1970,12 @@ nav[tabindex]:focus-visible {
     max-width: 94vw;
   }
   .loose__close {
-    top: -8px;
-    right: -6px;
+    top: 2px;
+    right: 2px;
+  }
+  .loose__close--dark {
+    top: -48px;
+    right: 0;
   }
   .signup {
     padding: var(--space-6) var(--space-5) var(--space-5);
