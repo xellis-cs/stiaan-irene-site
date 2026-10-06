@@ -641,3 +641,152 @@
   }
   render();
 })();
+
+// --- Shared: read a protected table once signed in -------------------------
+// The notify list and the messages are read the same way the sign-ups are:
+// with the admin's session token, because the row rules let anyone ADD a row
+// but nobody read one back without signing in. This helper does the fetch and
+// the three outcomes every such panel needs — not signed in, table missing,
+// rows — so each panel only has to say how to draw its rows.
+//
+//   loadProtected("notify_list", "created_at.desc", function (state, rows) {…})
+//   state: "signed-out" | "missing" | "error" | "ok"
+window.IEA_loadProtected = function (table, order, done) {
+  var SB_URL = window.SUPABASE_URL;
+  var SB_KEY = window.SUPABASE_ANON_KEY;
+  if (!SB_URL || !SB_KEY) return done("error", []);
+  var tok;
+  try {
+    tok = (JSON.parse(localStorage.getItem("iea_admin_session")) || {}).access_token;
+  } catch (e) {
+    tok = null;
+  }
+  if (!tok) return done("signed-out", []);
+  fetch(SB_URL + "/rest/v1/" + table + "?select=*&order=" + order, {
+    headers: { apikey: SB_KEY, Authorization: "Bearer " + tok },
+  })
+    .then(function (r) {
+      if (r.status === 404) return { missing: true };
+      if (!r.ok) throw new Error("Error " + r.status);
+      return r.json();
+    })
+    .then(function (rows) {
+      if (rows && rows.missing) return done("missing", []);
+      done("ok", rows || []);
+    })
+    .catch(function () {
+      done("error", []);
+    });
+};
+
+// Dates in the lists, short: "6 Oct, 14:32"
+window.IEA_when = function (iso) {
+  var d = iso ? new Date(iso) : null;
+  if (!d || isNaN(d.getTime())) return "";
+  return (
+    d.toLocaleDateString(undefined, { day: "numeric", month: "short" }) +
+    ", " +
+    d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
+  );
+};
+
+// --- Notify list: who asked to hear about new dates --------------------------
+(function () {
+  var list = document.querySelector("[data-notify-list]");
+  var statusEl = document.querySelector("[data-notify-status]");
+  var refreshBtn = document.querySelector("[data-notify-refresh]");
+  var copyBtn = document.querySelector("[data-notify-copy]");
+  var editorView = document.querySelector('[data-view="editor"]');
+  if (!list) return;
+
+  var emails = [];
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg || "";
+  }
+
+  function render(rows) {
+    emails = rows.map(function (r) {
+      return String(r.email || "").trim();
+    }).filter(Boolean);
+    if (copyBtn) copyBtn.hidden = !emails.length;
+    if (!rows.length) {
+      list.innerHTML = '<p class="inbox__empty">Nobody has asked to be notified yet.</p>';
+      return;
+    }
+    list.innerHTML =
+      '<p class="inbox__count">' +
+      rows.length +
+      (rows.length === 1 ? " address" : " addresses") +
+      ", newest first</p>" +
+      '<ul class="inbox__list">' +
+      rows
+        .map(function (r) {
+          return (
+            '<li class="inbox__row"><span class="inbox__main">' +
+            esc(r.email) +
+            (r.source ? '<span class="inbox__tag">' + esc(r.source) + "</span>" : "") +
+            '</span><span class="inbox__meta">' +
+            esc(window.IEA_when(r.created_at)) +
+            "</span></li>"
+          );
+        })
+        .join("") +
+      "</ul>";
+  }
+
+  var loading = false;
+  function load() {
+    if (loading) return;
+    loading = true;
+    setStatus("Loading…");
+    window.IEA_loadProtected("notify_list", "created_at.desc", function (state, rows) {
+      loading = false;
+      if (state === "signed-out") {
+        setStatus("Sign in to see the list.");
+        return;
+      }
+      if (state === "missing") {
+        setStatus("The notify_list table doesn’t exist in Supabase yet — run supabase-setup.sql.");
+        list.innerHTML = "";
+        return;
+      }
+      if (state === "error") {
+        setStatus("Couldn’t load the list. Try Refresh in a moment.");
+        return;
+      }
+      setStatus("");
+      render(rows);
+    });
+  }
+
+  if (refreshBtn) refreshBtn.addEventListener("click", load);
+  if (copyBtn) {
+    copyBtn.addEventListener("click", function () {
+      var text = emails.join(", ");
+      var done = function () {
+        setStatus("Copied " + emails.length + (emails.length === 1 ? " address." : " addresses."));
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {
+          setStatus("Couldn’t copy — select the list and copy it by hand.");
+        });
+      } else {
+        setStatus("Couldn’t copy — select the list and copy it by hand.");
+      }
+    });
+  }
+  // Signing in only unhides the editor — the page never reloads — so load
+  // the moment it appears, not only on first script run.
+  if (editorView && "MutationObserver" in window) {
+    new MutationObserver(function () {
+      if (!editorView.hidden) load();
+    }).observe(editorView, { attributes: true, attributeFilter: ["hidden"] });
+  }
+  if (editorView && !editorView.hidden) load();
+})();

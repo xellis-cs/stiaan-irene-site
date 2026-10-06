@@ -80,3 +80,41 @@ create policy "only signed-in can write content"
   to authenticated
   using (true)
   with check (true);
+
+
+-- ---------------------------------------------------------------------------
+-- Notify list — the "Be the first to hear about new dates" email forms on the
+-- website (notify.js). Same security story as the sign-ups: anyone may add an
+-- address, only a signed-in admin may read the list (the "Notify list" panel
+-- in /admin). Run this once in the SQL Editor, like the blocks above.
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.notify_list (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  email text not null,
+  -- which form it came from: 'workshop-dates' or 'footer'
+  source text
+);
+
+-- One row per address, however it is capitalised. A second attempt answers
+-- with a 409, which the website turns into "you're already on the list".
+create unique index if not exists notify_list_email_key
+  on public.notify_list (lower(email));
+
+alter table public.notify_list enable row level security;
+
+drop policy if exists "anyone can join the list" on public.notify_list;
+create policy "anyone can join the list"
+  on public.notify_list for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "only signed-in can read the list" on public.notify_list;
+create policy "only signed-in can read the list"
+  on public.notify_list for select
+  to authenticated
+  using (true);
+
+-- No update or delete from the website or admin: removing an address (someone
+-- asks to be taken off) is done in the Supabase table editor.

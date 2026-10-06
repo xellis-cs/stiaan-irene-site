@@ -223,6 +223,27 @@
         <div class="roll" data-participants></div>
       </section>
 
+      <!-- ================= NOTIFY LIST ================= -->
+      <!-- Everyone who left an email on the website to hear about new dates.
+           Read-only: the list is loaded by admin.js once you are signed in.
+           Removing an address is done in the Supabase table editor. -->
+      <section class="panel">
+        <div class="panel__head">
+          <h2>Notify list</h2>
+          <div class="panel__actions">
+            <button type="button" class="btn btn--ghost" data-notify-copy hidden>Copy all emails</button>
+            <button type="button" class="btn" data-notify-refresh>Refresh</button>
+          </div>
+        </div>
+        <p class="hint">
+          People who asked to hear when new workshop dates go up. When you add
+          dates, "Copy all emails" puts the addresses on your clipboard to paste
+          into the Bcc line of an email. Only you can see this list.
+        </p>
+        <p class="inbox__status" data-notify-status></p>
+        <div class="inbox" data-notify-list></div>
+      </section>
+
       <!-- ================= PORTFOLIO ================= -->
       <section class="panel">
         <div class="panel__head"><h2>Portfolio albums</h2></div>

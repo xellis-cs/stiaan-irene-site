@@ -288,11 +288,22 @@
              arrangement as the Portfolio section's card stacks. -->
         <div class="workshops__row">
           <div class="workshops__head">
-            <!-- TODO: replace with a real detail (venue, group size, how to
-                 book). Right now this only states what the section shows. -->
             <p class="section-eyebrow reveal">The next four months</p>
             <h2 class="workshops__heading reveal">Workshop Dates</h2>
-            <p class="workshops__intro reveal">Placeholder for description</p>
+            <p class="workshops__intro reveal">
+              Learn watercolour from the very first wash. Irene's workshops
+              are made for beginners — no experience needed — in small groups
+              with time for everyone. Pick a date to book your place.
+            </p>
+            <!-- VENUE AND COST — Stiaan: fill these in once Irene confirms
+                 them. Replace the sentence below with something like
+                 "At <venue>, <town> · R<amount> per person, materials
+                 included". Until then it says honestly that both come with
+                 the booking, rather than guessing. -->
+            <p class="workshops__note reveal">
+              <svg class="workshops__note-icon" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
+              Venue and cost are confirmed with you when you book.
+            </p>
           </div>
 
           <!-- Four upcoming months. Each month name sits above a rounded card
@@ -335,6 +346,69 @@
             </div>
           </div>
           </div>
+        </div>
+
+        <!-- Under the months: what a workshop is like, and a way to hear
+             about new dates. Two columns on a computer, stacked on a phone. -->
+        <div class="workshops__extras">
+          <div class="expect reveal">
+            <h3 class="expect__title">What to expect</h3>
+            <ul class="expect__list">
+              <li class="expect__item">
+                <span class="expect__dot" aria-hidden="true"></span>
+                <div>
+                  <strong>Beginners welcome.</strong>
+                  Irene starts at the very beginning and goes at the group's pace.
+                  If you have never held a brush, this is for you.
+                </div>
+              </li>
+              <li class="expect__item">
+                <span class="expect__dot" aria-hidden="true"></span>
+                <div>
+                  <strong>Small groups.</strong>
+                  A handful of people at a time, so there is room for your questions
+                  and a hand when you need one.
+                </div>
+              </li>
+              <li class="expect__item">
+                <span class="expect__dot" aria-hidden="true"></span>
+                <div>
+                  <strong>Materials made simple.</strong>
+                  When you book, Irene tells you what to bring and what will be
+                  waiting for you on the day.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- "Get notified": one email field. Saved to the notify_list table
+               (notify.js, supabase-setup.sql); Irene reads the list in /admin.
+               The source tells her which form the address came from. -->
+          <form class="notify reveal" data-notify-form data-source="workshop-dates" novalidate>
+            <h3 class="notify__title">Be the first to hear about new dates</h3>
+            <p class="notify__text">
+              Leave your email and Irene will let you know when the next
+              workshops are announced. Nothing else, no newsletter.
+            </p>
+            <div class="notify__row">
+              <label class="notify__label" for="notify-email">Email address</label>
+              <input
+                class="notify__field"
+                id="notify-email"
+                type="email"
+                name="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+              <!-- a trap for bots: people never see this field, so anything
+                   typed into it means the sender was a script -->
+              <input class="notify__trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <button type="submit" class="notify__submit">Notify me</button>
+            </div>
+            <p class="notify__status" role="status" aria-live="polite"></p>
+          </form>
         </div>
       </section>
 
@@ -3439,5 +3513,6 @@
     <script src="stack.js"></script>
     <script src="content.js"></script>
     <script src="signup.js"></script>
+    <script src="notify.js"></script>
   </body>
 </html>
