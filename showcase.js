@@ -14,6 +14,12 @@
   if (!showcase) return;
 
   var panel = showcase.querySelector(".showcase__panel");
+  // Everything the Tab key can land on, with disabled controls left out of
+  // every kind alike. One list, so the trap below and anything else that
+  // needs it agree on what "focusable" means.
+  var FOCUSABLE =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+    'textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])';
   var CLOSE_MS = 580; // keep in step with the .showcase__panel transition
   var CARD_RADIUS = 10; // must match .card border-radius in style.css
   var lastTrigger = null;
@@ -245,14 +251,12 @@
     // of it onto the dimmed page behind would be confusing. Reaching the end
     // wraps round to the start, and Shift+Tab from the start wraps to the end.
     if (e.key === "Tab" && panel) {
-      var focusable = Array.prototype.filter.call(
-        panel.querySelectorAll(
-          'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
-        ),
-        function (el) {
-          return el.offsetWidth > 0 || el.offsetHeight > 0; // skip hidden stages
-        }
-      );
+      var focusable = Array.prototype.filter.call(panel.querySelectorAll(FOCUSABLE), function (el) {
+        // only things that are actually on screen: not inside a hidden stage,
+        // not aria-hidden, and laid out (offsetParent is null when hidden)
+        if (el.closest('[hidden], [aria-hidden="true"]')) return false;
+        return el.offsetParent !== null;
+      });
       if (!focusable.length) return;
       var first = focusable[0];
       var last = focusable[focusable.length - 1];
