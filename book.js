@@ -412,7 +412,12 @@
   function goTo(target, opts) {
     opts = opts || {};
     target = clamp(target);
-    if (target === current && started && !opts.force) return;
+    if (target === current && started && !opts.force) {
+      // asked for the view already (being) shown: the latest wish is "end
+      // here", so a request still waiting from a moment ago is dropped
+      if (turning) queued = null;
+      return;
+    }
     if (turning) {
       queued = { target: target, opts: opts };
       return;
