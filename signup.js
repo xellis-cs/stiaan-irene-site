@@ -56,6 +56,11 @@
       workshop_month: month ? (month.querySelector(".workshops__month-name") || {}).textContent.trim() : "",
       workshop_date: [day, weekday, time].filter(Boolean).join(" "),
       workshop_topic: text(".workshop__topic"),
+      // the parts on their own, for the thank-you's sentence (the row sent
+      // to the database keeps workshop_date exactly as above)
+      day: day,
+      weekday: weekday,
+      time: time,
     };
     showChip(day, [weekday, time, picked.workshop_month].filter(Boolean).join(" · "), picked.workshop_topic);
     reset(); // a fresh form for a fresh date
@@ -169,7 +174,10 @@
     if (done) {
       if (doneText) {
         var who = row.attendees > 1 ? row.attendees + " people" : "one place";
-        var when = [row.workshop_date, row.workshop_month].filter(Boolean).join(", ");
+        // written the way a South African says a date: "Saturday 18 July, 14:00"
+        var when = picked
+          ? [[picked.weekday, picked.day, row.workshop_month].filter(Boolean).join(" "), picked.time].filter(Boolean).join(", ")
+          : [row.workshop_date, row.workshop_month].filter(Boolean).join(", ");
         doneText.innerHTML =
           "Thank you, <strong></strong> — " +
           who +
