@@ -45,18 +45,6 @@
     return out;
   }
 
-  // The medium of each album is written on its spread in index.html
-  // (data-medium), next to the one-line description, so the words live with
-  // the content rather than in here.
-  function mediumFor(album) {
-    var hero = document.querySelector('[data-plate-role="hero"][data-plate-album="' + cssEscape(album) + '"]');
-    var spread = hero && hero.closest("[data-spread]");
-    return (spread && spread.getAttribute("data-medium")) || "";
-  }
-  function cssEscape(s) {
-    return window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/"/g, '\\"');
-  }
-
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) node.className = className;
@@ -103,8 +91,11 @@
     if (opts.heading) num.setAttribute("tabindex", "-1");
     cap.appendChild(num);
     cap.appendChild(el("span", "label__line label__line--title", "Untitled"));
-    var medium = mediumFor(plate.album);
-    cap.appendChild(el("span", "label__line label__line--quiet", plate.album + (medium ? " · " + medium : "")));
+    // No medium line: Irene has not confirmed what each piece is made with,
+    // and a guess printed as a catalogue fact is worse than a gap. The album
+    // name is only repeated where the plate sits away from its own album
+    // spread (the frontispiece); on an album's pages the running head says it.
+    if (opts.frontispiece) cap.appendChild(el("span", "label__line label__line--quiet", plate.album));
     fig.appendChild(cap);
     return fig;
   }
@@ -176,8 +167,7 @@
     label.innerHTML = "";
     label.appendChild(el("span", "label__line label__line--num", "Plate " + roman(plate.number)));
     label.appendChild(el("span", "label__line label__line--title", "Untitled"));
-    var medium = mediumFor(plate.album);
-    label.appendChild(el("span", "label__line label__line--quiet", plate.album + (medium ? " · " + medium : "")));
+    label.appendChild(el("span", "label__line label__line--quiet", plate.album)); // the print floats over the spread, so it names its album
     var inAlbum = plates.filter(function (p) {
       return p.album === plate.album;
     });
