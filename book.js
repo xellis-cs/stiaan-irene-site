@@ -331,6 +331,15 @@
       else if (pagesOf(to - 1).concat(pagesOf(to + 1)).indexOf(p) > -1) setState(p, "staged");
       else setState(p, "off");
     });
+    // The pages being left still paint during the turn but take no focus:
+    // a Tab pressed right after the arrow key must not land on a heading
+    // that is about to vanish. If focus is on one of them it is let go of
+    // deliberately here; afterTurn() puts it on the new page's heading.
+    fromPages.forEach(function (p) {
+      if (toPages.indexOf(p) > -1) return;
+      if (document.activeElement && p.contains(document.activeElement)) document.activeElement.blur();
+      p.inert = true;
+    });
     // the pages in motion sit above the rest, and nothing is clickable
     // until the page has landed
     book.classList.add("is-turning");
