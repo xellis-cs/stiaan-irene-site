@@ -1128,8 +1128,10 @@ nav[tabindex]:focus-visible {
 .workshop:hover {
   background: rgba(253, 253, 253, 0.42);
 }
-.workshop:hover::after {
+.workshop:hover::after,
+.workshop:focus-visible::after {
   transform: translateX(3px);
+  opacity: 1;
 }
 .workshop__day {
   grid-area: day;
@@ -1162,6 +1164,8 @@ nav[tabindex]:focus-visible {
   color: var(--color-ink-muted);
   margin-top: 2px;
 }
+/* the small arrow on every date: quiet at rest (eleven of them share a
+   page), full strength when the row is hovered or focused */
 .workshop::after {
   content: "";
   grid-area: arrow;
@@ -1171,9 +1175,10 @@ nav[tabindex]:focus-visible {
   justify-self: end;
   background: currentColor;
   color: var(--color-accent-ink);
+  opacity: 0.45;
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
-  transition: transform 150ms ease-out;
+  transition: transform 150ms ease-out, opacity 150ms ease-out;
 }
 
 /* "Be the first to hear": one field and its button on one line, under
@@ -1627,7 +1632,7 @@ nav[tabindex]:focus-visible {
   height: 18px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 1.6; /* every 18–22px line icon in the book is 1.6 */
   stroke-linecap: round;
 }
 .stepper__btn:hover {
