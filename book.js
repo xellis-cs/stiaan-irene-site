@@ -196,6 +196,14 @@
       var more = getComputedStyle(body).overflowY !== "visible" && body.scrollHeight > body.clientHeight + 2;
       body.classList.toggle("is-scrollable", more);
       body.classList.toggle("is-at-end", !more || body.scrollTop + body.clientHeight >= body.scrollHeight - 2);
+      // A page of text alone (the story) has nothing inside it for the Tab
+      // key to land on, so Chrome makes the scroller itself focusable and
+      // Safari does not. Give it a tab stop ourselves, only when it scrolls
+      // and only when nothing in it can take focus already — the dates and
+      // the forms have buttons and fields, and would gain a redundant stop.
+      var focusable = body.querySelector('a[href], button:not([disabled]), input, select, textarea, [tabindex="0"]');
+      if (more && !focusable) body.tabIndex = 0;
+      else body.removeAttribute("tabindex");
     });
   }
   book.addEventListener(
