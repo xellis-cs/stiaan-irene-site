@@ -641,7 +641,11 @@ nav[tabindex]:focus-visible {
   text-wrap: balance;
   max-width: 7em;
 }
-/* The three roles, in small caps with a little air, dots between them */
+/* The three roles: spaced serif CAPITALS with dots between them. Not small
+   caps — Libre Caslon Text has no small-cap glyphs, so a browser would
+   fake them by shrinking capitals, and the thin fake strokes showed next
+   to the real Caslon around them. Real capitals at 0.78 of the body size
+   weigh the same as the rest of the page. */
 .roles {
   list-style: none;
   padding: 0;
@@ -649,12 +653,12 @@ nav[tabindex]:focus-visible {
   flex-wrap: wrap;
   column-gap: 0.6em;
   row-gap: 0.1em;
-  font: 400 calc(var(--text-body) * 1.02) / 1.6 var(--font-serif);
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.06em;
+  font: 400 calc(var(--text-body) * 0.78) / 1.7 var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--color-ink-soft);
   margin: 0 0 calc(var(--u) * 2.8);
-  max-width: 26em;
+  max-width: 34em;
 }
 .roles li:not(:last-child)::after {
   content: "·"; /* after the word, so a wrapped line never starts with a dot */
