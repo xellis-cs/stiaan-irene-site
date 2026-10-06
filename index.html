@@ -572,7 +572,13 @@
                 <ul class="social">
                   <li>
                     <a class="social__link" href="https://www.facebook.com/ireneellisart613" target="_blank" rel="noopener">
-                      <img class="social__pic" src="images/facebook-profile.png" alt="" width="147" height="147" loading="lazy" decoding="async" />
+                      <!-- the Facebook picture is a two-panel card: the circle
+                           shows its left panel (the "Irene Ellis Art" lettering
+                           over her portrait), not the whole card shrunk to a
+                           smudge; see .social__pic--card in style.css -->
+                      <span class="social__pic social__pic--card">
+                        <img src="images/facebook-profile.png" alt="" width="147" height="147" loading="lazy" decoding="async" />
+                      </span>
                       <span class="social__text">
                         <span class="social__where">Facebook</span>
                         <span class="social__name">Irene Ellis ART</span>
