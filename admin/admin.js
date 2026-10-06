@@ -1,3 +1,70 @@
+// --- Shared helpers, used by every panel below -------------------------------
+// Names, phone numbers, emails and messages are typed by strangers — never let
+// that text be treated as markup when it is put back on the page. ONE copy of
+// this, so a fix lands everywhere.
+window.IEA_esc = function (s) {
+  return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+  });
+};
+
+// Dates in the lists, short: "6 Oct, 14:32"
+window.IEA_when = function (iso) {
+  var d = iso ? new Date(iso) : null;
+  if (!d || isNaN(d.getTime())) return "";
+  return (
+    d.toLocaleDateString(undefined, { day: "numeric", month: "short" }) +
+    ", " +
+    d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
+  );
+};
+
+// Read a protected table (sign-ups, the notify list, the messages) once signed
+// in. The row rules let anyone ADD a row but nobody read one back without
+// signing in, so the request carries the admin's session token. This helper
+// does the fetch and the outcomes every such panel needs — not signed in, table
+// missing, rows — so each panel only has to say how to draw its rows.
+//
+//   IEA_loadProtected("notify_list", "created_at.desc", function (state, rows) {…})
+//   state: "signed-out" | "missing" | "error" | "ok"
+//
+// A session token only lives about an hour. If it has run out — or the
+// database answers 401 because it has — the stored session is cleared and the
+// login screen comes back with a plain message, instead of a load error that
+// never goes away. (window.IEA_session is set up by the login block below.)
+window.IEA_loadProtected = function (table, order, done) {
+  var SB_URL = window.SUPABASE_URL;
+  var SB_KEY = window.SUPABASE_ANON_KEY;
+  var session = window.IEA_session;
+  if (!SB_URL || !SB_KEY || !session) return done("error", []);
+  var s = session.get();
+  if (!s || !s.access_token) return done("signed-out", []);
+  if (!session.valid()) {
+    session.expire();
+    return done("signed-out", []);
+  }
+  fetch(SB_URL + "/rest/v1/" + table + "?select=*&order=" + order, {
+    headers: { apikey: SB_KEY, Authorization: "Bearer " + s.access_token },
+  })
+    .then(function (r) {
+      if (r.status === 401) return { expired: true };
+      if (r.status === 404) return { missing: true };
+      if (!r.ok) throw new Error("Error " + r.status);
+      return r.json();
+    })
+    .then(function (rows) {
+      if (rows && rows.expired) {
+        session.expire();
+        return done("signed-out", []);
+      }
+      if (rows && rows.missing) return done("missing", []);
+      done("ok", rows || []);
+    })
+    .catch(function () {
+      done("error", []);
+    });
+};
+
 // --- Admin login (Supabase auth via its REST endpoint — no library) ---
 // Shows the login screen until you sign in; the editor stays hidden until then.
 // A successful sign-in stores the session token so a refresh keeps you in.
@@ -30,6 +97,17 @@
     var s = getSession();
     return !!(s && s.expires_at && s.expires_at * 1000 > Date.now());
   }
+  // Handed to the shared loader above: read the session, check it is still
+  // good, and — when it has run out — clear it and bring the login back.
+  window.IEA_session = {
+    get: getSession,
+    valid: sessionValid,
+    expire: function () {
+      localStorage.removeItem(STORE);
+      show("login");
+      fail("Your sign-in has expired, please sign in again.");
+    },
+  };
   function configured() {
     return (
       URL &&
@@ -110,7 +188,11 @@
     });
   }
 
-  show(sessionValid() ? "editor" : "login");
+  // A stored session that has already run out is cleared on arrival too, with
+  // the same message, rather than sitting there until a panel trips over it.
+  if (sessionValid()) show("editor");
+  else if (getSession()) window.IEA_session.expire();
+  else show("login");
 })();
 
 // Admin page interactions — enough to make the layout usable to build on.
@@ -422,11 +504,7 @@
   var editorView = document.querySelector('[data-view="editor"]');
   if (!roll) return;
 
-  function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
-    });
-  }
+  var esc = window.IEA_esc;
 
   // What the editor currently holds: months, each with its dates.
   function readEditor() {
@@ -585,40 +663,21 @@
   document.addEventListener("signups:loaded", render);
 
   // Fetching the sign-ups used to be the removed sign-ups panel's job; this
-  // panel only listened. Now it fetches them itself. Reading the list needs the
-  // admin's token: the row rules let anyone ADD a sign-up but nobody read one
-  // back without signing in, so the publishable key alone returns nothing.
+  // panel only listened. Now it fetches them itself, through the shared
+  // IEA_loadProtected (top of this file), which carries the admin's token and
+  // handles an expired sign-in.
   var loading = false;
   function loadSignups() {
     if (loading) return;
-    var SB_URL = window.SUPABASE_URL;
-    var SB_KEY = window.SUPABASE_ANON_KEY;
-    if (!SB_URL || !SB_KEY) return;
-    var tok;
-    try {
-      tok = (JSON.parse(localStorage.getItem("iea_admin_session")) || {}).access_token;
-    } catch (e) {
-      tok = null;
-    }
-    if (!tok) return; // signed out: the months still draw, with no names
     loading = true;
-    fetch(SB_URL + "/rest/v1/signups?select=*&order=created_at.desc", {
-      headers: { apikey: SB_KEY, Authorization: "Bearer " + tok },
-    })
-      .then(function (r) {
-        return r.ok ? r.json() : [];
-      })
-      .then(function (rows) {
-        window.IEA_SIGNUPS = rows || [];
-        render();
-      })
-      .catch(function () {
-        window.IEA_SIGNUPS = []; // draw the months with zero counts rather than nothing
-        render();
-      })
-      .finally(function () {
-        loading = false;
-      });
+    window.IEA_loadProtected("signups", "created_at.desc", function (state, rows) {
+      loading = false;
+      // Signed out (or the table missing, or an error): the months still draw,
+      // with zero counts, rather than nothing at all.
+      window.IEA_SIGNUPS = state === "ok" ? rows : [];
+      if (state === "signed-out") window.IEA_SIGNUPS = null; // so the status says "Sign in"
+      render();
+    });
   }
   // Signing in only unhides the editor — the page never reloads — so load the
   // names the moment it appears, not only on first script run.
@@ -642,54 +701,6 @@
   render();
 })();
 
-// --- Shared: read a protected table once signed in -------------------------
-// The notify list and the messages are read the same way the sign-ups are:
-// with the admin's session token, because the row rules let anyone ADD a row
-// but nobody read one back without signing in. This helper does the fetch and
-// the three outcomes every such panel needs — not signed in, table missing,
-// rows — so each panel only has to say how to draw its rows.
-//
-//   loadProtected("notify_list", "created_at.desc", function (state, rows) {…})
-//   state: "signed-out" | "missing" | "error" | "ok"
-window.IEA_loadProtected = function (table, order, done) {
-  var SB_URL = window.SUPABASE_URL;
-  var SB_KEY = window.SUPABASE_ANON_KEY;
-  if (!SB_URL || !SB_KEY) return done("error", []);
-  var tok;
-  try {
-    tok = (JSON.parse(localStorage.getItem("iea_admin_session")) || {}).access_token;
-  } catch (e) {
-    tok = null;
-  }
-  if (!tok) return done("signed-out", []);
-  fetch(SB_URL + "/rest/v1/" + table + "?select=*&order=" + order, {
-    headers: { apikey: SB_KEY, Authorization: "Bearer " + tok },
-  })
-    .then(function (r) {
-      if (r.status === 404) return { missing: true };
-      if (!r.ok) throw new Error("Error " + r.status);
-      return r.json();
-    })
-    .then(function (rows) {
-      if (rows && rows.missing) return done("missing", []);
-      done("ok", rows || []);
-    })
-    .catch(function () {
-      done("error", []);
-    });
-};
-
-// Dates in the lists, short: "6 Oct, 14:32"
-window.IEA_when = function (iso) {
-  var d = iso ? new Date(iso) : null;
-  if (!d || isNaN(d.getTime())) return "";
-  return (
-    d.toLocaleDateString(undefined, { day: "numeric", month: "short" }) +
-    ", " +
-    d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
-  );
-};
-
 // --- Notify list: who asked to hear about new dates --------------------------
 (function () {
   var list = document.querySelector("[data-notify-list]");
@@ -701,11 +712,7 @@ window.IEA_when = function (iso) {
 
   var emails = [];
 
-  function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
-    });
-  }
+  var esc = window.IEA_esc;
   function setStatus(msg) {
     if (statusEl) statusEl.textContent = msg || "";
   }
@@ -799,11 +806,7 @@ window.IEA_when = function (iso) {
   var editorView = document.querySelector('[data-view="editor"]');
   if (!list) return;
 
-  function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
-    });
-  }
+  var esc = window.IEA_esc;
   function setStatus(msg) {
     if (statusEl) statusEl.textContent = msg || "";
   }
@@ -829,8 +832,11 @@ window.IEA_when = function (iso) {
             '<li class="inbox__row"><span class="inbox__main"><strong>' +
             esc(who) +
             "</strong> · " +
+            // esc() already neutralises quotes and angle brackets for the
+            // attribute; "@" and "." stay as they are (encoding them shows up
+            // literally in some mail apps)
             '<a href="mailto:' +
-            esc(encodeURIComponent(r.email || "")) +
+            esc(r.email) +
             '">' +
             esc(r.email) +
             "</a></span>" +
