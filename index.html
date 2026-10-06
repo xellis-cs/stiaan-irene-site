@@ -146,16 +146,33 @@
           <circle class="pin__light" cx="10" cy="7.2" r="1.6" />
           <line class="pin__needle" x1="12" y1="14.5" x2="12" y2="22" />
         </symbol>
-        <!-- One turn of the spiral: a punched hole in each page and the
-             charcoal wire arching over the gutter between them. The wire
-             leaves the left hole a little lower than it enters the right
-             one, so a column of these reads as one continuous helix. -->
+        <!-- One turn of the spiral: a punched hole in each page, through to
+             the dark board, and the charcoal wire arching over the gutter
+             between them and down into each hole. The wire leaves the left
+             hole a little lower than it enters the right one, so a column of
+             these reads as one continuous helix. -->
         <symbol id="coilRing" viewBox="0 0 120 40" overflow="visible">
-          <ellipse cx="22" cy="25" rx="7.5" ry="4.6" fill="#4a4644" />
-          <ellipse cx="98" cy="21" rx="7.5" ry="4.6" fill="#4a4644" />
-          <path d="M22,28 C 22,-4 98,-8 98,24" transform="translate(1.2,2.2)" fill="none" stroke="#000" stroke-width="4.6" stroke-linecap="round" opacity="0.14" />
-          <path d="M22,28 C 22,-4 98,-8 98,24" fill="none" stroke="#3a322d" stroke-width="4.6" stroke-linecap="round" />
-          <path d="M22,28 C 22,-4 98,-8 98,24" fill="none" stroke="#6b615b" stroke-width="1.2" stroke-linecap="round" opacity="0.55" transform="translate(-0.6,-1)" />
+          <defs>
+            <!-- the lower lip of each hole, drawn again over the wire -->
+            <clipPath id="holeLipL"><rect x="13" y="25" width="18" height="6" /></clipPath>
+            <clipPath id="holeLipR"><rect x="89" y="21" width="18" height="6" /></clipPath>
+          </defs>
+          <!-- the wire's shadow on the paper (under the holes, so none of it
+               falls across them) -->
+          <path d="M22,26 C 22,-4 98,-8 98,22" transform="translate(1.2,2.2)" fill="none" stroke="#000" stroke-width="4.6" stroke-linecap="round" opacity="0.14" />
+          <!-- the punched holes: through the paper to the dark board, with a
+               hair of shade where the paper's edge turns down -->
+          <ellipse class="coil-hole" cx="22" cy="25" rx="7.5" ry="4.6" fill="#2a2826" />
+          <ellipse class="coil-hole" cx="98" cy="21" rx="7.5" ry="4.6" fill="#2a2826" />
+          <ellipse class="coil-rim" cx="22" cy="25" rx="7.5" ry="4.6" fill="none" stroke="#000" stroke-width="1" opacity="0.35" />
+          <ellipse class="coil-rim" cx="98" cy="21" rx="7.5" ry="4.6" fill="none" stroke="#000" stroke-width="1" opacity="0.35" />
+          <!-- the wire, arching over the gutter and down into each hole -->
+          <path class="coil-wire" d="M22,26 C 22,-4 98,-8 98,22" fill="none" stroke="#3a322d" stroke-width="4.6" stroke-linecap="round" />
+          <path class="coil-light" d="M22,26 C 22,-4 98,-8 98,22" fill="none" stroke="#6b615b" stroke-width="1.2" stroke-linecap="round" opacity="0.55" transform="translate(-0.6,-1)" />
+          <!-- the holes' lower lips over the wire: it goes down into the
+               hole and is gone behind the page -->
+          <ellipse class="coil-hole" cx="22" cy="25" rx="7.5" ry="4.6" fill="#2a2826" clip-path="url(#holeLipL)" />
+          <ellipse class="coil-hole" cx="98" cy="21" rx="7.5" ry="4.6" fill="#2a2826" clip-path="url(#holeLipR)" />
         </symbol>
         <!-- The edge-on ring for a single page: the hole and the wire that
              runs off the edge of the page (it is clipped there). Drawn for a
@@ -165,11 +182,14 @@
             <clipPath id="aboveBottom">
               <rect x="-40" y="-40" width="240" height="89.6" />
             </clipPath>
+            <clipPath id="bindLip"><rect x="44" y="42" width="28" height="10" /></clipPath>
           </defs>
           <g clip-path="url(#aboveBottom)">
-            <path d="M150,24 A 54 54 0 0 0 57.7,47.2" transform="translate(1.4,2.4)" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" opacity="0.08" />
-            <ellipse cx="58.0" cy="42.0" rx="11.8" ry="7.6" fill="#4a4644" />
-            <path d="M150,24 A 54 54 0 0 0 57.7,47.2" fill="none" stroke="#3a322d" stroke-width="5" stroke-linecap="round" />
+            <path d="M150,24 A 54 54 0 0 0 58,44" transform="translate(1.4,2.4)" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" opacity="0.08" />
+            <ellipse class="coil-hole" cx="58.0" cy="42.0" rx="11.8" ry="7.6" fill="#2a2826" />
+            <ellipse class="coil-rim" cx="58.0" cy="42.0" rx="11.8" ry="7.6" fill="none" stroke="#000" stroke-width="1" opacity="0.35" />
+            <path class="coil-wire" d="M150,24 A 54 54 0 0 0 58,44" fill="none" stroke="#3a322d" stroke-width="5" stroke-linecap="round" />
+            <ellipse class="coil-hole" cx="58.0" cy="42.0" rx="11.8" ry="7.6" fill="#2a2826" clip-path="url(#bindLip)" />
           </g>
         </symbol>
       </defs>
