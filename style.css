@@ -137,7 +137,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-serif);
   font-size: var(--text-body);
-  line-height: 1.55;
+  line-height: 1.5; /* the one leading for everything read: story, intro, lists */
   -webkit-font-smoothing: antialiased;
   caret-color: var(--color-red);
 }
@@ -648,6 +648,17 @@ nav[tabindex]:focus-visible {
 }
 .story p {
   margin: 0 0 0.9em;
+}
+/* the reading paragraphs: a tidier right edge, and hyphenation on the
+   28-character lines a phone page allows (html lang="en" is set) */
+.story p,
+.intro,
+.expect li,
+.notify__text,
+.workshops__empty {
+  text-wrap: pretty;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 .story__lead {
   font-size: var(--text-lead);
@@ -1751,7 +1762,7 @@ nav[tabindex]:focus-visible {
     /* a single page fills the screen above the strip; --u follows its height */
     --book-h: calc(100vh - var(--board-pad) - var(--board-foot));
     --u: calc(var(--book-h) / 100);
-    --page-pad: clamp(18px, 5vw, 26px);
+    --page-pad: clamp(16px, 4vw, 22px); /* the outer margin; the coil side keeps its 38px */
     --gutter-pad: 38px;
   }
   @supports (height: 100dvh) {
