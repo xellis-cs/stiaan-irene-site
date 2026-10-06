@@ -14,3 +14,9 @@ Thumbs.db
 desktop.ini
 .DS_Store
 .vscode/
+
+# Impeccable working files that never belong in the repo (screenshots, mocks)
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/build/
+.impeccable/config.local.json
