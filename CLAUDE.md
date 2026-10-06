@@ -78,9 +78,10 @@ rules, wide margins.
 2. `#artist` — L: Irene's portrait hung like a plate (images/irene-ellis.jpg)
    with its label. R: "My art story", every sentence of her bio, scrolling
    inside the page if it is long.
-3. `#programme` — L: intro copy, the venue/cost line, "What to expect".
-   R: `#workshop-dates` with the four months of date buttons, then the
-   "Be the first to hear" email form.
+3. `#programme` — L: intro copy, the venue/cost line, "What to expect",
+   then the "Be the first to hear" email form (`#notify`). R:
+   `#workshop-dates`: the months of date buttons content.js draws, or the
+   one honest line until Irene saves some.
 4–12. The plates: THREE spreads per album, paced like a catalogue. The
    album's title spread is written in index.html (`#plates-1` `#plates-2`
    `#plates-3`): L: the album's name (script), its one-line description and
@@ -89,8 +90,9 @@ rules, wide margins.
    each (`#plates-1-2`, `#plates-1-3`, …), one plate per page at full size
    (plates 2|3, then 4|5). Every plate page's heading is its plate number.
 13. `#contact` — L: "Get in touch", the message form. R: Facebook and
-   Instagram, a line back to the Programme, the colophon (© 2026, the
-   typefaces, a quiet Admin link).
+   Instagram, "Looking for a date?" with the pinned slip again, the
+   colophon (© 2026, fifteen plates, the typefaces). The quiet Admin link
+   sits on this page's folio line (book.js puts it there).
 Old links still land: #about, #workshop-dates, #portfolio and #hero are
 aliases (the `ALIASES` map in book.js).
 
@@ -133,10 +135,37 @@ aliases (the `ALIASES` map in book.js).
   moves in step. `will-change` and the z-lift apply only to the two pages in
   motion, only during the turn.
 - Knobs at the top of book.js: `TURN_MS` 720 (computer) and
-  `TURN_MS_SINGLE` 520 (phone); `TURN_SNAP` 5 and `TURN_SNAP_SINGLE` 3 (the
-  exponential ease-out; bigger = snappier start — at 5 the page stands on
-  its edge about a fifth of the way through); `SWIPE_MIN` 48px;
-  `WHEEL_MIN` 160 and `WHEEL_LOCK` 1100ms; the `ALIASES` map.
+  `TURN_MS_SINGLE` 600 (phone); `TURN_SNAP` 3.5 and `TURN_SNAP_SINGLE` 3
+  (the exponential ease-out; bigger = snappier start — at 3.5 the page
+  stands on its edge about a quarter of the way through and settles over
+  the last tenth); `TURN_RELEASE` 0.85 (the share of the turn after which
+  the corners and dates take clicks again while the page settles);
+  `SWIPE_MIN` 48px; `WHEEL_MIN` 160 and `WHEEL_LOCK` 1100ms; the `ALIASES`
+  map (an alias only applies when nothing on the page has that id).
+- The phone/computer line is ONE media query written in two places and
+  kept identical: `SINGLE` in book.js and the PHONES block in style.css:
+  `(max-width: 720px), (max-width: 1000px) and (orientation: portrait)` —
+  so a tablet held upright reads one page at a time.
+- The wheel: a gesture that scrolled a page's text stays with the text —
+  every wheel event within 200ms of the last belongs to the same gesture
+  and never counts toward a turn (a trackpad's momentum tail can no longer
+  turn the page). PageUp/PageDown/Home/End page the text first and turn
+  the book only once the text is at its end; Left/Right always turn.
+- Hashes: a spread's id, except on a phone, where a right-hand page with
+  an id of its own (the dates page, `#workshop-dates`; the story,
+  `#story`) is named by it, so a reload or a shared link comes back to that
+  page. A link to something inside a page (`#notify`) turns to that page
+  AND scrolls its own scroller to the thing (`reveal()`), or just scrolls
+  when already there.
+- Folios: book.js writes "· continues" into a page's folio while the page
+  has more below its edge (`.folio__more`, shown by the styles only with
+  `.is-scrollable:not(.is-at-end)`), and puts the quiet Admin link on the
+  LAST page's folio line (`.folio__admin`), out of the reading column. A
+  text-only scrolling page (the story) gets `tabindex="0"` from
+  `markScrollers()` so Safari can reach it by keyboard.
+- During a turn the departing pages are made inert (they still paint) so
+  Tab cannot land on a page about to vanish; a layout change mid-turn
+  (rotating a phone) lands on the spread that was asked for.
 - What turns a page: the corners and arrows (`[data-turn]`), the tabs and
   any `a[href="#spread"]` (the slip, the folio wordmark, "Turn to the
   Programme"), ArrowLeft/Right, PageUp/PageDown, Home/End (never while
@@ -150,20 +179,48 @@ aliases (the `ALIASES` map in book.js).
   load the address is NOT given a hash (adding one during load makes the
   browser start Tab from that spread instead of the skip link).
 - After a turn: focus moves to the new page's heading, the `aria-live`
-  announcer says "Page 3 of 7, Programme", the tab of the spread on show
-  gets `aria-current`, arrows/corners at either end are disabled/hidden.
+  announcer says "Page 3 of 13" (the name too only when focus did not
+  move), the tab of the SECTION on show gets `aria-current` (Plates stays
+  out on all nine plate spreads), arrows/corners at either end are
+  disabled/hidden.
 - `prefers-reduced-motion: reduce` → the page changes instantly, no 3D.
 
 ## The index — tabs, arrows, slip
 - `.tabs` (nav#book-index, the skip link's target): four tabs About ·
-  Programme · Plates · Contact, each an `<a href="#spread">`. On a computer
+  Dates · Plates · Contact, each an `<a href="#spread">`. On a computer
   they stick out of the book's right fore-edge (vertical text, ≥44px); on a
   phone the `.index` becomes a slim tan strip along the bottom with the
   arrows at its ends. `.turnbar` holds the arrows and the "3 / 7" count
   (count hidden on phones; the folios do that job).
 - `.slip` is the primary action: a tan paper slip with a pin, linking to
-  `#programme`. Keep it unmistakably a button (shadow with offset and blur,
-  hover lift, arrow). It lives on the title page.
+  `#workshop-dates`. Keep it unmistakably a button (shadow with offset and
+  blur, hover lift, arrow). It lives on the title page and again on the
+  back page (Contact, right). Its label scales with the book (12.5–18px)
+  and its pin, arrow and padding are set in that em. The pin is ONE
+  `<symbol id="pin">` shared with the booking slip (`.loose__pin`), and it
+  turns back by the slip's 1.6° so it stands upright.
+- The phone's index strip reads About · Dates · Plates · Contact ("Dates",
+  not "Programme": four words must fit a 204–274px strip at 11–12px).
+
+## Tokens worth knowing (style.css :root)
+- Tracking: `--track-label` 0.14em for every tracked-caps line,
+  `--track-button` 0.1em for the slip, buttons and skip link; sentence
+  case has none. (The phone tab's 0.02em is the one noted exception.)
+- Rules: `--rule-soft` / `--rule` / `--rule-strong` are the only hairline
+  strengths. `--color-field-edge` (the accent) is a form field's border,
+  3.7–4.7:1 on the papers (WCAG 1.4.11).
+- The coil's colours: `--coil-wire`, `--coil-hole`, `--coil-highlight`,
+  applied through the `.coil-wire/.coil-hole/.coil-light` classes on the
+  ring drawings; the geometry stays hand-tuned in index.html.
+- Picture ceilings: `--plate-ceiling` 70 / `--portrait-ceiling` 58
+  (hundredths of the book height) and the room formula (`--page-room`,
+  `--label-room`) that shrinks a picture before its label can slide under
+  the folio at 150–200% zoom.
+- Fallback faces (`Caslon Fallback`, `Franklin Fallback`, `Pinyon
+  Fallback`) are the local Times/Arial/Times Italic scaled to the web
+  fonts' widths so the title page does not jump as the fonts arrive.
+- There is a print stylesheet (every page in order on white, one spread
+  per sheet) that mirrors the no-JavaScript block: keep the two in step.
 
 ## Images & assets
 - All images live in `images/`, referenced with relative paths.
