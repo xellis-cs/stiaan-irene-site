@@ -680,3 +680,90 @@ body {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+/* --- Read-only lists loaded from the database (notify list, messages) ---
+   Plain rows a person reads down, like the participants roll: a line each,
+   the newest first, with the date it arrived on the right. Shared by both
+   panels so they look the same. */
+.panel__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.inbox__status {
+  margin: 12px 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.inbox__status:empty {
+  display: none;
+}
+.inbox {
+  margin-top: 12px;
+}
+.inbox__count {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.inbox__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.inbox__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+}
+.inbox__row:nth-child(odd) {
+  background: var(--surface-2);
+}
+.inbox__row + .inbox__row {
+  border-top: 1px solid var(--line);
+}
+.inbox__main {
+  flex: 1 1 220px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.inbox__meta {
+  flex: none;
+  font-size: 0.8rem;
+  color: var(--muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.inbox__tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--pink);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  vertical-align: middle;
+}
+/* a message's text sits under its sender, kept readable */
+.inbox__body {
+  flex: 1 1 100%;
+  margin: 4px 0 2px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  color: var(--text);
+}
+.inbox__empty {
+  margin: 0;
+  padding: 14px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}

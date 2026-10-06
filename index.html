@@ -3,18 +3,97 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Irene Ellis Art</title>
+    <title>Irene Ellis Art — Watercolour workshops and original art</title>
+    <!-- What search engines and link previews show. The description is the
+         one line a stranger reads before deciding to click, so it says what
+         Irene offers, not just her name. -->
+    <meta
+      name="description"
+      content="Irene Ellis is a South African artist offering beginner-friendly watercolour workshops and original artwork. See upcoming dates and book your place."
+    />
+    <meta name="theme-color" content="#f1dfd6" />
+    <!-- ABSOLUTE ADDRESSES — the canonical link below, and og:url and og:image
+         further down, spell out the site's full web address. They have to:
+         a sharing preview (WhatsApp, Facebook) is built by another server,
+         which cannot resolve a relative path. If the site ever moves to a
+         custom domain or another host, change all three. -->
+    <link rel="canonical" href="https://stiaankoegelenberg.github.io/irene-ellis-art/" />
+
+    <!-- Link preview card (WhatsApp, Facebook, Instagram DMs, iMessage all read
+         these "Open Graph" tags; X/Twitter reads its own copies). The image
+         has to be a FULL address — a relative path shows up blank in a chat. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Irene Ellis Art" />
+    <meta property="og:title" content="Irene Ellis Art — Watercolour workshops and original art" />
+    <meta
+      property="og:description"
+      content="Beginner-friendly watercolour workshops and original artwork by South African artist Irene Ellis. See upcoming dates and book your place."
+    />
+    <meta property="og:url" content="https://stiaankoegelenberg.github.io/irene-ellis-art/" />
+    <meta property="og:image" content="https://stiaankoegelenberg.github.io/irene-ellis-art/images/irene-ellis.jpg" />
+    <meta property="og:image:alt" content="Portrait of Irene Ellis" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Irene Ellis Art — Watercolour workshops and original art" />
+    <meta
+      name="twitter:description"
+      content="Beginner-friendly watercolour workshops and original artwork by South African artist Irene Ellis."
+    />
+    <meta name="twitter:image" content="https://stiaankoegelenberg.github.io/irene-ellis-art/images/irene-ellis.jpg" />
+
+    <!-- Browser-tab icon: one dandelion seed (the same shape as the #seed
+         symbol in the hero), written straight into the page as an SVG so
+         there is no extra file to fetch — and no 404 for a missing
+         favicon.ico. The strokes are thicker than the hero's so it still
+         reads at 16px. -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 56'%3E%3Cg fill='none' stroke='%238f5f50' stroke-width='2.6' stroke-linecap='round'%3E%3Cline x1='20' y1='48' x2='20' y2='20'/%3E%3Cline x1='20' y1='20' x2='5' y2='14.5'/%3E%3Cline x1='20' y1='20' x2='7.4' y2='10.2'/%3E%3Cline x1='20' y1='20' x2='10.8' y2='6.9'/%3E%3Cline x1='20' y1='20' x2='15' y2='4.8'/%3E%3Cline x1='20' y1='20' x2='20' y2='4'/%3E%3Cline x1='20' y1='20' x2='25' y2='4.8'/%3E%3Cline x1='20' y1='20' x2='29.2' y2='6.9'/%3E%3Cline x1='20' y1='20' x2='32.6' y2='10.2'/%3E%3Cline x1='20' y1='20' x2='35' y2='14.5'/%3E%3C/g%3E%3Cellipse cx='20' cy='51' rx='3.4' ry='4.6' fill='%238f5f50'/%3E%3C/svg%3E"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;1,400;1,500&family=Inter:wght@400;500;600;700&family=Pinyon+Script&display=swap"
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&family=Pinyon+Script&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="showcase.css" />
   </head>
   <body>
-    <main>
+    <!-- For keyboard and screen-reader users: the first Tab press offers a
+         jump straight past the hero. Invisible until it has focus. -->
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ===================================================================
+         SITE HEADER — a slim bar that slides in once the hero has scrolled
+         away, so the navigation and "Book a workshop" are always one tap
+         away. Hidden while the hero is on screen (the hero has its own
+         pills), and while the dark showcase is open. script.js toggles
+         .is-shown; stack.js starts its title band just below it.
+         The right padding keeps everything clear of the binding coil.
+         =================================================================== -->
+    <header class="site-header" data-site-header>
+      <a class="site-header__brand" href="#hero">Irene Ellis Art</a>
+      <button
+        type="button"
+        class="site-header__menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-menu-toggle
+      >
+        <span class="site-header__menu-bars" aria-hidden="true"></span>
+        Menu
+      </button>
+      <nav class="site-header__nav" id="site-nav" aria-label="Site">
+        <a href="#about">About</a>
+        <a href="#workshop-dates">Workshops</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+        <a class="site-header__cta" href="#workshop-dates">Book a workshop</a>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
       <section id="hero">
         <!-- Decorative watercolour wash + drifting dandelion seeds.
              aria-hidden keeps it out of the way of screen readers. -->
@@ -64,6 +143,16 @@
             Artist <span class="hero__dot">·</span> Motivational Speaker
             <span class="hero__dot">·</span> Master of Ceremony
           </p>
+          <!-- The one line that says what a visitor can actually DO here.
+               The three roles above are who Irene is; this is what she offers. -->
+          <p class="hero__intro reveal">
+            Beginner-friendly watercolour workshops and original artwork,
+            made with heart in South Africa.
+          </p>
+          <div class="hero__actions reveal">
+            <a class="btn btn--primary" href="#workshop-dates">Book a workshop</a>
+            <a class="btn btn--ghost" href="#portfolio">See the portfolio</a>
+          </div>
         </div>
 
         <nav class="hero__nav" aria-label="Primary">
@@ -111,6 +200,10 @@
               class="about__img"
               src="images/irene-ellis.jpg"
               alt="Portrait of Irene Ellis"
+              width="562"
+              height="1000"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <svg class="about__ornament" viewBox="0 0 400 500" fill="none" aria-hidden="true">
@@ -204,11 +297,22 @@
              arrangement as the Portfolio section's card stacks. -->
         <div class="workshops__row">
           <div class="workshops__head">
-            <!-- TODO: replace with a real detail (venue, group size, how to
-                 book). Right now this only states what the section shows. -->
             <p class="section-eyebrow reveal">The next four months</p>
             <h2 class="workshops__heading reveal">Workshop Dates</h2>
-            <p class="workshops__intro reveal">Placeholder for description</p>
+            <p class="workshops__intro reveal">
+              Learn watercolour from the very first wash. Irene's workshops
+              are made for beginners — no experience needed — in small groups
+              with time for everyone. Pick a date to book your place.
+            </p>
+            <!-- VENUE AND COST — Stiaan: fill these in once Irene confirms
+                 them. Replace the sentence below with something like
+                 "At <venue>, <town> · R<amount> per person, materials
+                 included". Until then it says honestly that both come with
+                 the booking, rather than guessing. -->
+            <p class="workshops__note reveal">
+              <svg class="workshops__note-icon" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
+              Venue and cost are confirmed with you when you book.
+            </p>
           </div>
 
           <!-- Four upcoming months. Each month name sits above a rounded card
@@ -252,6 +356,73 @@
           </div>
           </div>
         </div>
+
+        <!-- Under the months: what a workshop is like, and a way to hear
+             about new dates. Two columns on a computer, stacked on a phone. -->
+        <div class="workshops__extras">
+          <div class="expect reveal">
+            <h3 class="expect__title">What to expect</h3>
+            <ul class="expect__list">
+              <li class="expect__item">
+                <span class="expect__dot" aria-hidden="true"></span>
+                <div>
+                  <strong>Beginners welcome.</strong>
+                  Irene starts at the very beginning and goes at the group's pace.
+                  If you have never held a brush, this is for you.
+                </div>
+              </li>
+              <li class="expect__item">
+                <span class="expect__dot" aria-hidden="true"></span>
+                <div>
+                  <strong>Small groups.</strong>
+                  A handful of people at a time, so there is room for your questions
+                  and a hand when you need one.
+                </div>
+              </li>
+              <li class="expect__item">
+                <span class="expect__dot" aria-hidden="true"></span>
+                <div>
+                  <strong>Materials made simple.</strong>
+                  When you book, Irene tells you what to bring and what will be
+                  waiting for you on the day.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- "Get notified": one email field. Saved to the notify_list table
+               (notify.js, supabase-setup.sql); Irene reads the list in /admin.
+               data-source is stored with the address, saying which form it
+               came from — handy if a second form is ever added. -->
+          <form class="notify reveal" data-notify-form data-source="workshop-dates" novalidate>
+            <h3 class="notify__title">Be the first to hear about new dates</h3>
+            <p class="notify__text">
+              Leave your email and Irene will let you know when the next
+              workshops are announced. Nothing else, no newsletter.
+            </p>
+            <div class="notify__row">
+              <label class="notify__label" for="notify-email">Email address</label>
+              <input
+                class="notify__field"
+                id="notify-email"
+                type="email"
+                name="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+              <!-- a trap for bots: people never see this field (it sits off
+                   screen, out of the tab order), so anything typed into it
+                   means the sender was a script. Its name is deliberately
+                   meaningless — a name like "website" gets filled in by
+                   browsers' autofill, which would drop real sign-ups. -->
+              <input class="notify__trap" type="text" name="iea_extra_field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field empty" />
+              <button type="submit" class="notify__submit">Notify me</button>
+            </div>
+            <p class="notify__status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </section>
 
       <section id="portfolio">
@@ -272,14 +443,14 @@
             <h2 class="portfolio__heading reveal">Portfolio</h2>
           </div>
 
-          <!-- Category objects. One for now; two more to follow. Each is a
-               crumpled paper ball that grows slightly on hover, with a
-               pill button centred on it that stays put. -->
+          <!-- Category objects: three fanned card stacks, each with a pill
+               button centred on it that stays put and a one-line description
+               beneath. The names are the GALLERY keys in gallery-data.js. -->
           <div class="portfolio__objects">
             <div class="category">
               <!-- Stacked cards: fanned tight at rest, twisting open on
-                   hover so more of each card shows. Each will carry its own
-                   image later. -->
+                   hover so more of each card shows. script.js paints the
+                   album's pictures onto them. -->
               <div class="cards" aria-hidden="true">
                 <span class="card card--1"></span>
                 <span class="card card--2"></span>
@@ -291,15 +462,17 @@
                 type="button"
                 class="category__button"
                 data-category-open
-                data-category="Category one"
+                data-category="Pastel &amp; Gold"
               >
-                Category one
+                Pastel &amp; Gold
               </button>
+              <!-- one line about the album, under the stack -->
+              <p class="category__desc">Colour on black paper, gold leaf and a little magic</p>
             </div>
             <div class="category">
               <!-- Stacked cards: fanned tight at rest, twisting open on
-                   hover so more of each card shows. Each will carry its own
-                   image later. -->
+                   hover so more of each card shows. script.js paints the
+                   album's pictures onto them. -->
               <div class="cards" aria-hidden="true">
                 <span class="card card--1"></span>
                 <span class="card card--2"></span>
@@ -311,15 +484,17 @@
                 type="button"
                 class="category__button"
                 data-category-open
-                data-category="Category two"
+                data-category="Flora &amp; Fauna"
               >
-                Category two
+                Flora &amp; Fauna
               </button>
+              <!-- one line about the album, under the stack -->
+              <p class="category__desc">Proteas, leaves and creatures in pencil and ink</p>
             </div>
             <div class="category">
               <!-- Stacked cards: fanned tight at rest, twisting open on
-                   hover so more of each card shows. Each will carry its own
-                   image later. -->
+                   hover so more of each card shows. script.js paints the
+                   album's pictures onto them. -->
               <div class="cards" aria-hidden="true">
                 <span class="card card--1"></span>
                 <span class="card card--2"></span>
@@ -331,10 +506,12 @@
                 type="button"
                 class="category__button"
                 data-category-open
-                data-category="Category three"
+                data-category="Graphite Studies"
               >
-                Category three
+                Graphite Studies
               </button>
+              <!-- one line about the album, under the stack -->
+              <p class="category__desc">Close-up portraits in graphite and charcoal</p>
             </div>
           </div>
         </div>
@@ -3192,21 +3369,40 @@
 
         <!-- Three dark boxes over the landscape.
              · The big one is the message form: name + surname side by side,
-               the sender's email, the message, and Submit bottom-right. The
-               fields look like the workshop sign-up fields. Submit is NOT
-               wired up yet — it is type="button", so pressing it does nothing.
-             · The two small ones are still empty; they will become the
-               Facebook and Instagram links (swap each <div> for an
-               <a href="…"> when the real profile addresses are known). -->
+               the sender's email, the message, and Send bottom-right. The
+               fields look like the workshop booking fields. contact.js saves
+               a message to the `messages` table (supabase-setup.sql); Irene
+               reads them in /admin. The labels are there for screen readers
+               and sit out of sight — the placeholders carry the words.
+             · The two small ones are the Facebook and Instagram links. -->
         <div class="contact__boxes">
-          <form class="contact__box contact__box--message" novalidate>
+          <form class="contact__box contact__box--message" data-contact-form novalidate aria-label="Send Irene a message">
             <div class="contact__row">
-              <input class="contact__field" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="given-name" />
-              <input class="contact__field" type="text" name="surname" placeholder="Surname" aria-label="Surname" autocomplete="family-name" />
+              <div class="contact__group">
+                <label class="visually-hidden" for="contact-name">Name</label>
+                <input class="contact__field" id="contact-name" type="text" name="name" placeholder="Name" autocomplete="given-name" autocapitalize="words" required />
+              </div>
+              <div class="contact__group">
+                <label class="visually-hidden" for="contact-surname">Surname</label>
+                <input class="contact__field" id="contact-surname" type="text" name="surname" placeholder="Surname (optional)" autocomplete="family-name" autocapitalize="words" />
+              </div>
             </div>
-            <input class="contact__field" type="email" name="email" placeholder="Your email address" aria-label="Your email address" autocomplete="email" />
-            <textarea class="contact__field contact__field--message" name="message" placeholder="Message" aria-label="Message"></textarea>
-            <button type="button" class="contact__submit">Submit</button>
+            <div class="contact__group">
+              <label class="visually-hidden" for="contact-email">Your email address</label>
+              <input class="contact__field" id="contact-email" type="email" name="email" inputmode="email" placeholder="Your email address" autocomplete="email" required />
+            </div>
+            <div class="contact__group contact__group--message">
+              <label class="visually-hidden" for="contact-message">Message</label>
+              <textarea class="contact__field contact__field--message" id="contact-message" name="message" placeholder="Message" required></textarea>
+            </div>
+            <!-- a trap for bots: off screen and out of the tab order, so people
+                 never see it. Meaningless name on purpose: autofill recognises
+                 names like "website" and would fill it, dropping real messages. -->
+            <input class="contact__trap" type="text" name="iea_extra_field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field empty" />
+            <div class="contact__foot">
+              <p class="contact__status" role="status" aria-live="polite"></p>
+              <button type="submit" class="contact__submit">Send message</button>
+            </div>
           </form>
           <div class="contact__socials">
             <!-- Facebook (top): profile picture (shown as a circle) + the
@@ -3240,10 +3436,36 @@
 
     </main>
 
-    <footer id="footer">
-      <!-- TODO: replace href="#" with real profile URLs -->
-      <a href="#">Facebook — ireneellisart613</a>
-      <a href="#">Instagram — ireneellisart</a>
+    <!-- ===================================================================
+         FOOTER — the foot of the page, in the contact landscape's ground
+         colour so the earth runs on unbroken to the page edge below it.
+         Kept to one slim row on purpose: stack.js raises the held contact
+         boxes by whatever sits under the section on short screens, so a
+         tall footer would push the form up into the title band.
+         =================================================================== -->
+    <footer class="site-footer" id="footer">
+      <div class="site-footer__brand">
+        <a class="site-footer__wordmark" href="#hero">Irene Ellis Art</a>
+        <span class="site-footer__copy">© 2026 Irene Ellis Art</span>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer">
+        <a href="#about">About</a>
+        <a href="#workshop-dates">Workshops</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="site-footer__social">
+        <a href="https://www.facebook.com/ireneellisart613" target="_blank" rel="noopener" aria-label="Irene Ellis Art on Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg>
+          <span>Facebook</span>
+        </a>
+        <a href="https://www.instagram.com/ireneellisart/" target="_blank" rel="noopener" aria-label="Irene Ellis Art on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6c2.7 0 3.1 0 4.1.1 1 0 1.5.2 1.9.3.5.2.8.4 1.2.8.4.4.6.7.8 1.2.1.4.3.9.3 1.9.1 1.1.1 1.4.1 4.1s0 3.1-.1 4.1c0 1-.2 1.5-.3 1.9-.2.5-.4.8-.8 1.2-.4.4-.7.6-1.2.8-.4.1-.9.3-1.9.3-1.1.1-1.4.1-4.1.1s-3.1 0-4.1-.1c-1 0-1.5-.2-1.9-.3-.5-.2-.8-.4-1.2-.8-.4-.4-.6-.7-.8-1.2-.1-.4-.3-.9-.3-1.9-.1-1.1-.1-1.4-.1-4.1s0-3.1.1-4.1c0-1 .2-1.5.3-1.9.2-.5.4-.8.8-1.2.4-.4.7-.6 1.2-.8.4-.1.9-.3 1.9-.3 1.1-.1 1.4-.1 4.1-.1M12 2c-2.7 0-3.1 0-4.2.1-1.1 0-1.8.2-2.4.5-.7.2-1.2.6-1.8 1.1-.5.6-.9 1.1-1.1 1.8-.3.6-.5 1.3-.5 2.4C2 8.9 2 9.3 2 12s0 3.1.1 4.2c0 1.1.2 1.8.5 2.4.2.7.6 1.2 1.1 1.8.6.5 1.1.9 1.8 1.1.6.3 1.3.5 2.4.5 1.1.1 1.5.1 4.2.1s3.1 0 4.2-.1c1.1 0 1.8-.2 2.4-.5.7-.2 1.2-.6 1.8-1.1.5-.6.9-1.1 1.1-1.8.3-.6.5-1.3.5-2.4.1-1.1.1-1.5.1-4.2s0-3.1-.1-4.2c0-1.1-.2-1.8-.5-2.4-.2-.7-.6-1.2-1.1-1.8-.6-.5-1.1-.9-1.8-1.1-.6-.3-1.3-.5-2.4-.5C15.1 2 14.7 2 12 2zm0 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2zm0 8.4a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6zm5.3-9.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>
+          <span>Instagram</span>
+        </a>
+        <!-- Irene's editor, where the dates and bookings live -->
+        <a class="site-footer__admin" href="admin/">Admin</a>
+      </div>
     </footer>
 
     <!-- ===================================================================
@@ -3266,22 +3488,74 @@
         <!-- One blank stage per category — only the clicked one is shown.
              Each is where that category's artwork (and its unfolded sheet)
              will live. Intentionally empty for now. -->
-        <div class="showcase__stage" data-stage="Category one" hidden></div>
-        <div class="showcase__stage" data-stage="Category two" hidden></div>
-        <div class="showcase__stage" data-stage="Category three" hidden></div>
-        <!-- Workshop dates open this deliberately-empty stage — content to be
-             built here later. Same dark panel + fold-X back as the albums. -->
+        <div class="showcase__stage" data-stage="Pastel &amp; Gold" hidden></div>
+        <div class="showcase__stage" data-stage="Flora &amp; Fauna" hidden></div>
+        <div class="showcase__stage" data-stage="Graphite Studies" hidden></div>
+        <!-- Workshop dates open this stage: the booking form. Same dark panel
+             and fold-X as the albums. signup.js fills the chip with the date
+             that was clicked, checks the fields, and saves the booking. -->
         <div class="showcase__stage" data-stage="workshop" hidden>
-          <!-- Workshop sign-up fields (a starting layout — not wired to save yet) -->
-          <form class="signup" novalidate>
-            <input class="signup__field" type="text" placeholder="Name" aria-label="Name" />
-            <input class="signup__field" type="text" placeholder="Surname" aria-label="Surname" />
-            <input class="signup__field" type="tel" placeholder="Cellphone number" aria-label="Cellphone number" />
-            <input class="signup__field" type="number" min="1" placeholder="Number of attendees" aria-label="Number of attendees" />
-            <!-- Wired up in signup.js. Deliberately a plain button, not a form
-                 submit: a submit would reload the page and lose what was typed. -->
-            <p class="signup__status" role="status" aria-live="polite"></p>
-            <button type="button" class="signup__submit">Submit</button>
+          <form class="signup" novalidate aria-labelledby="signup-title">
+            <div class="signup__head">
+              <p class="signup__eyebrow">Workshop booking</p>
+              <h3 class="signup__title" id="signup-title">Book your place</h3>
+              <!-- Which date was picked, restated so nobody books the wrong
+                   day. signup.js writes the parts in from the clicked button. -->
+              <p class="signup__chip" data-signup-chip>
+                <span class="signup__chip-day" data-chip-day></span>
+                <span class="signup__chip-when" data-chip-when></span>
+                <span class="signup__chip-topic" data-chip-topic></span>
+              </p>
+            </div>
+
+            <div class="signup__fields" data-signup-fields>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-name">Name</label>
+                <input class="signup__field" id="signup-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" required />
+                <p class="signup__hint" id="signup-name-hint"></p>
+              </div>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-surname">Surname</label>
+                <input class="signup__field" id="signup-surname" name="surname" type="text" autocomplete="family-name" autocapitalize="words" required />
+                <p class="signup__hint" id="signup-surname-hint"></p>
+              </div>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-phone">Cellphone number</label>
+                <input class="signup__field" id="signup-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 082 123 4567" required />
+                <p class="signup__hint" id="signup-phone-hint"></p>
+              </div>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-attendees">How many people</label>
+                <!-- A stepper: minus, the number, plus. The number is a real
+                     input so it can still be typed into; 1 to 6 per booking. -->
+                <div class="signup__stepper">
+                  <button type="button" class="signup__step" data-step="-1" aria-label="One fewer person">−</button>
+                  <input class="signup__field signup__count" id="signup-attendees" name="attendees" type="number" inputmode="numeric" min="1" max="6" value="1" />
+                  <button type="button" class="signup__step" data-step="1" aria-label="One more person">+</button>
+                </div>
+                <p class="signup__hint" id="signup-attendees-hint">Up to 6 per booking</p>
+              </div>
+            </div>
+
+            <div class="signup__foot" data-signup-foot>
+              <p class="signup__status" role="status" aria-live="polite"></p>
+              <button type="submit" class="signup__submit">Book my place</button>
+            </div>
+
+            <!-- Shown instead of the fields once the booking has saved -->
+            <div class="signup__done" data-signup-done hidden tabindex="-1">
+              <p class="signup__done-title">You're booked in</p>
+              <p class="signup__done-text" data-done-text></p>
+              <p class="signup__done-next">
+                Irene will be in touch on the number you gave to confirm the
+                venue, the cost and what to bring. No payment is taken through
+                this website.
+              </p>
+              <div class="signup__done-actions">
+                <button type="button" class="signup__submit" data-showcase-close>Done</button>
+                <button type="button" class="signup__again" data-signup-again>Book another date</button>
+              </div>
+            </div>
           </form>
         </div>
         <button
@@ -3355,5 +3629,7 @@
     <script src="stack.js"></script>
     <script src="content.js"></script>
     <script src="signup.js"></script>
+    <script src="notify.js"></script>
+    <script src="contact.js"></script>
   </body>
 </html>

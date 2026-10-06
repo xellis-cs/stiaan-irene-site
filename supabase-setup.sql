@@ -80,3 +80,75 @@ create policy "only signed-in can write content"
   to authenticated
   using (true)
   with check (true);
+
+
+-- ---------------------------------------------------------------------------
+-- Notify list — the "Be the first to hear about new dates" email form on the
+-- website (notify.js). Same security story as the sign-ups: anyone may add an
+-- address, only a signed-in admin may read the list (the "Notify list" panel
+-- in /admin). Run this once in the SQL Editor, like the blocks above.
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.notify_list (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  email text not null,
+  -- which form it came from (today only 'workshop-dates'; kept so a second
+  -- form could be told apart later)
+  source text
+);
+
+-- One row per address, however it is capitalised. A second attempt answers
+-- with a 409, which the website turns into "you're already on the list".
+create unique index if not exists notify_list_email_key
+  on public.notify_list (lower(email));
+
+alter table public.notify_list enable row level security;
+
+drop policy if exists "anyone can join the list" on public.notify_list;
+create policy "anyone can join the list"
+  on public.notify_list for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "only signed-in can read the list" on public.notify_list;
+create policy "only signed-in can read the list"
+  on public.notify_list for select
+  to authenticated
+  using (true);
+
+-- No update or delete from the website or admin: removing an address (someone
+-- asks to be taken off) is done in the Supabase table editor.
+
+
+-- ---------------------------------------------------------------------------
+-- Messages — the Get In Touch form on the website (contact.js). Same rules
+-- again: anyone may send one, only the signed-in admin may read them (the
+-- "Messages" panel in /admin). Run this once in the SQL Editor.
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.messages (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  surname text,
+  email text not null,
+  message text not null
+);
+
+alter table public.messages enable row level security;
+
+drop policy if exists "anyone can send a message" on public.messages;
+create policy "anyone can send a message"
+  on public.messages for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "only signed-in can read messages" on public.messages;
+create policy "only signed-in can read messages"
+  on public.messages for select
+  to authenticated
+  using (true);
+
+-- No update or delete: a message that has been dealt with is removed in the
+-- Supabase table editor, if at all.

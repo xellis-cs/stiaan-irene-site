@@ -4,6 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin · Irene Ellis Art</title>
+    <!-- the same dandelion-seed tab icon as the site, so there is no 404 for
+         a missing favicon.ico here either -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 56'%3E%3Cg fill='none' stroke='%238f5f50' stroke-width='2.6' stroke-linecap='round'%3E%3Cline x1='20' y1='48' x2='20' y2='20'/%3E%3Cline x1='20' y1='20' x2='5' y2='14.5'/%3E%3Cline x1='20' y1='20' x2='7.4' y2='10.2'/%3E%3Cline x1='20' y1='20' x2='10.8' y2='6.9'/%3E%3Cline x1='20' y1='20' x2='15' y2='4.8'/%3E%3Cline x1='20' y1='20' x2='20' y2='4'/%3E%3Cline x1='20' y1='20' x2='25' y2='4.8'/%3E%3Cline x1='20' y1='20' x2='29.2' y2='6.9'/%3E%3Cline x1='20' y1='20' x2='32.6' y2='10.2'/%3E%3Cline x1='20' y1='20' x2='35' y2='14.5'/%3E%3C/g%3E%3Cellipse cx='20' cy='51' rx='3.4' ry='4.6' fill='%238f5f50'/%3E%3C/svg%3E"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -216,6 +223,44 @@
         <div class="roll" data-participants></div>
       </section>
 
+      <!-- ================= NOTIFY LIST ================= -->
+      <!-- Everyone who left an email on the website to hear about new dates.
+           Read-only: the list is loaded by admin.js once you are signed in.
+           Removing an address is done in the Supabase table editor. -->
+      <section class="panel">
+        <div class="panel__head">
+          <h2>Notify list</h2>
+          <div class="panel__actions">
+            <button type="button" class="btn btn--ghost" data-notify-copy hidden>Copy all emails</button>
+            <button type="button" class="btn" data-notify-refresh>Refresh</button>
+          </div>
+        </div>
+        <p class="hint">
+          People who asked to hear when new workshop dates go up. When you add
+          dates, "Copy all emails" puts the addresses on your clipboard to paste
+          into the Bcc line of an email. Only you can see this list.
+        </p>
+        <p class="inbox__status" data-notify-status></p>
+        <div class="inbox" data-notify-list></div>
+      </section>
+
+      <!-- ================= MESSAGES ================= -->
+      <!-- What people send through Get In Touch on the website. Read-only;
+           loaded by admin.js once signed in. Reply from your own email. -->
+      <section class="panel">
+        <div class="panel__head">
+          <h2>Messages</h2>
+          <button type="button" class="btn" data-messages-refresh>Refresh</button>
+        </div>
+        <p class="hint">
+          Messages sent through the website's Get In Touch form, newest first.
+          Click a sender's email to reply from your own mail. Only you can see
+          these.
+        </p>
+        <p class="inbox__status" data-messages-status></p>
+        <div class="inbox" data-messages-list></div>
+      </section>
+
       <!-- ================= PORTFOLIO ================= -->
       <section class="panel">
         <div class="panel__head"><h2>Portfolio albums</h2></div>
@@ -224,8 +269,8 @@
         <div class="albums">
           <article class="album">
             <div class="album__head">
-              <h3>Category one</h3>
-              <button type="button" class="btn btn--preview" data-category-open data-category="Category one">Preview</button>
+              <h3>Pastel &amp; Gold</h3>
+              <button type="button" class="btn btn--preview" data-category-open data-category="Pastel &amp; Gold">Preview</button>
             </div>
             <div class="album__grid" data-grid></div>
             <label class="dropzone">
@@ -240,8 +285,8 @@
 
           <article class="album">
             <div class="album__head">
-              <h3>Category two</h3>
-              <button type="button" class="btn btn--preview" data-category-open data-category="Category two">Preview</button>
+              <h3>Flora &amp; Fauna</h3>
+              <button type="button" class="btn btn--preview" data-category-open data-category="Flora &amp; Fauna">Preview</button>
             </div>
             <div class="album__grid" data-grid></div>
             <label class="dropzone">
@@ -256,8 +301,8 @@
 
           <article class="album">
             <div class="album__head">
-              <h3>Category three</h3>
-              <button type="button" class="btn btn--preview" data-category-open data-category="Category three">Preview</button>
+              <h3>Graphite Studies</h3>
+              <button type="button" class="btn btn--preview" data-category-open data-category="Graphite Studies">Preview</button>
             </div>
             <div class="album__grid" data-grid></div>
             <label class="dropzone">
@@ -286,9 +331,9 @@
     <div class="showcase" data-showcase hidden>
       <div class="showcase__backdrop" data-showcase-close></div>
       <div class="showcase__panel" role="dialog" aria-modal="true" aria-label="Artwork">
-        <div class="showcase__stage" data-stage="Category one" hidden></div>
-        <div class="showcase__stage" data-stage="Category two" hidden></div>
-        <div class="showcase__stage" data-stage="Category three" hidden></div>
+        <div class="showcase__stage" data-stage="Pastel &amp; Gold" hidden></div>
+        <div class="showcase__stage" data-stage="Flora &amp; Fauna" hidden></div>
+        <div class="showcase__stage" data-stage="Graphite Studies" hidden></div>
         <button type="button" class="showcase__back" data-showcase-close aria-label="Back">
           <svg class="showcase__fold" viewBox="0 0 150 150" aria-hidden="true">
             <polygon points="0,0 150,0 150,150" fill="#eed0c8" />

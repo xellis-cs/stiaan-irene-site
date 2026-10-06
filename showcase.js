@@ -14,6 +14,12 @@
   if (!showcase) return;
 
   var panel = showcase.querySelector(".showcase__panel");
+  // Everything the Tab key can land on, with disabled controls left out of
+  // every kind alike. One list, so the trap below and anything else that
+  // needs it agree on what "focusable" means.
+  var FOCUSABLE =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+    'textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])';
   var CLOSE_MS = 580; // keep in step with the .showcase__panel transition
   var CARD_RADIUS = 10; // must match .card border-radius in style.css
   var lastTrigger = null;
@@ -77,12 +83,30 @@
     // Remember which category opened it — the artwork will need this
     var name = trigger ? trigger.dataset.category || trigger.textContent.trim() : "";
     showcase.dataset.category = name;
-    if (panel) panel.setAttribute("aria-label", name ? name + " artwork" : "Artwork");
+    if (panel) {
+      // what a screen reader announces when the dialog opens
+      panel.setAttribute(
+        "aria-label",
+        name === "workshop" ? "Book your place" : name ? name + " artwork" : "Artwork"
+      );
+    }
 
     // Show only this category's stage
     showcase.querySelectorAll("[data-stage]").forEach(function (stage) {
       stage.hidden = stage.dataset.stage !== name;
     });
+    // The caption in the panel's top-left: the album's name and how many
+    // pieces it holds. Not for the booking form, which has its own heading.
+    var caption = showcase.querySelector(".showcase__caption");
+    if (caption) {
+      var count = (window.GALLERY && window.GALLERY[name] || []).length;
+      caption.hidden = !count;
+      if (count) {
+        caption.querySelector(".showcase__caption-name").textContent = name;
+        caption.querySelector(".showcase__caption-count").textContent =
+          count + (count === 1 ? " piece" : " pieces");
+      }
+    }
 
     window.clearTimeout(hideTimer);
     showcase.hidden = false;
@@ -134,12 +158,19 @@
     var all = document.querySelectorAll(
       '[data-category-open][data-category="' + key + '"]'
     );
+    // Every workshop date shares the one "workshop" key, so the text (the
+    // date itself) is what tells them apart. Prefer the twin that says the
+    // same thing; fall back to any twin of the same kind.
+    var want = (el.textContent || "").trim();
+    var fallback = null;
     for (var i = 0; i < all.length; i++) {
       if (!!all[i].closest(".stack-strip") !== inBand) continue;
       var r = all[i].getBoundingClientRect();
-      if (r.width && r.height) return all[i];
+      if (!r.width || !r.height) continue;
+      if ((all[i].textContent || "").trim() === want) return all[i];
+      if (!fallback) fallback = all[i];
     }
-    return null;
+    return fallback;
   }
 
   function closeShowcase() {
@@ -211,8 +242,45 @@
   });
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !showcase.hidden) closeShowcase();
+    if (showcase.hidden) return;
+    if (e.key === "Escape") {
+      closeShowcase();
+      return;
+    }
+    // Keep the Tab key inside the open panel: it is a dialog, and tabbing out
+    // of it onto the dimmed page behind would be confusing. Reaching the end
+    // wraps round to the start, and Shift+Tab from the start wraps to the end.
+    if (e.key === "Tab" && panel) {
+      var focusable = Array.prototype.filter.call(panel.querySelectorAll(FOCUSABLE), function (el) {
+        // only things that are actually on screen: not inside a hidden stage,
+        // not aria-hidden, and laid out (offsetParent is null when hidden)
+        if (el.closest('[hidden], [aria-hidden="true"]')) return false;
+        return el.offsetParent !== null;
+      });
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
+
+  // The caption element, made once and shared by every album (the markup is
+  // inlined per page, so building it here keeps both pages identical).
+  if (panel && !panel.querySelector(".showcase__caption")) {
+    var cap = document.createElement("p");
+    cap.className = "showcase__caption";
+    cap.hidden = true;
+    cap.innerHTML =
+      '<span class="showcase__caption-name"></span>' +
+      '<span class="showcase__caption-count"></span>';
+    panel.insertBefore(cap, panel.firstChild);
+  }
 })();
 
 // Build the scrollable masonry wall inside each showcase stage from the shared
@@ -232,9 +300,19 @@
     imgs.forEach(function (rel, i) {
       var im = document.createElement("img");
       im.className = "gallery__item";
-      im.src = window.gallerySrc(rel);
+      // lazy: the panel is hidden until clicked, so nothing is fetched until
+      // then; async: decoding a big photo never holds up the page's painting
       im.loading = "lazy";
-      im.alt = name + " artwork " + (i + 1);
+      im.decoding = "async";
+      // the real size, so the wall is laid out once rather than reshuffled as
+      // each picture arrives (the CSS still scales it to its column)
+      var size = window.GALLERY_SIZES && window.GALLERY_SIZES[rel];
+      if (size) {
+        im.width = size[0];
+        im.height = size[1];
+      }
+      im.src = window.gallerySrc(rel);
+      im.alt = name + ", piece " + (i + 1) + " of " + imgs.length;
       grid.appendChild(im);
     });
     gallery.appendChild(grid);

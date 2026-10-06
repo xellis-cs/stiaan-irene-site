@@ -1,25 +1,39 @@
-// Workshop sign-ups — the form inside the dark panel, wired to the database.
+// Workshop sign-ups — the booking form inside the dark panel, wired to the
+// database.
 //
-// A visitor picks a workshop date, fills in their details and presses Submit;
-// the sign-up lands in the `signups` table, where the admin page reads it.
-// Only inserting is allowed from here: the database's row rules let anyone add
-// a sign-up but let nobody read the list back without signing in, so one
+// A visitor clicks a workshop date, the panel opens with that date restated
+// in a chip, they fill in their details and press "Book my place"; the
+// booking lands in the `signups` table, where the admin page reads it. Only
+// inserting is allowed from here: the database's row rules let anyone add a
+// sign-up but let nobody read the list back without signing in, so one
 // visitor can never see another's name or phone number.
+//
+// The row sent to the database is exactly: name, surname, phone, attendees,
+// workshop_month, workshop_date, workshop_topic — the admin page keys off
+// these, so add nothing here without adding it there too.
 (function () {
   var URL_BASE = window.SUPABASE_URL;
   var KEY = window.SUPABASE_ANON_KEY;
 
   var form = document.querySelector(".signup");
-  var btn = document.querySelector(".signup__submit");
-  if (!form || !btn) return;
+  if (!form) return;
 
+  var btn = form.querySelector('.signup__submit[type="submit"]');
   var statusEl = form.querySelector(".signup__status");
+  var fieldsWrap = form.querySelector("[data-signup-fields]");
+  var foot = form.querySelector("[data-signup-foot]");
+  var done = form.querySelector("[data-signup-done]");
+  var doneText = form.querySelector("[data-done-text]");
+  var chip = form.querySelector("[data-signup-chip]");
   var fields = {
-    name: form.querySelector('input[type="text"]'),
-    surname: form.querySelectorAll('input[type="text"]')[1],
-    phone: form.querySelector('input[type="tel"]'),
-    attendees: form.querySelector('input[type="number"]'),
+    name: form.querySelector("#signup-name"),
+    surname: form.querySelector("#signup-surname"),
+    phone: form.querySelector("#signup-phone"),
+    attendees: form.querySelector("#signup-attendees"),
   };
+  if (!btn || !fields.name || !fields.surname || !fields.phone || !fields.attendees) return;
+
+  var MAX_PEOPLE = 6;
 
   // Which date was clicked. The panel is opened by a workshop button, and the
   // page stack copies those buttons into its title band, so this listens on the
@@ -34,15 +48,29 @@
       var el = b.querySelector(sel);
       return el ? el.textContent.trim() : "";
     };
+    var day = text(".workshop__day");
+    var weekday = text(".workshop__weekday");
+    var time = text(".workshop__time");
     picked = {
       workshop_month: month ? (month.querySelector(".workshops__month-name") || {}).textContent.trim() : "",
-      workshop_date: [text(".workshop__day"), text(".workshop__weekday"), text(".workshop__time")]
-        .filter(Boolean)
-        .join(" "),
+      workshop_date: [day, weekday, time].filter(Boolean).join(" "),
       workshop_topic: text(".workshop__topic"),
     };
-    say("");
+    showChip(day, [weekday, time, picked.workshop_month].filter(Boolean).join(" · "), picked.workshop_topic);
+    reset(); // a fresh form for a fresh date
   });
+
+  function showChip(day, when, topic) {
+    if (!chip) return;
+    var set = function (sel, v) {
+      var el = chip.querySelector(sel);
+      if (el) el.textContent = v || "";
+    };
+    set("[data-chip-day]", day);
+    set("[data-chip-when]", when);
+    set("[data-chip-topic]", topic);
+    chip.classList.toggle("is-set", !!(day || when));
+  }
 
   function say(msg, kind) {
     if (!statusEl) return;
@@ -54,29 +82,146 @@
     return el && el.value ? el.value.trim() : "";
   }
 
-  btn.addEventListener("click", function () {
+  // --- Inline checks: the line under a field says what is wrong, and the
+  //     field wears a red ring until it is fixed. ---
+  function hint(el) {
+    return form.querySelector("#" + el.id + "-hint");
+  }
+  function flag(el, msg) {
+    el.setAttribute("aria-invalid", "true");
+    var h = hint(el);
+    if (h) {
+      h.textContent = msg;
+      h.classList.add("is-error");
+    }
+  }
+  function clear(el) {
+    el.removeAttribute("aria-invalid");
+    var h = hint(el);
+    if (h && h.classList.contains("is-error")) {
+      h.textContent = h.dataset.rest || "";
+      h.classList.remove("is-error");
+    }
+  }
+  // remember each hint's resting text (the attendees one has some)
+  Object.keys(fields).forEach(function (k) {
+    var h = hint(fields[k]);
+    if (h) h.dataset.rest = h.textContent;
+    fields[k].addEventListener("input", function () {
+      clear(fields[k]);
+      if (statusEl && statusEl.classList.contains("signup__status--error")) say("");
+    });
+  });
+
+  function people() {
+    var n = parseInt(fields.attendees.value, 10);
+    if (isNaN(n)) n = 1;
+    return Math.min(MAX_PEOPLE, Math.max(1, n));
+  }
+  function setPeople(n) {
+    fields.attendees.value = String(n);
+    form.querySelectorAll("[data-step]").forEach(function (s) {
+      var d = parseInt(s.dataset.step, 10);
+      s.disabled = (d < 0 && n <= 1) || (d > 0 && n >= MAX_PEOPLE);
+    });
+  }
+  form.querySelectorAll("[data-step]").forEach(function (s) {
+    s.addEventListener("click", function () {
+      setPeople(people() + parseInt(s.dataset.step, 10));
+    });
+  });
+  fields.attendees.addEventListener("change", function () {
+    setPeople(people()); // typed value snapped into 1–6
+  });
+  setPeople(1);
+
+  function validate() {
+    var ok = true;
+    if (!value(fields.name)) {
+      flag(fields.name, "Please give your name.");
+      ok = false;
+    }
+    if (!value(fields.surname)) {
+      flag(fields.surname, "And your surname.");
+      ok = false;
+    }
+    // South African cellphone numbers have 10 digits; allow a +27 form too
+    if (value(fields.phone).replace(/\D/g, "").length < 9) {
+      flag(fields.phone, "Please check the cellphone number.");
+      ok = false;
+    }
+    if (!ok) {
+      var first = form.querySelector('[aria-invalid="true"]');
+      if (first) first.focus();
+    }
+    return ok;
+  }
+
+  // --- The two states: the form, or the thank-you ---
+  function showDone(row) {
+    if (fieldsWrap) fieldsWrap.hidden = true;
+    if (foot) foot.hidden = true;
+    if (done) {
+      if (doneText) {
+        var who = row.attendees > 1 ? row.attendees + " people" : "one place";
+        var when = [row.workshop_date, row.workshop_month].filter(Boolean).join(", ");
+        doneText.innerHTML =
+          "Thank you, <strong></strong> — " +
+          who +
+          " for <strong></strong>" +
+          (row.workshop_topic ? " (<span></span>)" : "") +
+          ".";
+        // the visitor's own text goes in as TEXT, never as markup
+        var strongs = doneText.querySelectorAll("strong");
+        strongs[0].textContent = row.name;
+        strongs[1].textContent = when || "the workshop";
+        var topicEl = doneText.querySelector("span");
+        if (topicEl) topicEl.textContent = row.workshop_topic;
+      }
+      done.hidden = false;
+      done.focus(); // a screen reader hears the confirmation straight away
+    }
+  }
+  function reset() {
+    if (fieldsWrap) fieldsWrap.hidden = false;
+    if (foot) foot.hidden = false;
+    if (done) done.hidden = true;
+    say("");
+    [fields.name, fields.surname, fields.phone].forEach(function (el) {
+      el.value = "";
+      clear(el);
+    });
+    setPeople(1);
+    btn.disabled = false;
+  }
+  // "Book another date": close the panel so they can pick one. The fold-X
+  // button is the one place that knows how to close, so press it.
+  var again = form.querySelector("[data-signup-again]");
+  if (again) {
+    again.addEventListener("click", function () {
+      var close = document.querySelector(".showcase__back");
+      if (close) close.click();
+      reset();
+    });
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // a real submit would reload the page and lose everything typed
     if (!URL_BASE || !KEY) {
-      say("Sign-ups aren’t connected yet.", "error");
+      say("Sign-ups aren’t connected yet. Please phone Irene instead.", "error");
       return;
     }
+    if (!validate()) return;
+
     var row = {
       name: value(fields.name),
       surname: value(fields.surname),
       phone: value(fields.phone),
-      attendees: Number(value(fields.attendees)) || 1,
+      attendees: people(),
       workshop_month: (picked && picked.workshop_month) || "",
       workshop_date: (picked && picked.workshop_date) || "",
       workshop_topic: (picked && picked.workshop_topic) || "",
     };
-
-    if (!row.name || !row.surname) {
-      say("Please fill in your name and surname.", "error");
-      return;
-    }
-    if (row.phone.replace(/\D/g, "").length < 9) {
-      say("Please check the cellphone number.", "error");
-      return;
-    }
 
     btn.disabled = true;
     say("Sending…");
@@ -93,22 +238,14 @@
       body: JSON.stringify(row),
     })
       .then(function (res) {
-        if (!res.ok) {
-          return res.text().then(function (t) {
-            throw new Error(t || "Error " + res.status);
-          });
-        }
-        say("Thank you — your place is booked. Irene will be in touch.", "ok");
-        [fields.name, fields.surname, fields.phone, fields.attendees].forEach(function (el) {
-          if (el) el.value = "";
-        });
+        if (!res.ok) throw new Error("Error " + res.status);
+        say("");
+        showDone(row);
       })
       .catch(function () {
         // Never show the raw database error to a visitor — it means nothing to
         // them and can leak the shape of the table.
         say("Sorry, that didn’t go through. Please try again or phone Irene.", "error");
-      })
-      .finally(function () {
         btn.disabled = false;
       });
   });
