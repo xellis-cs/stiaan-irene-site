@@ -1,10 +1,10 @@
-// "Be the first to hear about new dates" — the email forms, wired to the
+// "Be the first to hear about new dates" — the email form, wired to the
 // database.
 //
-// Works for every form marked data-notify-form (there is one under Workshop
-// Dates and one in the footer). An address lands in the `notify_list` table
-// with where it came from (data-source), so Irene can see in /admin who to
-// tell when she adds dates. Only inserting is allowed from here — the row
+// Works for every form marked data-notify-form (there is one, under Workshop
+// Dates; a second one anywhere would work the same). An address lands in the
+// `notify_list` table with where it came from (data-source), so Irene can see
+// in /admin who to tell when she adds dates. Only inserting is allowed from here — the row
 // rules let anyone add an address but nobody read the list without signing
 // in, so a visitor can never see anyone else's email.
 (function () {
@@ -22,7 +22,10 @@
 
   forms.forEach(function (form) {
     var field = form.querySelector('input[type="email"]');
-    var trap = form.querySelector('input[name="website"]');
+    // The bot trap. Its name is meaningless on purpose: a name like "website"
+    // is one browsers' autofill recognises and fills in, which would make a
+    // real person look like a bot and drop their address.
+    var trap = form.querySelector('input[name="iea_extra_field"]');
     var btn = form.querySelector('button[type="submit"]');
     var statusEl = form.querySelector(".notify__status");
     if (!field || !btn) return;

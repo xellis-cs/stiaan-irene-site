@@ -83,7 +83,7 @@ create policy "only signed-in can write content"
 
 
 -- ---------------------------------------------------------------------------
--- Notify list — the "Be the first to hear about new dates" email forms on the
+-- Notify list — the "Be the first to hear about new dates" email form on the
 -- website (notify.js). Same security story as the sign-ups: anyone may add an
 -- address, only a signed-in admin may read the list (the "Notify list" panel
 -- in /admin). Run this once in the SQL Editor, like the blocks above.
@@ -93,7 +93,8 @@ create table if not exists public.notify_list (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
   email text not null,
-  -- which form it came from: 'workshop-dates' or 'footer'
+  -- which form it came from (today only 'workshop-dates'; kept so a second
+  -- form could be told apart later)
   source text
 );
 

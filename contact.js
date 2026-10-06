@@ -15,7 +15,8 @@
   if (!form) return;
   var btn = form.querySelector('button[type="submit"]');
   var statusEl = form.querySelector(".contact__status");
-  var trap = form.querySelector('input[name="website"]');
+  // The bot trap (meaningless name on purpose — see the note in index.html)
+  var trap = form.querySelector('input[name="iea_extra_field"]');
   var fields = {
     name: form.querySelector("#contact-name"),
     surname: form.querySelector("#contact-surname"),
@@ -49,7 +50,7 @@
 
     var row = {
       name: value(fields.name),
-      surname: value(fields.surname),
+      surname: value(fields.surname), // optional on a contact form
       email: value(fields.email).toLowerCase(),
       message: value(fields.message),
     };
