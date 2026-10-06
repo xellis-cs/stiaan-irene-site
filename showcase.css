@@ -55,14 +55,17 @@
   transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
     border-radius 0.55s ease, opacity 0.4s ease 0.15s;
 }
-/* The workshop-dates display opens 30% smaller than the portfolio panel
-   (70% of its size). Only affects the panel opened from a workshop button —
-   the data-category is set before the grow animation measures the panel. */
+/* The booking panel (opened from a workshop date) is a smaller card than
+   the gallery: as tall as the form needs, never taller than the screen.
+   Only affects the panel opened from a workshop button — the data-category
+   is set before the grow animation measures the panel. */
 .showcase[data-category="workshop"] .showcase__panel {
-  /* 75% wider and 10% shorter than the previous workshop size; the flex
-     container (.showcase) keeps it centred at whatever size it is. */
-  width: min(831.16px, 64.8vw);
-  height: min(270.9px, 27.72vh);
+  width: min(680px, 92vw);
+  height: auto;
+  max-height: 90vh;
+  padding: clamp(24px, 4vh, 40px) clamp(22px, 4vw, 44px);
+  align-items: stretch;
+  overflow-y: auto; /* a short phone screen scrolls the form, not the page */
   /* all four corners gently rounded to 12px */
   border-radius: 12px;
 }
@@ -71,27 +74,93 @@
   border-top-right-radius: 12px;
 }
 
-/* --- Workshop sign-up fields, shown inside the dark workshop display ---
-   Deep-pink rings, and a fill slightly greyer than the panel so the boxes
-   read against the black without a stark white. Corners reuse the panel's
-   12px curve. (A starting layout — refine from here.) */
+/* --- The booking form inside the dark panel ---
+   Light text on the dark "display" colour. Fields have a fill a little
+   greyer than the panel and a deep-pink ring; the corners reuse the panel's
+   12px curve. Two columns of fields on a computer, one on a phone. */
 .signup {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
+  flex-direction: column;
+  gap: 22px;
   width: 100%;
-  height: 100%;
-  /* nudge the fields up by 20% of the display height (they're centred by default) */
-  transform: translateY(-20%);
+  margin: 0;
+  color: #f1dfd6;
+}
+.signup__head {
+  padding-right: 56px; /* room for the fold-X in the corner */
+}
+.signup__eyebrow {
+  margin: 0 0 6px;
+  font: 500 0.72rem/1.2 var(--font-ui, Inter, sans-serif);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c9bdb6;
+}
+.signup__title {
+  margin: 0 0 14px;
+  font: 400 clamp(2rem, 4vw, 2.6rem) / 1 var(--font-display, "Pinyon Script", cursive);
+  color: #fdfdfd;
+}
+/* The chosen date, as a pale chip: day number in rose, then the weekday,
+   time and month, then the topic. Hidden while nothing has been picked. */
+.signup__chip {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  padding: 8px 14px 8px 10px;
+  border-radius: 10px;
+  background: #faf5f0;
+  color: #2c2c2c;
+  font: 500 0.92rem/1.3 var(--font-ui, Inter, sans-serif);
+}
+.signup__chip:not(.is-set) {
+  display: none;
+}
+.signup__chip-day {
+  padding: 2px 9px;
+  border-radius: 7px;
+  background: #e6b8ab;
+  font-weight: 700;
+  color: #2c2c2c;
+}
+.signup__chip-topic {
+  color: rgba(44, 44, 44, 0.72);
+}
+.signup__chip-topic:not(:empty)::before {
+  content: "·";
+  margin-right: 10px;
+  color: rgba(44, 44, 44, 0.4);
+}
+
+.signup__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 18px;
+}
+.signup__fields[hidden] {
+  display: none;
+}
+.signup__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.signup__label {
+  font: 500 0.78rem/1.2 var(--font-ui, Inter, sans-serif);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #d9cfc8;
 }
 .signup__field {
-  flex: 1 1 120px;
-  min-width: 0;
-  font: inherit;
+  width: 100%;
+  min-height: 46px;
+  box-sizing: border-box;
+  font: 1rem/1.3 var(--font-ui, Inter, sans-serif);
   color: #f1dfd6; /* light text, readable on the grey fill */
-  padding: 10px 12px;
+  padding: 10px 14px;
   background: #433e3a; /* slightly greyer than the #2a2826 panel */
   border: 2px solid #e6b8ab; /* deep-pink ring */
   border-radius: 12px; /* same gentle curve as the panel */
@@ -100,23 +169,189 @@
     background-color 0.35s ease;
 }
 .signup__field::placeholder {
-  color: #c9bdb6;
-}
-/* No spinner arrows on the "Number of attendees" field (still typeable). */
-.signup__field[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-.signup__field[type="number"]::-webkit-outer-spin-button,
-.signup__field[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  color: #b5a8a0;
 }
 .signup__field:focus {
   outline: none;
   border-color: #a8465a;
   box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.3);
 }
+/* a field that failed its check wears the rose-red ring until it is fixed */
+.signup__field[aria-invalid="true"] {
+  border-color: #e79aa8;
+}
+/* the little line under a field: a hint in grey, or what went wrong in rose */
+.signup__hint {
+  margin: 0;
+  min-height: 1.2em;
+  font: 0.8rem/1.3 var(--font-ui, Inter, sans-serif);
+  color: #b5a8a0;
+}
+.signup__hint.is-error {
+  color: #e79aa8;
+}
+
+/* The stepper: minus and plus either side of the number */
+.signup__stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.signup__count {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+  font-weight: 600;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.signup__count::-webkit-outer-spin-button,
+.signup__count::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.signup__step {
+  flex: none;
+  width: 46px;
+  min-height: 46px;
+  font: 500 1.4rem/1 var(--font-ui, Inter, sans-serif);
+  color: #f1dfd6;
+  background: #433e3a;
+  border: 2px solid #e6b8ab;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.signup__step:hover {
+  background: #e6b8ab;
+  color: #2a2826;
+}
+.signup__step:disabled {
+  opacity: 0.4;
+  cursor: default;
+  background: #433e3a;
+  color: #f1dfd6;
+}
+
+/* Status on the left, the button on the right */
+.signup__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+}
+.signup__foot[hidden] {
+  display: none;
+}
+.signup__status {
+  flex: 1 1 200px;
+  margin: 0;
+  font: 0.95rem/1.4 var(--font-ui, Inter, sans-serif);
+  color: #c9bdb6; /* quiet grey while it is only saying "Sending…" */
+}
+.signup__status:empty {
+  display: none;
+}
+.signup__status--ok {
+  color: #eed0c8; /* brand pink: it worked */
+}
+.signup__status--error {
+  color: #e79aa8; /* a lightened rose-red — the close-X colour is too dark here */
+}
+.signup__submit {
+  flex: none;
+  min-height: 46px;
+  font: 600 1rem/1.3 var(--font-ui, Inter, sans-serif);
+  letter-spacing: 0.04em;
+  color: #2a2826; /* the panel's own dark, so the pink reads as the lit surface */
+  padding: 10px 26px;
+  background: #eed0c8; /* brand pink */
+  border: none;
+  border-radius: 12px; /* the panel's curve */
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+.signup__submit:hover {
+  background: #f1dfd6; /* lifts toward the lighter blush */
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6);
+}
+.signup__submit:active {
+  transform: translateY(1px);
+}
+.signup__submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+}
+.signup__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.55);
+}
+
+/* The thank-you, in place of the fields once the booking is saved */
+.signup__done {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 22px;
+  border-radius: 12px;
+  background: #342f2c;
+  border: 1px solid rgba(230, 184, 171, 0.35);
+  outline: none;
+}
+.signup__done[hidden] {
+  display: none;
+}
+.signup__done-title {
+  margin: 0;
+  font: 600 1.25rem/1.2 var(--font-serif, Georgia, serif);
+  color: #fdfdfd;
+}
+.signup__done-text,
+.signup__done-next {
+  margin: 0;
+  font: 0.95rem/1.5 var(--font-ui, Inter, sans-serif);
+  color: #d9cfc8;
+}
+.signup__done-text strong {
+  color: #fdfdfd;
+}
+.signup__done-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+.signup__done-actions .signup__submit {
+  margin-left: 0;
+}
+.signup__again {
+  min-height: 46px;
+  padding: 10px 20px;
+  font: 500 1rem/1.3 var(--font-ui, Inter, sans-serif);
+  color: #f1dfd6;
+  background: transparent;
+  border: 1.5px solid rgba(241, 223, 214, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.signup__again:hover {
+  border-color: #f1dfd6;
+  background: rgba(241, 223, 214, 0.08);
+}
+@media (prefers-reduced-motion: reduce) {
+  .signup__field,
+  .signup__step,
+  .signup__submit,
+  .signup__again {
+    transition: none;
+  }
+}
+
 /* Contents fade in only once the panel has grown, so they aren't
    visibly squashed while it's still source-shaped */
 .showcase__stage,
@@ -241,64 +476,6 @@ body.is-showcase-open {
   }
 }
 
-/* Submit, in the bottom-right corner of the dark display. The form itself is
-   nudged up 20% so the fields sit above centre, which would carry the button
-   up with it — pulling it back down by that same 20% lands it on the panel's
-   bottom edge, where the eye expects it. */
-.signup__submit {
-  position: absolute;
-  right: 0;
-  bottom: -20%;
-  font: inherit;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: #2a2826; /* the panel's own dark, so the pink reads as the lit surface */
-  padding: 10px 26px;
-  background: #eed0c8; /* brand pink */
-  border: none;
-  border-radius: 12px; /* the panel's curve */
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.3s ease;
-}
-.signup__submit:hover {
-  background: #f1dfd6; /* lifts toward the lighter blush */
-  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6);
-}
-.signup__submit:active {
-  transform: translateY(1px);
-}
-.signup__submit:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.55);
-}
-@media (prefers-reduced-motion: reduce) {
-  .signup__submit {
-    transition: none;
-  }
-}
-
-/* The reply to a sign-up — sits bottom-left, opposite Submit, and is pulled
-   down by the same 20% the form is nudged up so the two line up. Absolute, so
-   a long message can never push the fields around. */
-.signup__status {
-  position: absolute;
-  left: 0;
-  bottom: -20%;
-  max-width: 58%;
-  margin: 0;
-  padding: 10px 0; /* matches the button's padding, so they sit level */
-  font-size: 0.95rem;
-  line-height: 1.4;
-  color: #c9bdb6; /* quiet grey while it is only saying "Sending…" */
-}
-.signup__status--ok {
-  color: #eed0c8; /* brand pink: it worked */
-}
-.signup__status--error {
-  color: #e79aa8; /* a lightened rose-red — the close-X colour is too dark here */
-}
-
 /* Opening the panel locks the page behind it (body.is-showcase-open sets
    overflow:hidden), which takes the scrollbar away — and the page snaps 15px
    wider at the exact moment the panel starts growing. Measured: content jumped
@@ -351,39 +528,37 @@ html {
     width: 0;
   }
 
-  /* The workshop sign-up: as tall as its fields need, the fields one under
-     the other, and Submit at the bottom right. */
+  /* The booking form on a phone: one column of fields, as tall as it needs */
   .showcase[data-category="workshop"] .showcase__panel {
-    width: min(calc(100vw - 32px), 420px);
-    height: auto;
-    padding: 52px 20px 20px;
+    width: calc(100vw - 24px);
+    max-height: calc(100svh - 24px);
+    padding: 20px 18px 22px;
     border-radius: 12px;
   }
   .signup {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    gap: 12px;
-    height: auto;
-    transform: none;
+    gap: 18px;
+  }
+  .signup__fields {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
   .signup__field {
-    flex: none;
-    padding: 12px 14px;
     /* 16px or more stops an iPhone zooming the page in when a field is tapped */
     font-size: 16px;
   }
-  .signup__status {
-    position: static;
-    max-width: none;
-    padding: 0;
+  /* the topic takes its own line in the chip, without the separating dot */
+  .signup__chip-topic {
+    flex-basis: 100%;
   }
-  .signup__status:empty {
-    display: none;
+  .signup__chip-topic:not(:empty)::before {
+    content: none;
+  }
+  .signup__foot {
+    flex-direction: column;
+    align-items: stretch;
   }
   .signup__submit {
-    position: static;
-    align-self: flex-end;
+    margin-left: 0;
     padding: 13px 28px;
   }
 }

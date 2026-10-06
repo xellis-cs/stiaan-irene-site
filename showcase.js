@@ -77,7 +77,13 @@
     // Remember which category opened it — the artwork will need this
     var name = trigger ? trigger.dataset.category || trigger.textContent.trim() : "";
     showcase.dataset.category = name;
-    if (panel) panel.setAttribute("aria-label", name ? name + " artwork" : "Artwork");
+    if (panel) {
+      // what a screen reader announces when the dialog opens
+      panel.setAttribute(
+        "aria-label",
+        name === "workshop" ? "Book your place" : name ? name + " artwork" : "Artwork"
+      );
+    }
 
     // Show only this category's stage
     showcase.querySelectorAll("[data-stage]").forEach(function (stage) {
@@ -134,12 +140,19 @@
     var all = document.querySelectorAll(
       '[data-category-open][data-category="' + key + '"]'
     );
+    // Every workshop date shares the one "workshop" key, so the text (the
+    // date itself) is what tells them apart. Prefer the twin that says the
+    // same thing; fall back to any twin of the same kind.
+    var want = (el.textContent || "").trim();
+    var fallback = null;
     for (var i = 0; i < all.length; i++) {
       if (!!all[i].closest(".stack-strip") !== inBand) continue;
       var r = all[i].getBoundingClientRect();
-      if (r.width && r.height) return all[i];
+      if (!r.width || !r.height) continue;
+      if ((all[i].textContent || "").trim() === want) return all[i];
+      if (!fallback) fallback = all[i];
     }
-    return null;
+    return fallback;
   }
 
   function closeShowcase() {

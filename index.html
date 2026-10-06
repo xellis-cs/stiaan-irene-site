@@ -3427,19 +3427,71 @@
         <div class="showcase__stage" data-stage="Category one" hidden></div>
         <div class="showcase__stage" data-stage="Category two" hidden></div>
         <div class="showcase__stage" data-stage="Category three" hidden></div>
-        <!-- Workshop dates open this deliberately-empty stage — content to be
-             built here later. Same dark panel + fold-X back as the albums. -->
+        <!-- Workshop dates open this stage: the booking form. Same dark panel
+             and fold-X as the albums. signup.js fills the chip with the date
+             that was clicked, checks the fields, and saves the booking. -->
         <div class="showcase__stage" data-stage="workshop" hidden>
-          <!-- Workshop sign-up fields (a starting layout — not wired to save yet) -->
-          <form class="signup" novalidate>
-            <input class="signup__field" type="text" placeholder="Name" aria-label="Name" />
-            <input class="signup__field" type="text" placeholder="Surname" aria-label="Surname" />
-            <input class="signup__field" type="tel" placeholder="Cellphone number" aria-label="Cellphone number" />
-            <input class="signup__field" type="number" min="1" placeholder="Number of attendees" aria-label="Number of attendees" />
-            <!-- Wired up in signup.js. Deliberately a plain button, not a form
-                 submit: a submit would reload the page and lose what was typed. -->
-            <p class="signup__status" role="status" aria-live="polite"></p>
-            <button type="button" class="signup__submit">Submit</button>
+          <form class="signup" novalidate aria-labelledby="signup-title">
+            <div class="signup__head">
+              <p class="signup__eyebrow">Workshop booking</p>
+              <h3 class="signup__title" id="signup-title">Book your place</h3>
+              <!-- Which date was picked, restated so nobody books the wrong
+                   day. signup.js writes the parts in from the clicked button. -->
+              <p class="signup__chip" data-signup-chip>
+                <span class="signup__chip-day" data-chip-day></span>
+                <span class="signup__chip-when" data-chip-when></span>
+                <span class="signup__chip-topic" data-chip-topic></span>
+              </p>
+            </div>
+
+            <div class="signup__fields" data-signup-fields>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-name">Name</label>
+                <input class="signup__field" id="signup-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" required />
+                <p class="signup__hint" id="signup-name-hint"></p>
+              </div>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-surname">Surname</label>
+                <input class="signup__field" id="signup-surname" name="surname" type="text" autocomplete="family-name" autocapitalize="words" required />
+                <p class="signup__hint" id="signup-surname-hint"></p>
+              </div>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-phone">Cellphone number</label>
+                <input class="signup__field" id="signup-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 082 123 4567" required />
+                <p class="signup__hint" id="signup-phone-hint"></p>
+              </div>
+              <div class="signup__group">
+                <label class="signup__label" for="signup-attendees">How many people</label>
+                <!-- A stepper: minus, the number, plus. The number is a real
+                     input so it can still be typed into; 1 to 6 per booking. -->
+                <div class="signup__stepper">
+                  <button type="button" class="signup__step" data-step="-1" aria-label="One fewer person">−</button>
+                  <input class="signup__field signup__count" id="signup-attendees" name="attendees" type="number" inputmode="numeric" min="1" max="6" value="1" />
+                  <button type="button" class="signup__step" data-step="1" aria-label="One more person">+</button>
+                </div>
+                <p class="signup__hint" id="signup-attendees-hint">Up to 6 per booking</p>
+              </div>
+            </div>
+
+            <div class="signup__foot" data-signup-foot>
+              <p class="signup__status" role="status" aria-live="polite"></p>
+              <button type="submit" class="signup__submit">Book my place</button>
+            </div>
+
+            <!-- Shown instead of the fields once the booking has saved -->
+            <div class="signup__done" data-signup-done hidden tabindex="-1">
+              <p class="signup__done-title">You're booked in</p>
+              <p class="signup__done-text" data-done-text></p>
+              <p class="signup__done-next">
+                Irene will be in touch on the number you gave to confirm the
+                venue, the cost and what to bring. No payment is taken through
+                this website.
+              </p>
+              <div class="signup__done-actions">
+                <button type="button" class="signup__submit" data-showcase-close>Done</button>
+                <button type="button" class="signup__again" data-signup-again>Book another date</button>
+              </div>
+            </div>
           </form>
         </div>
         <button
