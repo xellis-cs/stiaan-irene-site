@@ -5,6 +5,42 @@
    book.js turns them; this file is the paper, the ink and the furniture.
    ============================================================ */
 
+/* ---------- Fallback faces, matched to the web fonts' metrics ----------
+   While Caslon, Franklin and Pinyon are still arriving, the browser sets
+   the page in a local face. Left to itself that face is wider or narrower
+   and the lines wrap differently, so the roles and the offer jumped by
+   28px on every cold load as the real fonts landed. These three faces are
+   the local Times, Arial and Times Italic scaled so their lines run the
+   same length (size-adjust: the ratio of each pair's widths over the
+   offer sentence, measured with fontTools) and given the web fonts'
+   ascent and descent, so the lines sit where they will sit. On a machine
+   without those faces the next name in the stack is used, unadjusted. */
+@font-face {
+  font-family: "Caslon Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif");
+  size-adjust: 117.9%;
+  ascent-override: 97%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Franklin Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans");
+  size-adjust: 102%;
+  ascent-override: 96.6%;
+  descent-override: 24.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Pinyon Fallback";
+  font-style: italic;
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic");
+  size-adjust: 94.6%;
+  ascent-override: 86.3%;
+  descent-override: 38.4%;
+  line-gap-override: 0%;
+}
+
 /* ---------- Brand palette and the few numbers everything shares ---------- */
 :root {
   --color-pink: #eed0c8; /* the right-hand pages */
@@ -64,9 +100,9 @@
      ui:      Libre Franklin, for labels, folios, tabs, fields and buttons.
               A Franklin Gothic is what museum wall labels are set in.
      (EB Garamond and Inter did these jobs in the earlier, scrolling site.) */
-  --font-display: "Pinyon Script", cursive;
-  --font-serif: "Libre Caslon Text", "Iowan Old Style", Georgia, serif;
-  --font-ui: "Libre Franklin", "Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Pinyon Script", "Pinyon Fallback", "Times New Roman", serif;
+  --font-serif: "Libre Caslon Text", "Caslon Fallback", Georgia, serif;
+  --font-ui: "Libre Franklin", "Franklin Fallback", "Helvetica Neue", Arial, sans-serif;
   /* (the served Libre Franklin has no tabular figures — tnum — so only the
      Caslon day numbers can be asked to line up; asking Franklin does nothing) */
 
@@ -565,7 +601,9 @@ nav[tabindex]:focus-visible {
 /* ============================================================
    THE WORDS — the catalogue's voices
    ============================================================ */
-/* The spread title: the one place besides the wordmark that uses the script */
+/* The spread title: the one place besides the wordmark that uses the script.
+   (The italic fallback face is declared italic, so the script's stand-in
+   slants while Pinyon loads; the script itself is upright.) */
 .spread-title {
   font: 400 var(--text-spread-title) / 1 var(--font-display);
   color: var(--color-text);
