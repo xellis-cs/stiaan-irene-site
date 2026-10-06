@@ -454,6 +454,7 @@
       return;
     }
     var from = current;
+    var modeAtStart = single();
     current = target;
     started = true;
 
@@ -471,7 +472,20 @@
       }
     }
 
+    // The spread asked for is remembered as an ELEMENT: if the window
+    // crosses the phone/computer line while the page is turning, relayout()
+    // renumbers the views, and the view number captured here would land on
+    // the wrong page.
+    var targetSpread = spreadOf(target);
+    var targetPage = pagesOf(target)[0];
+
     function landed() {
+      if (single() !== modeAtStart) {
+        // the layout changed mid-turn: find the same page or spread again
+        target = single() ? Math.max(0, pages.indexOf(targetPage)) : viewForSpread(targetSpread);
+        current = target;
+        history.replaceState({ view: target, single: single() }, "", "#" + hashFor(target));
+      }
       render(target);
       afterTurn(target, opts);
       if (queued) {
@@ -751,10 +765,15 @@
   var wasSingle = single();
   function relayout() {
     if (single() !== wasSingle) {
-      var spread = spreadOf(current);
+      // which page or spread is on show is read in the OLD layout, before
+      // the mode flips, or the view number would mean the wrong thing
+      var page = wasSingle ? pages[current] : null;
+      var spread = wasSingle ? page && page.closest("[data-spread]") : spreads[current];
       wasSingle = single();
-      current = spread ? viewForSpread(spread) : 0;
+      if (turning) return; // the turn in flight lands on its own spread (see goTo)
+      current = single() ? Math.max(0, pages.indexOf(page || (spread && spread.querySelector("[data-page]")))) : spread ? viewForSpread(spread) : 0;
       render(current);
+      if (announce) announce.textContent = "Page " + (current + 1) + " of " + viewCount() + ", " + (spreadOf(current) ? spreadOf(current).getAttribute("data-title") : "");
       history.replaceState({ view: current, single: single() }, "", "#" + hashFor(current));
     }
     fillCoil();
