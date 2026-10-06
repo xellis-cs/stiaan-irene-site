@@ -23,8 +23,10 @@
 //
 // WHAT TURNS A PAGE
 // The lifted corner, the arrows, the tabs and the pinned slip; the keyboard
-// (Left/Right, PageUp/PageDown, Home/End); a sideways swipe; a deliberate
-// wheel or trackpad gesture (never while a page's own text is scrolling);
+// (Left/Right always; PageUp/PageDown and Home/End only once the page's own
+// text, if it scrolls, is at its end — before that they scroll the text,
+// as they do anywhere); a sideways swipe; a deliberate wheel or trackpad
+// gesture (never while a page's own text is scrolling);
 // and the browser's Back and Forward buttons, because every spread has its
 // own #hash and each turn is written into the browser history.
 (function () {
@@ -497,6 +499,17 @@
     if (document.querySelector("dialog[open]")) return;
     var t = e.target;
     if (t && (t.matches("input, textarea, select, [contenteditable]") || t.isContentEditable)) return;
+    // Inside a page that scrolls, the paging keys page the TEXT first (the
+    // browser does that itself when the key is left alone); they turn the
+    // book only once the text is at the end they are heading for — the same
+    // rule the wheel follows.
+    var sc = t && t.closest && t.closest(".page__body--scroll");
+    if (sc) {
+      var down = e.key === "PageDown" || e.key === "End";
+      var up = e.key === "PageUp" || e.key === "Home";
+      if (down && sc.scrollTop + sc.clientHeight < sc.scrollHeight - 1) return;
+      if (up && sc.scrollTop > 0) return;
+    }
     switch (e.key) {
       case "ArrowRight":
       case "PageDown":
