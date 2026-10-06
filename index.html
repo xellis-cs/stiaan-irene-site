@@ -82,8 +82,8 @@
     <a class="skip-link" href="#book-index">Skip to the page index</a>
 
     <!-- ===================================================================
-         SHARED DRAWINGS — three shapes, drawn once and re-used with <use>:
-         · #seed      one dandelion seed, the only ornament in the book
+         SHARED DRAWINGS — the shapes drawn once and re-used with <use>:
+         · #seed-1/2/3  three dandelion seeds, the only ornament in the book
          · #coilRing  one ring of the wire coil that runs down the gutter
                       (the centre of the open book) on a computer
          · #bindRing  one ring of the coil as seen along the left edge of a
@@ -92,18 +92,48 @@
          =================================================================== -->
     <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
       <defs>
-        <symbol id="seed" viewBox="0 0 40 56" overflow="visible">
-          <ellipse cx="20" cy="52" rx="2.4" ry="3.8" />
-          <line x1="20" y1="48" x2="20" y2="20" />
-          <line x1="20" y1="20" x2="4.97" y2="14.53" />
-          <line x1="20" y1="20" x2="7.4" y2="10.15" />
-          <line x1="20" y1="20" x2="10.82" y2="6.9" />
-          <line x1="20" y1="20" x2="15.05" y2="4.8" />
-          <line x1="20" y1="20" x2="20" y2="4" />
-          <line x1="20" y1="20" x2="24.95" y2="4.8" />
-          <line x1="20" y1="20" x2="29.18" y2="6.9" />
-          <line x1="20" y1="20" x2="32.6" y2="10.15" />
-          <line x1="20" y1="20" x2="35.03" y2="14.53" />
+        <!-- Three dandelion seeds, each drawn by hand: the filaments curve,
+             differ in length and number, and the stems bow a little, so the
+             three on the title page are three seeds and not one stamp. -->
+        <symbol id="seed-1" viewBox="0 0 40 56" overflow="visible">
+          <ellipse cx="20" cy="52" rx="2.3" ry="3.8" transform="rotate(-6 20 52)" />
+          <path d="M20,48 Q 20.8,34 20.5,20" />
+          <path d="M20.5,20 Q 12.4,19.7 6.2,17.1" />
+          <path d="M20.5,20 Q 13.9,17.3 10.2,12.8" />
+          <path d="M20.5,20 Q 15.8,15.2 13.4,10.3" />
+          <path d="M20.5,20 Q 19.0,11.0 15.1,4.5" />
+          <path d="M20.5,20 Q 21.9,12.3 20.2,6.0" />
+          <path d="M20.5,20 Q 24.0,14.4 25.1,9.1" />
+          <path d="M20.5,20 Q 23.3,14.1 27.4,10.6" />
+          <path d="M20.5,20 Q 27.2,17.8 31.3,13.6" />
+          <path d="M20.5,20 Q 28.3,16.7 35.3,16.9" />
+        </symbol>
+        <symbol id="seed-2" viewBox="0 0 40 56" overflow="visible">
+          <ellipse cx="20" cy="52" rx="2.3" ry="3.8" transform="rotate(5 20 52)" />
+          <path d="M20,48 Q 18.9,34 19.3,20" />
+          <path d="M19.3,20 Q 12.8,17.9 7.2,17.8" />
+          <path d="M19.3,20 Q 13.7,14.8 7.4,13.7" />
+          <path d="M19.3,20 Q 13.7,16.4 10.2,12.2" />
+          <path d="M19.3,20 Q 16.5,12.7 11.3,8.7" />
+          <path d="M19.3,20 Q 18.8,11.8 15.7,5.7" />
+          <path d="M19.3,20 Q 20.6,10.7 19.0,3.1" />
+          <path d="M19.3,20 Q 22.4,12.9 22.2,6.5" />
+          <path d="M19.3,20 Q 25.0,13.7 27.4,7.0" />
+          <path d="M19.3,20 Q 25.9,16.1 29.4,11.0" />
+          <path d="M19.3,20 Q 25.6,15.0 32.1,13.7" />
+          <path d="M19.3,20 Q 28.0,16.9 35.5,16.5" />
+        </symbol>
+        <symbol id="seed-3" viewBox="0 0 40 56" overflow="visible">
+          <ellipse cx="20" cy="52" rx="2.3" ry="3.8" transform="rotate(-3 20 52)" />
+          <path d="M20,48 Q 21.4,34 20.8,20" />
+          <path d="M20.8,20 Q 12.7,20.6 6.5,17.6" />
+          <path d="M20.8,20 Q 15.2,13.9 8.7,11.8" />
+          <path d="M20.8,20 Q 18.1,12.2 12.8,7.9" />
+          <path d="M20.8,20 Q 17.8,11.6 17.6,4.2" />
+          <path d="M20.8,20 Q 24.4,13.7 24.1,7.6" />
+          <path d="M20.8,20 Q 26.4,13.4 29.5,7.0" />
+          <path d="M20.8,20 Q 27.3,18.4 31.0,14.2" />
+          <path d="M20.8,20 Q 28.3,16.4 35.2,16.4" />
         </symbol>
         <!-- The pin that holds a paper slip: a rose-red head with a catch
              of light, and the needle. Used on the title page's slip, the back
@@ -167,9 +197,9 @@
             <article class="page page--left page--title" data-page>
               <div class="page__body page__body--scroll">
                 <!-- The ornament: a few seeds, drawn in the margin -->
-                <svg class="seed seed--a" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
-                <svg class="seed seed--b" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
-                <svg class="seed seed--c" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
+                <svg class="seed seed--a" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed-1" /></svg>
+                <svg class="seed seed--b" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed-2" /></svg>
+                <svg class="seed seed--c" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed-3" /></svg>
                 <h1 class="wordmark" tabindex="-1">Irene Ellis Art</h1>
                 <ul class="roles" aria-label="Irene's roles">
                   <li>Artist</li>
@@ -290,7 +320,6 @@
                      included". Until then it says honestly that both come with
                      the booking, rather than guessing. -->
                 <p class="note">
-                  <svg class="note__seed" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
                   Venue and cost are confirmed with you when you book.
                 </p>
                 <h3 class="small-title">What to expect</h3>

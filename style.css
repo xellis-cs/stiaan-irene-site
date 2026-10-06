@@ -597,23 +597,10 @@ nav[tabindex]:focus-visible {
   margin: calc(var(--u) * -0.6) 0 calc(var(--u) * 1.8);
 }
 .note {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
   margin-top: calc(var(--u) * 1.8);
   font-style: italic;
   color: var(--color-ink-soft);
   font-size: var(--text-body);
-}
-.note__seed {
-  flex: none;
-  width: 0.8em;
-  height: 1.15em;
-  align-self: center;
-  fill: var(--color-accent);
-  stroke: var(--color-accent);
-  stroke-width: 2.2;
-  stroke-linecap: round;
 }
 
 /* "The dates are on the next page": only a phone needs telling */
@@ -732,7 +719,7 @@ nav[tabindex]:focus-visible {
   text-wrap: pretty;
 }
 
-/* The seeds drawn in the title page's margin */
+/* The seeds drawn in the title page's margin (#seed-1/2/3 in index.html) */
 .seed {
   position: absolute;
   width: calc(var(--u) * 3.6);
@@ -744,6 +731,9 @@ nav[tabindex]:focus-visible {
   opacity: 0.85;
   pointer-events: none;
 }
+.seed path {
+  fill: none; /* the stem and filaments are lines; only the seed body fills */
+}
 .seed--a {
   right: 6%;
   top: -2%;
@@ -754,7 +744,7 @@ nav[tabindex]:focus-visible {
   top: 11%;
   width: calc(var(--u) * 2.4);
   transform: rotate(-8deg);
-  opacity: 0.6;
+  opacity: 0.78; /* (at 0.6 the small one was a smudge on a 1x screen) */
 }
 .seed--c {
   right: 8%;
