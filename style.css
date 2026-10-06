@@ -772,7 +772,10 @@ nav[tabindex]:focus-visible {
   transform: rotate(-1deg) translateY(-2px);
   box-shadow: var(--shadow-paper-lift);
 }
-.slip__pin {
+/* The pin (the #pin symbol in index.html) on the title slip, the back
+   page's slip and the booking slip: one drawing, one set of colours */
+.slip__pin,
+.loose__pin {
   position: absolute;
   top: -11px;
   left: 50%;
@@ -784,13 +787,29 @@ nav[tabindex]:focus-visible {
   stroke-width: 1.6;
   stroke-linecap: round;
   filter: drop-shadow(1px 2px 1.5px rgba(0, 0, 0, 0.38));
+  pointer-events: none;
 }
-.slip__pin circle:first-child {
+.pin__head {
   stroke: none;
 }
-.slip__pin-light {
+.pin__light {
   fill: rgba(255, 255, 255, 0.55);
   stroke: none;
+}
+/* A pin pushed through paper stays upright while the paper hangs from it:
+   the slip is turned -1.6deg, so the pin turns back by the same amount,
+   and eases to match when the slip straightens on hover. */
+.slip__pin {
+  transform: rotate(1.6deg);
+  transform-origin: 12px 12px;
+  transition: transform 180ms ease-out;
+}
+.slip:hover .slip__pin,
+.slip:focus-visible .slip__pin {
+  transform: rotate(1deg);
+}
+.loose__pin {
+  z-index: 3; /* above the slip's paper */
 }
 .slip__arrow {
   width: 18px;
@@ -1516,19 +1535,6 @@ nav[tabindex]:focus-visible {
   scrollbar-width: thin;
   scrollbar-color: var(--color-accent) transparent;
 }
-.signup::before {
-  /* the pin that holds the slip */
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  width: 14px;
-  height: 14px;
-  margin-left: -7px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #d98d9c, var(--color-red) 55%, #7c2f3f);
-  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.38);
-}
 .signup__head {
   margin-bottom: var(--space-5);
 }
@@ -2069,6 +2075,13 @@ html:not(.js) .folio {
   .slip:hover,
   .slip:focus-visible {
     transform: rotate(-1.6deg);
+  }
+  .slip__pin {
+    transition: none;
+  }
+  .slip:hover .slip__pin,
+  .slip:focus-visible .slip__pin {
+    transform: rotate(1.6deg);
   }
   .corner:hover,
   .corner:focus-visible {

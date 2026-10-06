@@ -105,6 +105,17 @@
           <line x1="20" y1="20" x2="32.6" y2="10.15" />
           <line x1="20" y1="20" x2="35.03" y2="14.53" />
         </symbol>
+        <!-- The pin that holds a paper slip: a rose-red head with a catch
+             of light, and the needle. Used on the title page's slip, the back
+             page's slip and the booking slip, so all three are one object.
+             (Its colours are set by the styles on .slip__pin / .loose__pin;
+             the parts inside are reached through the inherited fill/stroke
+             and the classes written here.) -->
+        <symbol id="pin" viewBox="0 0 24 24" overflow="visible">
+          <circle class="pin__head" cx="12" cy="9" r="5.5" />
+          <circle class="pin__light" cx="10" cy="7.2" r="1.6" />
+          <line class="pin__needle" x1="12" y1="14.5" x2="12" y2="22" />
+        </symbol>
         <!-- One turn of the spiral: a punched hole in each page and the
              charcoal wire arching over the gutter between them. The wire
              leaves the left hole a little lower than it enters the right
@@ -177,11 +188,7 @@
                      dates page itself. book.js turns the pages to get there
                      instead of jumping. -->
                 <a class="slip" href="#workshop-dates">
-                  <svg class="slip__pin" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="9" r="5.5" />
-                    <circle class="slip__pin-light" cx="10" cy="7.2" r="1.6" />
-                    <line x1="12" y1="14.5" x2="12" y2="22" />
-                  </svg>
+                  <svg class="slip__pin" viewBox="0 0 24 24" aria-hidden="true"><use href="#pin" /></svg>
                   <span class="slip__label">Book a workshop</span>
                   <svg class="slip__arrow" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 12h15M13 6l6 6-6 6" />
@@ -509,11 +516,7 @@
                      the thing the book is for. -->
                 <p class="turn-back">Looking for a date?</p>
                 <a class="slip slip--back" href="#workshop-dates">
-                  <svg class="slip__pin" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="9" r="5.5" />
-                    <circle class="slip__pin-light" cx="10" cy="7.2" r="1.6" />
-                    <line x1="12" y1="14.5" x2="12" y2="22" />
-                  </svg>
+                  <svg class="slip__pin" viewBox="0 0 24 24" aria-hidden="true"><use href="#pin" /></svg>
                   <span class="slip__label">Book a workshop</span>
                   <svg class="slip__arrow" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 12h15M13 6l6 6-6 6" />
@@ -599,6 +602,8 @@
          attendees, workshop_month, workshop_date, workshop_topic).
          =================================================================== -->
     <dialog class="loose loose--slip" data-booking aria-labelledby="signup-title">
+      <!-- the same pin as the title page's slip holds this sheet -->
+      <svg class="loose__pin" viewBox="0 0 24 24" aria-hidden="true"><use href="#pin" /></svg>
       <button type="button" class="loose__close" data-booking-close aria-label="Close the booking slip">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
