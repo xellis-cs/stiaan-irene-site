@@ -761,12 +761,16 @@ nav[tabindex]:focus-visible {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
-  min-height: 52px;
-  padding: 0 var(--space-5) 0 var(--space-5);
+  gap: 0.8em;
+  /* sized in the label's em, which follows the book: the 12.5px floor of
+     the small size on laptops, up to 18px on a 2560px screen where the
+     wordmark is 96px — so the primary action never shrinks relative to
+     the page around it */
+  min-height: clamp(52px, calc(var(--u) * 6.5), 76px);
+  padding: 0 clamp(20px, calc(var(--u) * 2.8), 36px);
   background: var(--color-tan);
   color: var(--color-text);
-  font: 600 var(--text-small) / 1 var(--font-ui);
+  font: 600 clamp(12.5px, calc(var(--u) * 1.6), 18px) / 1 var(--font-ui);
   letter-spacing: var(--track-button);
   text-transform: uppercase;
   text-decoration: none;
@@ -785,11 +789,11 @@ nav[tabindex]:focus-visible {
 .slip__pin,
 .loose__pin {
   position: absolute;
-  top: -11px;
+  top: -0.75em;
   left: 50%;
-  width: 24px;
-  height: 24px;
-  margin-left: -12px;
+  width: 1.6em;
+  height: 1.6em;
+  margin-left: -0.8em;
   fill: var(--color-red);
   stroke: #5a4f49;
   stroke-width: 1.6;
@@ -818,10 +822,11 @@ nav[tabindex]:focus-visible {
 }
 .loose__pin {
   z-index: 3; /* above the slip's paper */
+  font-size: 15px; /* the dialog has no label em to follow: a fixed 24px pin */
 }
 .slip__arrow {
-  width: 18px;
-  height: 18px;
+  width: 1.2em;
+  height: 1.2em;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
