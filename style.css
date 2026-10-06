@@ -1488,8 +1488,12 @@ nav[tabindex]:focus-visible {
 .signup__head {
   margin-bottom: var(--space-5);
 }
-.signup__title {
-  font: 400 clamp(2rem, 6vw, 2.6rem) / 1 var(--font-display);
+/* The slip's headings are set in the reading serif, not the script: the
+   script is for the wordmark and the spread titles only, and a form is
+   read closely, not admired. One size shared with the story's lead. */
+.signup__title,
+.signup__done-title {
+  font: 500 var(--text-lead) / 1.2 var(--font-serif);
   margin-bottom: var(--space-3);
 }
 /* Which date was picked, restated so nobody books the wrong day */
@@ -1600,11 +1604,7 @@ nav[tabindex]:focus-visible {
   margin: 0;
 }
 
-/* once the booking has saved */
-.signup__done-title {
-  font: 400 clamp(1.8rem, 5vw, 2.4rem) / 1.1 var(--font-display);
-  margin-bottom: var(--space-3);
-}
+/* once the booking has saved (the title shares .signup__title's rule) */
 .signup__done-text {
   margin-bottom: var(--space-3);
 }

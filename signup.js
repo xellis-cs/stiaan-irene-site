@@ -25,6 +25,7 @@
   var done = form.querySelector("[data-signup-done]");
   var doneText = form.querySelector("[data-done-text]");
   var chip = form.querySelector("[data-signup-chip]");
+  var head = form.querySelector(".signup__head"); // hidden once booked, so the thank-you has one title
   var fields = {
     name: form.querySelector("#signup-name"),
     surname: form.querySelector("#signup-surname"),
@@ -161,6 +162,7 @@
   function showDone(row) {
     if (fieldsWrap) fieldsWrap.hidden = true;
     if (foot) foot.hidden = true;
+    if (head) head.hidden = true;
     if (done) {
       if (doneText) {
         var who = row.attendees > 1 ? row.attendees + " people" : "one place";
@@ -185,6 +187,7 @@
   function reset() {
     if (fieldsWrap) fieldsWrap.hidden = false;
     if (foot) foot.hidden = false;
+    if (head) head.hidden = false;
     if (done) done.hidden = true;
     say("");
     [fields.name, fields.surname, fields.phone].forEach(function (el) {
