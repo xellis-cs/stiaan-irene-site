@@ -22,6 +22,13 @@
   /* The same rose, deep enough for SMALL text: plate numbers and labels.
      Measured 5.8:1 on pink, 6.5:1 on blush, 7.3:1 on tan, 4.7:1 on rose. */
   --color-accent-ink: #6e4336;
+  /* The edge of a form field and the stepper: the accent rose. A hairline
+     of charcoal at 0.3 alpha only reached 1.7:1 on the pink and 1.8:1 on
+     the tan slip — a low-vision visitor on a sunlit phone could not see
+     where a field was until they tapped it (WCAG 1.4.11 asks 3:1 for
+     control boundaries). Measured: 3.7:1 on pink, 4.2:1 on blush, 4.7:1
+     on tan, 5.3:1 against the field's own white. */
+  --color-field-edge: var(--color-accent);
   /* Softer charcoals for small captions. Both checked to pass 4.5:1 on every
      paper they sit on (soft: 5.7:1 on pink; muted: 4.6:1 on pink). */
   --color-ink-soft: rgba(44, 44, 44, 0.8);
@@ -883,7 +890,7 @@ nav[tabindex]:focus-visible {
   width: 100%;
   min-height: 44px;
   padding: 10px 12px;
-  border: 1px solid rgba(44, 44, 44, 0.3);
+  border: 1px solid var(--color-field-edge);
   border-radius: var(--radius-field);
   background: var(--color-white);
   color: var(--color-text);
@@ -895,7 +902,7 @@ nav[tabindex]:focus-visible {
   opacity: 1;
 }
 .field:hover {
-  border-color: rgba(44, 44, 44, 0.5);
+  border-color: var(--color-accent-ink); /* a step darker than at rest */
 }
 .field:focus-visible {
   border-color: var(--color-red);
@@ -1521,7 +1528,7 @@ nav[tabindex]:focus-visible {
 .stepper {
   display: inline-flex;
   align-items: stretch;
-  border: 1px solid rgba(44, 44, 44, 0.3);
+  border: 1px solid var(--color-field-edge);
   border-radius: var(--radius-field);
   background: var(--color-white);
   overflow: hidden;
@@ -1563,8 +1570,8 @@ nav[tabindex]:focus-visible {
   min-height: 44px;
   text-align: center;
   border: 0;
-  border-left: 1px solid rgba(44, 44, 44, 0.2);
-  border-right: 1px solid rgba(44, 44, 44, 0.2);
+  border-left: 1px solid var(--color-field-edge);
+  border-right: 1px solid var(--color-field-edge);
   border-radius: 0;
   box-shadow: none;
   -moz-appearance: textfield;
