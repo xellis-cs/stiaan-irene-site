@@ -507,17 +507,24 @@
   function afterTurn(view, opts) {
     var spread = spreadOf(view);
     var title = spread ? spread.getAttribute("data-title") : "";
-    if (announce) {
-      announce.textContent = "Page " + (view + 1) + " of " + viewCount() + ", " + title;
-    }
     // Focus moves to the heading of the page now on show, so a keyboard or
     // screen-reader user carries on from the top of the new page. Not on
     // first load (that would steal focus from the address bar), and not
     // while a slip or print is open on top of the book.
+    var focused = false;
     if (!opts.silent && !document.querySelector("dialog[open]")) {
       var first = pagesOf(view)[0];
       var heading = first && first.querySelector("h1[tabindex], h2[tabindex]");
-      if (heading) heading.focus({ preventScroll: true });
+      if (heading) {
+        heading.focus({ preventScroll: true });
+        focused = document.activeElement === heading;
+      }
+    }
+    // What a screen reader hears. When focus has landed on the heading the
+    // heading names the page itself, so the announcement is only the page
+    // number; otherwise it carries the name too, so it is not lost.
+    if (announce) {
+      announce.textContent = "Page " + (view + 1) + " of " + viewCount() + (focused ? "" : ", " + title);
     }
     // a page that scrolls inside starts at its top each time it is turned to
     pagesOf(view).forEach(function (p) {
