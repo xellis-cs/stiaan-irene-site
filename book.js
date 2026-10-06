@@ -770,11 +770,13 @@
       var page = wasSingle ? pages[current] : null;
       var spread = wasSingle ? page && page.closest("[data-spread]") : spreads[current];
       wasSingle = single();
-      if (turning) return; // the turn in flight lands on its own spread (see goTo)
-      current = single() ? Math.max(0, pages.indexOf(page || (spread && spread.querySelector("[data-page]")))) : spread ? viewForSpread(spread) : 0;
-      render(current);
-      if (announce) announce.textContent = "Page " + (current + 1) + " of " + viewCount() + ", " + (spreadOf(current) ? spreadOf(current).getAttribute("data-title") : "");
-      history.replaceState({ view: current, single: single() }, "", "#" + hashFor(current));
+      if (!turning) {
+        // (a turn in flight lands on its own spread instead — see goTo)
+        current = single() ? Math.max(0, pages.indexOf(page || (spread && spread.querySelector("[data-page]")))) : spread ? viewForSpread(spread) : 0;
+        render(current);
+        if (announce) announce.textContent = "Page " + (current + 1) + " of " + viewCount() + ", " + (spreadOf(current) ? spreadOf(current).getAttribute("data-title") : "");
+        history.replaceState({ view: current, single: single() }, "", "#" + hashFor(current));
+      }
     }
     fillCoil();
   }
