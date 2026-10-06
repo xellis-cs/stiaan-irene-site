@@ -1168,6 +1168,9 @@ body.is-showcase-open .site-header {
   justify-content: center;
   /* 1.2x the old gap, matching the 1.2x stack size, so the ratio holds */
   gap: clamp(24px, 3.6vw, 62px);
+  /* room under the stacks for each album's one-line description, which
+     hangs below its square (see .category__desc) */
+  padding-bottom: 56px;
 }
 
 /* One category = a stack of cards with a pill button centred on it.
@@ -1262,6 +1265,27 @@ body.is-showcase-open .site-header {
 .category__button:focus-visible {
   background-color: var(--color-pink);
   border-color: var(--color-pink);
+}
+/* The one-line description, hung just below the stack's square so the pill
+   can stay exactly centred on the cards. It fades with the stack while the
+   showcase opens, like the pill does. */
+.category__desc {
+  position: absolute;
+  top: 100%;
+  left: -10%;
+  right: -10%;
+  margin: 6px 0 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--color-ink-soft);
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.category.is-opening .category__desc {
+  opacity: 0;
 }
 
 /* Hand-off: while the showcase grows out of this stack, the stack itself
@@ -2266,8 +2290,9 @@ a.contact__box--social:focus-visible {
     --mid: calc((var(--phone-pad-l) + 100vw - var(--phone-pad-r)) / 2);
     gap: 4px;
     /* the bottom padding is room for the fanned cards, which reach a little
-       below the stack (the row cuts off anything past its edge) */
-    padding: 12px calc(100vw - var(--mid) - var(--cat) / 2) 24px
+       below the stack, and for the description under it (the row cuts off
+       anything past its edge) */
+    padding: 12px calc(100vw - var(--mid) - var(--cat) / 2) 64px
       calc(var(--mid) - var(--cat) / 2);
   }
   .category {
@@ -2291,6 +2316,17 @@ a.contact__box--social:focus-visible {
   .category__button {
     padding: 14px 20px;
     font-size: 0.78rem;
+  }
+  /* The stacks sit almost touching in the swipe row, so only the stack in
+     view shows its description; the neighbours' lines would run into it. */
+  .category__desc {
+    left: 0;
+    right: 0;
+    font-size: 0.98rem;
+    opacity: 0;
+  }
+  .category.is-current .category__desc {
+    opacity: 1;
   }
 
   /* The dots under each row: which card you are on (script.js keeps them

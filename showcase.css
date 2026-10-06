@@ -37,7 +37,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(24px, 4vh, 48px);
+  gap: clamp(14px, 2.4vh, 24px); /* between the caption and the wall */
   width: min(1180px, 92vw);
   height: min(860px, 88vh);
   padding: clamp(24px, 4vh, 56px);
@@ -364,6 +364,41 @@
   opacity: 1;
   transition-delay: 0.34s;
 }
+/* The album's name and piece count, top-left of the panel (the fold-X has
+   the top-right). Built by showcase.js; hidden for the booking form. */
+.showcase__caption {
+  align-self: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin: 0;
+  padding-right: 64px; /* clear of the fold */
+  color: #f1dfd6;
+}
+.showcase__caption[hidden] {
+  display: none;
+}
+.showcase__caption-name {
+  font: 400 clamp(1.6rem, 3vw, 2.2rem) / 1 var(--font-display, "Pinyon Script", cursive);
+  color: #fdfdfd;
+}
+.showcase__caption-count {
+  font: 500 0.78rem/1.2 var(--font-ui, Inter, sans-serif);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c9bdb6;
+}
+/* the caption fades in with the rest of the contents */
+.showcase__caption {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+.showcase[data-state="open"] .showcase__caption {
+  opacity: 1;
+  transition-delay: 0.34s;
+}
+
 /* The area the artwork occupies. One per category; only the active one shows. */
 .showcase__stage {
   flex: 1;
@@ -509,8 +544,15 @@ html {
     height: calc((100svh - 24px) / 2);
     /* the top padding leaves the fold its own strip, so it never sits on a
        picture */
-    padding: 50px 12px 12px;
+    padding: 14px 12px 12px;
     border-radius: 3px 18px 3px 3px;
+  }
+  .showcase__caption {
+    padding-right: 52px; /* the 48px fold plus a breath */
+    min-height: 36px;
+  }
+  .showcase__caption-name {
+    font-size: 1.5rem;
   }
   .showcase__back {
     width: 48px;

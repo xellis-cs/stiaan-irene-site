@@ -430,14 +430,14 @@
             <h2 class="portfolio__heading reveal">Portfolio</h2>
           </div>
 
-          <!-- Category objects. One for now; two more to follow. Each is a
-               crumpled paper ball that grows slightly on hover, with a
-               pill button centred on it that stays put. -->
+          <!-- Category objects: three fanned card stacks, each with a pill
+               button centred on it that stays put and a one-line description
+               beneath. The names are the GALLERY keys in gallery-data.js. -->
           <div class="portfolio__objects">
             <div class="category">
               <!-- Stacked cards: fanned tight at rest, twisting open on
-                   hover so more of each card shows. Each will carry its own
-                   image later. -->
+                   hover so more of each card shows. script.js paints the
+                   album's pictures onto them. -->
               <div class="cards" aria-hidden="true">
                 <span class="card card--1"></span>
                 <span class="card card--2"></span>
@@ -449,15 +449,17 @@
                 type="button"
                 class="category__button"
                 data-category-open
-                data-category="Category one"
+                data-category="Pastel &amp; Gold"
               >
-                Category one
+                Pastel &amp; Gold
               </button>
+              <!-- one line about the album, under the stack -->
+              <p class="category__desc">Colour on black paper, gold leaf and a little magic</p>
             </div>
             <div class="category">
               <!-- Stacked cards: fanned tight at rest, twisting open on
-                   hover so more of each card shows. Each will carry its own
-                   image later. -->
+                   hover so more of each card shows. script.js paints the
+                   album's pictures onto them. -->
               <div class="cards" aria-hidden="true">
                 <span class="card card--1"></span>
                 <span class="card card--2"></span>
@@ -469,15 +471,17 @@
                 type="button"
                 class="category__button"
                 data-category-open
-                data-category="Category two"
+                data-category="Flora &amp; Fauna"
               >
-                Category two
+                Flora &amp; Fauna
               </button>
+              <!-- one line about the album, under the stack -->
+              <p class="category__desc">Proteas, leaves and creatures in pencil and ink</p>
             </div>
             <div class="category">
               <!-- Stacked cards: fanned tight at rest, twisting open on
-                   hover so more of each card shows. Each will carry its own
-                   image later. -->
+                   hover so more of each card shows. script.js paints the
+                   album's pictures onto them. -->
               <div class="cards" aria-hidden="true">
                 <span class="card card--1"></span>
                 <span class="card card--2"></span>
@@ -489,10 +493,12 @@
                 type="button"
                 class="category__button"
                 data-category-open
-                data-category="Category three"
+                data-category="Graphite Studies"
               >
-                Category three
+                Graphite Studies
               </button>
+              <!-- one line about the album, under the stack -->
+              <p class="category__desc">Close-up portraits in graphite and charcoal</p>
             </div>
           </div>
         </div>
@@ -3424,9 +3430,9 @@
         <!-- One blank stage per category — only the clicked one is shown.
              Each is where that category's artwork (and its unfolded sheet)
              will live. Intentionally empty for now. -->
-        <div class="showcase__stage" data-stage="Category one" hidden></div>
-        <div class="showcase__stage" data-stage="Category two" hidden></div>
-        <div class="showcase__stage" data-stage="Category three" hidden></div>
+        <div class="showcase__stage" data-stage="Pastel &amp; Gold" hidden></div>
+        <div class="showcase__stage" data-stage="Flora &amp; Fauna" hidden></div>
+        <div class="showcase__stage" data-stage="Graphite Studies" hidden></div>
         <!-- Workshop dates open this stage: the booking form. Same dark panel
              and fold-X as the albums. signup.js fills the chip with the date
              that was clicked, checks the fields, and saves the booking. -->
