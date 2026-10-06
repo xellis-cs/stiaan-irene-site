@@ -1,11 +1,13 @@
 // Workshop dates, from the database.
 //
-// The dates written into index.html are the FALLBACK, not the source. On load
-// this asks the database what Irene last saved in /admin and, if there is
-// anything there, redraws the months from it. If the request fails, the
-// database is asleep, or nothing has been saved yet, the page keeps the dates
-// it was built with — a visitor never sees an empty section because a server
-// was slow.
+// index.html ships NO dates: its grid holds one honest paragraph ("Irene has
+// not announced the next dates yet"). On load this asks the database what
+// Irene last saved in /admin and, if there is anything there, draws the
+// months into the grid. If nothing has been saved the paragraph stays. If the
+// request itself fails (the database is asleep, the network is down) the
+// paragraph is reworded to say the dates could not be loaded, which is a fact
+// about the site, not a claim about Irene's calendar. Sample dates are never
+// shown as if they were real.
 //
 // Reading is deliberately public: these are the dates the website exists to
 // show. Only writing needs her login.
@@ -58,7 +60,7 @@
         );
       })
       .join("");
-    if (!html) return false; // nothing worth showing: keep the built-in dates
+    if (!html) return false; // nothing worth showing: keep the "not announced yet" line
     grid.innerHTML = html;
 
     // Anything that measures or copies the months can look again now.
@@ -66,18 +68,27 @@
     return true;
   }
 
+  // The request failed (not "no dates saved": that keeps the shipped line).
+  function couldNotLoad() {
+    var empty = grid.querySelector("[data-workshops-empty]");
+    if (!empty) return;
+    empty.textContent =
+      "The dates could not be loaded just now. Leave your email under " +
+      "\u201cBe the first to hear\u201d and Irene will tell you when they are " +
+      "announced, or try again in a moment.";
+  }
+
   fetch(URL_BASE + "/rest/v1/site_content?id=eq.main&select=data", {
     headers: { apikey: KEY },
   })
     .then(function (r) {
-      return r.ok ? r.json() : null;
+      if (!r.ok) throw new Error("Error " + r.status);
+      return r.json();
     })
     .then(function (rows) {
       var data = rows && rows[0] && rows[0].data;
       var months = data && Array.isArray(data.months) ? data.months : null;
       if (months && months.length) render(months);
     })
-    .catch(function () {
-      /* keep the dates the page was built with */
-    });
+    .catch(couldNotLoad);
 })();

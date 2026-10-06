@@ -42,7 +42,9 @@ is hers and is not to be flattened into template copy.
 
 - Workshops are in person; Irene sets the dates (up to four months ahead) in
   /admin, which saves to the `site_content` table and the site redraws from it.
-  The dates written into index.html are a fallback.
+  index.html ships no dates: until some are saved (or if they cannot be
+  loaded) the Programme page says so in one line and points at the notify
+  form. Sample dates are never shown as if they were real.
 - Venue and cost are told to the visitor when they book; neither is on the site
   yet (undecided, not to be invented).
 - A date button opens the booking form; a booking is a row in `signups`

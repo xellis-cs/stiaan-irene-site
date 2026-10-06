@@ -207,8 +207,10 @@ aliases (the `ALIASES` map in book.js).
   surname, phone, attendees, workshop_month, workshop_date, workshop_topic.
   "Done" and "Book another date" press `[data-booking-close]`.
 - content.js injects months into `#workshop-dates .workshops__grid` and
-  dispatches `content:updated`; the dates written into index.html are the
-  fallback.
+  dispatches `content:updated`. index.html ships NO dates: the grid holds one
+  honest line (`.workshops__empty`, "Irene has not announced the next dates
+  yet") that stays when nothing is saved and is reworded to "could not be
+  loaded" when the request fails. Never type sample dates into index.html.
 - The intro copy is written; VENUE AND COST are not known yet. The line
   "Venue and cost are confirmed with you when you book" has an HTML comment
   above it marking where to fill them in once Irene decides.

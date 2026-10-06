@@ -313,44 +313,21 @@
                      element that holds .workshops__grid. -->
                 <div id="workshop-dates">
                   <h2 class="page-title" tabindex="-1">Workshop dates</h2>
-                  <!-- Up to four months. Each month lists its dates, one per
-                       line: day, weekday, time, and the topic. A date is a real
-                       button; pressing it opens the booking slip (book.js shows
-                       it, signup.js fills and saves it). The dates written here
-                       are the FALLBACK — content.js replaces them with whatever
-                       Irene last saved in /admin. -->
+                  <!-- Up to four months, each listing its dates one per line:
+                       day, weekday, time and the topic. A date is a real
+                       button; pressing it opens the booking slip (book.js
+                       shows it, signup.js fills and saves it). The grid is
+                       EMPTY here on purpose: content.js fills it with whatever
+                       Irene last saved in /admin. Never type sample dates in
+                       here — a visitor would read them as real. Until the
+                       dates arrive (or if none are saved) the one paragraph
+                       below is what shows. -->
                   <div class="workshops__grid">
-                    <div class="workshops__month">
-                      <p class="workshops__month-name">July</p>
-                      <div class="workshops__dates">
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">18</span> <span class="workshop__weekday">Saturday</span> <span class="workshop__time">14:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">24</span> <span class="workshop__weekday">Sunday</span> <span class="workshop__time">16:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">17</span> <span class="workshop__weekday">Monday</span> <span class="workshop__time">13:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                      </div>
-                    </div>
-                    <div class="workshops__month">
-                      <p class="workshops__month-name">August</p>
-                      <div class="workshops__dates">
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">18</span> <span class="workshop__weekday">Saturday</span> <span class="workshop__time">14:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">24</span> <span class="workshop__weekday">Sunday</span> <span class="workshop__time">16:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                      </div>
-                    </div>
-                    <div class="workshops__month">
-                      <p class="workshops__month-name">September</p>
-                      <div class="workshops__dates">
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">18</span> <span class="workshop__weekday">Saturday</span> <span class="workshop__time">14:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">24</span> <span class="workshop__weekday">Sunday</span> <span class="workshop__time">16:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">31</span> <span class="workshop__weekday">Friday</span> <span class="workshop__time">18:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">11</span> <span class="workshop__weekday">Tuesday</span> <span class="workshop__time">13:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                      </div>
-                    </div>
-                    <div class="workshops__month">
-                      <p class="workshops__month-name">October</p>
-                      <div class="workshops__dates">
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">18</span> <span class="workshop__weekday">Saturday</span> <span class="workshop__time">14:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                        <button type="button" class="workshop" data-category-open data-category="workshop"><span class="workshop__main"><span class="workshop__day">24</span> <span class="workshop__weekday">Sunday</span> <span class="workshop__time">16:00</span></span><span class="workshop__topic">Watercolour basics</span></button>
-                      </div>
-                    </div>
+                    <p class="workshops__empty" data-workshops-empty>
+                      Irene has not announced the next dates yet. Leave your
+                      email under <a href="#notify">“Be the first to hear”</a>
+                      and she will tell you first.
+                    </p>
                   </div>
                 </div>
 
@@ -358,7 +335,7 @@
                      notify_list table (notify.js, supabase-setup.sql); Irene
                      reads the list in /admin. data-source is stored with the
                      address, saying which form it came from. -->
-                <form class="notify" data-notify-form data-source="workshop-dates" novalidate>
+                <form class="notify" id="notify" data-notify-form data-source="workshop-dates" novalidate>
                   <h3 class="small-title">Be the first to hear about new dates</h3>
                   <p class="notify__text">
                     Leave your email and Irene will let you know when the next
