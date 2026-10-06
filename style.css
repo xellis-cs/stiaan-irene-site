@@ -801,7 +801,8 @@ nav[tabindex]:focus-visible {
   align-items: start;
 }
 
-/* The label block under every plate: number, "Untitled", album and medium */
+/* The label block under every plate: number, "Untitled", and the album on
+   the frontispiece and the loose print (no medium: it is not confirmed) */
 .label {
   display: grid;
   gap: 3px;

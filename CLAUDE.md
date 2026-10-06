@@ -196,6 +196,12 @@ aliases (the `ALIASES` map in book.js).
   the picture large on the board, its label, and arrows through the album.
   Escape puts it back; focus returns to the plate.
 
+- The label grammar is plate number, "Untitled", and (frontispiece and
+  loose print only) the album name. There is deliberately NO medium line:
+  Irene has not confirmed what each piece is made with, and the old
+  per-album guess was visibly wrong for several plates. When she does,
+  add data-medium per plate and re-enable the line in plates.js.
+
 ## Workshop Dates — the Programme spread
 - Each date ("18 Saturday 14:00 · Watercolour basics") is a real
   `button.workshop` drawn as a ruled catalogue line; pressing it opens the
