@@ -160,10 +160,11 @@
                 <svg class="seed seed--b" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
                 <svg class="seed seed--c" viewBox="0 0 40 56" aria-hidden="true"><use href="#seed" /></svg>
                 <h1 class="wordmark" tabindex="-1">Irene Ellis Art</h1>
-                <p class="roles">
-                  Artist <span class="roles__dot" aria-hidden="true">·</span> Motivational Speaker
-                  <span class="roles__dot" aria-hidden="true">·</span> Master of Ceremony
-                </p>
+                <ul class="roles" aria-label="Irene's roles">
+                  <li>Artist</li>
+                  <li>Motivational Speaker</li>
+                  <li>Master of Ceremony</li>
+                </ul>
                 <!-- The one line that says what a visitor can actually DO here.
                      The roles above are who Irene is; this is what she offers. -->
                 <p class="offer">
@@ -670,8 +671,8 @@
       <button type="button" class="loose__close loose__close--dark" data-print-close aria-label="Put the print back">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
-      <figure class="print">
-        <img class="print__img" alt="" data-print-img />
+      <figure class="print" data-print-figure>
+        <!-- plates.js puts the picture in here when a plate is pressed -->
         <figcaption class="label label--light" data-print-label></figcaption>
       </figure>
       <div class="print__nav">

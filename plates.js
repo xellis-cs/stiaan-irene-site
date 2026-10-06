@@ -153,8 +153,12 @@
   // ---------------------------------------------------------------------
   var dialog = document.querySelector("[data-print]");
   if (!dialog || typeof dialog.showModal !== "function") return;
-  var img = dialog.querySelector("[data-print-img]");
   var label = dialog.querySelector("[data-print-label]");
+  // the picture itself is made here, so the page never carries an empty <img>
+  var img = document.createElement("img");
+  img.className = "print__img";
+  img.alt = "";
+  dialog.querySelector("[data-print-figure]").insertBefore(img, label);
   var count = dialog.querySelector("[data-print-count]");
   var steps = dialog.querySelectorAll("[data-print-step]");
   var showing = null; // the plate on show
