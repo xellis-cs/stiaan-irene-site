@@ -504,10 +504,24 @@
                     </a>
                   </li>
                 </ul>
-                <p class="turn-back">
-                  Looking for a date? <a href="#workshop-dates">Turn to the Programme.</a>
-                </p>
-                <!-- The colophon — the small print at the back of a catalogue -->
+                <!-- The back page repeats the invitation: the same pinned slip
+                     as the title page, so the last thing a visitor can do is
+                     the thing the book is for. -->
+                <p class="turn-back">Looking for a date?</p>
+                <a class="slip slip--back" href="#workshop-dates">
+                  <svg class="slip__pin" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="9" r="5.5" />
+                    <circle class="slip__pin-light" cx="10" cy="7.2" r="1.6" />
+                    <line x1="12" y1="14.5" x2="12" y2="22" />
+                  </svg>
+                  <span class="slip__label">Book a workshop</span>
+                  <svg class="slip__arrow" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12h15M13 6l6 6-6 6" />
+                  </svg>
+                </a>
+                <!-- The colophon — the small print at the back of a catalogue.
+                     (The Admin link is on the folio line of this page: book.js
+                     puts it there, out of the reading column.) -->
                 <footer class="colophon">
                   <p>© 2026 Irene Ellis Art</p>
                   <p>
@@ -516,8 +530,6 @@
                     untitled with its plate number.
                   </p>
                   <p>Set in Pinyon Script, Libre Caslon Text and Libre Franklin.</p>
-                  <!-- Irene's editor, where the dates and bookings live -->
-                  <p><a class="colophon__admin" href="admin/">Admin</a></p>
                 </footer>
               </div>
             </article>

@@ -249,6 +249,15 @@
     // the title spread carries no folio on either page, as in a book:
     // neither the title page nor the frontispiece facing it
     if (spread && spread.id === "title") folio.classList.add("folio--title");
+    // the last page's folio also carries the quiet link to Irene's editor,
+    // so the reading column does not end on "Admin"
+    if (i === pages.length - 1) {
+      var admin = document.createElement("a");
+      admin.className = "folio__admin";
+      admin.href = "admin/";
+      admin.textContent = "Admin";
+      folio.appendChild(admin);
+    }
     page.appendChild(folio);
 
     // the shade that darkens a page as it stands up during a turn

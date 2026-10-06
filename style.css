@@ -498,6 +498,9 @@ nav[tabindex]:focus-visible {
   left: calc(var(--page-pad) * 0.6 + var(--gutter-pad));
   right: calc(var(--page-pad) + 40px);
 }
+.page--right .folio .folio__num {
+  margin-left: auto; /* the number stays at the outer edge; "Admin" sits after it */
+}
 .folio__num {
   color: var(--color-ink-soft);
 }
@@ -1242,6 +1245,10 @@ nav[tabindex]:focus-visible {
   font-style: italic;
   color: var(--color-ink-soft);
 }
+/* the slip again on the back page, under "Looking for a date?" */
+.slip--back {
+  margin-top: var(--space-3);
+}
 .colophon {
   margin-top: calc(var(--u) * 4);
   padding-top: var(--space-4);
@@ -1253,9 +1260,16 @@ nav[tabindex]:focus-visible {
 .colophon p {
   margin: 0 0 var(--space-2);
 }
-.colophon__admin {
+/* the link to Irene's editor, on the last page's folio line */
+.folio__admin {
+  pointer-events: auto;
+  margin-left: var(--space-4);
   color: var(--color-ink-muted);
   text-decoration-color: rgba(44, 44, 44, 0.3);
+  letter-spacing: 0.12em;
+}
+.folio__admin:hover {
+  color: var(--color-text);
 }
 
 /* ============================================================
