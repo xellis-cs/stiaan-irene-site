@@ -1980,6 +1980,9 @@ nav[tabindex]:focus-visible {
     .turnbar .arrow {
       width: 44px;
     }
+    .tab {
+      font-size: 11px; /* the floor; 12px clips "Contact" by 2px here */
+    }
   }
 
   .loose {
