@@ -368,29 +368,34 @@
             </article>
           </section>
 
-          <!-- ============ SPREADS 4–6 · THE PLATES ============
-               One spread per album. The album NAMES are the keys of the
-               GALLERY map in gallery-data.js — change them there and here
-               together, or the spread comes up empty. plates.js fills each
-               .plate-slot: the album's first picture large on the left page,
-               the rest in a group on the right page, every one with its
-               label. The one-line description under each title is written
-               here. MEDIUM: unknown. Irene has not said what each piece is
-               made with, so the labels carry no medium line; ask her per
-               plate, then add data-medium per PLATE (not per album) and
-               re-enable the line in plates.js. No sizes or years either —
-               they are not known. -->
+          <!-- ============ SPREADS 4–12 · THE PLATES ============
+               Three spreads per album, as a catalogue paces them: this
+               section is the album's TITLE spread (its name and one line on
+               the left, its first plate full to the margins on the right),
+               and plates.js then builds two more spreads straight after it,
+               each holding two plates at full size (plates 2|3 and 4|5), with
+               ids plates-N-2 and plates-N-3. book.js reads the spreads from
+               the page, so folios, hashes, tabs and the phone's one-page-at-
+               a-time mode all follow by themselves. The album NAMES are the
+               keys of the GALLERY map in gallery-data.js — change them there
+               and here together, or the spread comes up empty. The one-line
+               description under each title is written here; the "Plates I to
+               V" line is filled in by plates.js from the list. MEDIUM:
+               unknown. Irene has not said what each piece is made with, so
+               the labels carry no medium line; ask her per plate, then add
+               data-medium per PLATE (not per album) and re-enable the line in
+               plates.js. No sizes or years either — they are not known. -->
           <section class="spread" id="plates-1" data-spread data-title="Pastel &amp; Gold">
             <article class="page page--left" data-page>
-              <div class="page__body page__body--plate">
+              <div class="page__body page__body--album">
                 <h2 class="spread-title" tabindex="-1">Pastel &amp; Gold</h2>
                 <p class="album-desc">Colour on black paper, gold leaf and a little magic</p>
-                <div class="plate-slot" data-plate-album="Pastel &amp; Gold" data-plate-index="0" data-plate-role="hero"></div>
+                <p class="album-range" data-plate-range data-plate-album="Pastel &amp; Gold"></p>
               </div>
             </article>
             <article class="page page--right" data-page>
-              <div class="page__body page__body--scroll">
-                <div class="plate-slot" data-plate-album="Pastel &amp; Gold" data-plate-from="1" data-plate-role="group">
+              <div class="page__body page__body--plate">
+                <div class="plate-slot" data-plate-album="Pastel &amp; Gold" data-plate-index="0" data-plate-role="hero">
                   <noscript><p class="plate-noscript">The plates show when JavaScript is switched on.</p></noscript>
                 </div>
               </div>
@@ -399,35 +404,39 @@
 
           <section class="spread" id="plates-2" data-spread data-title="Flora &amp; Fauna">
             <article class="page page--left" data-page>
-              <div class="page__body page__body--plate">
+              <div class="page__body page__body--album">
                 <h2 class="spread-title" tabindex="-1">Flora &amp; Fauna</h2>
                 <p class="album-desc">Proteas, leaves and creatures</p>
-                <div class="plate-slot" data-plate-album="Flora &amp; Fauna" data-plate-index="0" data-plate-role="hero"></div>
+                <p class="album-range" data-plate-range data-plate-album="Flora &amp; Fauna"></p>
               </div>
             </article>
             <article class="page page--right" data-page>
-              <div class="page__body page__body--scroll">
-                <div class="plate-slot" data-plate-album="Flora &amp; Fauna" data-plate-from="1" data-plate-role="group"></div>
+              <div class="page__body page__body--plate">
+                <div class="plate-slot" data-plate-album="Flora &amp; Fauna" data-plate-index="0" data-plate-role="hero">
+                  <noscript><p class="plate-noscript">The plates show when JavaScript is switched on.</p></noscript>
+                </div>
               </div>
             </article>
           </section>
 
           <section class="spread" id="plates-3" data-spread data-title="Graphite Studies">
             <article class="page page--left" data-page>
-              <div class="page__body page__body--plate">
+              <div class="page__body page__body--album">
                 <h2 class="spread-title" tabindex="-1">Graphite Studies</h2>
                 <p class="album-desc">Close-up studies in graphite</p>
-                <div class="plate-slot" data-plate-album="Graphite Studies" data-plate-index="0" data-plate-role="hero"></div>
+                <p class="album-range" data-plate-range data-plate-album="Graphite Studies"></p>
               </div>
             </article>
             <article class="page page--right" data-page>
-              <div class="page__body page__body--scroll">
-                <div class="plate-slot" data-plate-album="Graphite Studies" data-plate-from="1" data-plate-role="group"></div>
+              <div class="page__body page__body--plate">
+                <div class="plate-slot" data-plate-album="Graphite Studies" data-plate-index="0" data-plate-role="hero">
+                  <noscript><p class="plate-noscript">The plates show when JavaScript is switched on.</p></noscript>
+                </div>
               </div>
             </article>
           </section>
 
-          <!-- ============ SPREAD 7 · CONTACT ============ -->
+          <!-- ============ SPREAD 13 · CONTACT ============ -->
           <section class="spread" id="contact" data-spread data-title="Contact">
             <article class="page page--left" data-page>
               <div class="page__body page__body--scroll">

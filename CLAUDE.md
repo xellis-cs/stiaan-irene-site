@@ -81,10 +81,14 @@ rules, wide margins.
 3. `#programme` — L: intro copy, the venue/cost line, "What to expect".
    R: `#workshop-dates` with the four months of date buttons, then the
    "Be the first to hear" email form.
-4–6. `#plates-1` `#plates-2` `#plates-3` — one spread per album. L: the
-   album's name (script), its one-line description, its first picture large.
-   R: "Plates II to V", the album's other pictures in a group, each labelled.
-7. `#contact` — L: "Get in touch", the message form. R: Facebook and
+4–12. The plates: THREE spreads per album, paced like a catalogue. The
+   album's title spread is written in index.html (`#plates-1` `#plates-2`
+   `#plates-3`): L: the album's name (script), its one-line description and
+   "Plates I to V" (filled by plates.js); R: the album's first plate full to
+   the margins with its label. plates.js then BUILDS two more spreads after
+   each (`#plates-1-2`, `#plates-1-3`, …), one plate per page at full size
+   (plates 2|3, then 4|5). Every plate page's heading is its plate number.
+13. `#contact` — L: "Get in touch", the message form. R: Facebook and
    Instagram, a line back to the Programme, the colophon (© 2026, the
    typefaces, a quiet Admin link).
 Old links still land: #about, #workshop-dates, #portfolio and #hero are
@@ -175,21 +179,23 @@ aliases (the `ALIASES` map in book.js).
 - ONE source of truth for the pictures: the `GALLERY` map in
   `gallery-data.js` (loaded by the site AND the admin page). plates.js reads
   it and fills every `.plate-slot`: `data-plate-role="frontispiece"` (title
-  spread), `"hero"` (an album's first picture, large) and `"group"` (the
-  rest, from `data-plate-from`). Plate numbers run straight through the book
-  in album order (I–V, VI–X, XI–XV) as Roman numerals. Every label says
-  "Untitled" because Irene has not titled her pieces; the album's medium
-  line is `data-medium` on its spread section (no sizes or years — unknown).
-  `GALLERY_SIZES` lists each picture's real width/height so the page lays out
-  once; add a line when adding a picture.
+  spread) and `"hero"` (an album's first picture, on the right page of the
+  album's title spread); then it builds the album's other spreads, two
+  plates to a spread, one per page, straight after the title spread. Plate
+  numbers run straight through the book in album order (I–V, VI–X, XI–XV) as
+  Roman numerals. Every label says "Untitled" because Irene has not titled
+  her pieces (no medium, sizes or years — unknown). `GALLERY_SIZES` lists each
+  picture's real width/height so the page lays out once; add a line when
+  adding a picture.
 - TO ADD A PLATE: drop the file in its folder, add it to the album's list in
-  gallery-data.js and its size to GALLERY_SIZES. It appears in the group on
-  the right page (which scrolls if it runs long) and in the admin preview.
+  gallery-data.js and its size to GALLERY_SIZES. It gets its own page in the
+  album's built spreads (an album with an even count ends on a spread whose
+  right page is blank, as a printed catalogue would) and appears in the
+  admin preview. The book grows by one page per two plates added.
 - TO ADD A SPREAD: copy a `<section class="spread">` block in index.html with
   a new id, data-title and two pages (each with a heading carrying
   tabindex="-1"); give it a tab in `.tabs` if it should be in the index.
-  book.js numbers the folios and counts the views itself. Keep the book at
-  ten spreads or fewer.
+  book.js numbers the folios and counts the views itself.
 - Plate I is also named in a `<link rel="preload">` in the head so it loads
   first; change it if the first picture of the first album changes.
 - Pressing a plate opens the "loose print": the `[data-print]` dialog with

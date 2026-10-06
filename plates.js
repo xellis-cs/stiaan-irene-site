@@ -1,11 +1,16 @@
 // The plates — every picture in the book, drawn from gallery-data.js.
 //
 // index.html holds EMPTY slots (<div class="plate-slot" …>) and this script
-// fills them: the frontispiece on the title spread, the big first picture
-// of each album, and the group of the album's other pictures. So the list
-// in gallery-data.js stays the ONE place that says which pictures exist —
-// add a file there and it appears here, with its label and plate number,
-// and in the admin preview.
+// fills them: the frontispiece on the title spread and the first picture of
+// each album, full to its page. Then, for each album, it BUILDS the spreads
+// that hold the album's other pictures, two to a spread (one per page, each
+// at full size), and puts them straight after the album's title spread. So
+// the list in gallery-data.js stays the ONE place that says which pictures
+// exist — add a file there and it gets its own page here, with its label and
+// plate number, and appears in the admin preview. This script runs before
+// book.js, which reads the spreads and pages from the document, so the
+// built spreads get folios, hashes (#plates-1-2, #plates-1-3 …) and the
+// phone's one-page mode like any written by hand.
 //
 // Plate numbers run straight through the book in the order the albums are
 // listed: album one is plates I–V, album two VI–X, and so on. Irene has not
@@ -54,7 +59,7 @@
 
   // One plate: the picture inside a button (press it to lift the print),
   // and the label block beneath. `opts.heading` makes the plate number a
-  // real heading — only the frontispiece needs that, its page has no other.
+  // real heading — every plate page has no other heading, so each gets one.
   function figureFor(plate, opts) {
     opts = opts || {};
     var fig = el("figure", "plate" + (opts.variant ? " plate--" + opts.variant : ""));
@@ -100,42 +105,74 @@
     return fig;
   }
 
-  // Fill every slot in the page
-  document.querySelectorAll(".plate-slot").forEach(function (slot) {
-    var album = slot.getAttribute("data-plate-album");
-    var role = slot.getAttribute("data-plate-role");
-    var mine = plates.filter(function (p) {
+  function platesIn(album) {
+    return plates.filter(function (p) {
       return p.album === album;
     });
-    if (!mine.length) return;
+  }
 
-    if (role === "frontispiece" || role === "hero") {
-      var idx = parseInt(slot.getAttribute("data-plate-index"), 10) || 0;
-      var plate = mine[idx];
-      if (!plate) return;
-      slot.appendChild(
-        figureFor(plate, {
-          variant: role,
-          frontispiece: role === "frontispiece",
-          heading: role === "frontispiece",
-          eager: role === "frontispiece",
-        })
-      );
-    } else if (role === "group") {
-      var from = parseInt(slot.getAttribute("data-plate-from"), 10) || 0;
-      var rest = mine.slice(from);
-      if (!rest.length) return;
-      // the page's heading: which plates this group holds
-      var first = roman(rest[0].number);
-      var last = roman(rest[rest.length - 1].number);
-      var h = el("h2", "page-title", rest.length > 1 ? "Plates " + first + " to " + last : "Plate " + first);
-      h.setAttribute("tabindex", "-1");
-      slot.appendChild(h);
-      var group = el("div", "plate-group");
-      rest.forEach(function (p) {
-        group.appendChild(figureFor(p, { variant: "small" }));
-      });
-      slot.appendChild(group);
+  // Fill every slot in the page: the frontispiece, and each album's first
+  // plate. Both are the only thing on their page, so the plate number is the
+  // page's heading (focus lands on it after a turn).
+  document.querySelectorAll(".plate-slot").forEach(function (slot) {
+    var mine = platesIn(slot.getAttribute("data-plate-album"));
+    var role = slot.getAttribute("data-plate-role");
+    var plate = mine[parseInt(slot.getAttribute("data-plate-index"), 10) || 0];
+    if (!plate) return;
+    slot.appendChild(
+      figureFor(plate, {
+        variant: "hero",
+        frontispiece: role === "frontispiece",
+        heading: true,
+        eager: role === "frontispiece",
+      })
+    );
+  });
+
+  // "Plates I to V" on each album's title page, from the list
+  document.querySelectorAll("[data-plate-range]").forEach(function (line) {
+    var mine = platesIn(line.getAttribute("data-plate-album"));
+    if (!mine.length) return;
+    var first = roman(mine[0].number);
+    var last = roman(mine[mine.length - 1].number);
+    line.textContent = mine.length > 1 ? "Plates " + first + " to " + last : "Plate " + first;
+  });
+
+  // One page holding one plate, full size
+  function platePage(side, plate) {
+    var page = el("article", "page page--" + side);
+    page.setAttribute("data-page", "");
+    var body = el("div", "page__body page__body--plate");
+    var slot = el("div", "plate-slot"); // the same wrapper the written slots use: it centres the plate
+    slot.appendChild(figureFor(plate, { variant: "hero", heading: true }));
+    body.appendChild(slot);
+    page.appendChild(body);
+    return page;
+  }
+
+  // Build the spreads after each album's title spread: plates 2 and 3 on
+  // one, 4 and 5 on the next, and so on, two to a spread. An album with an
+  // even count ends with a spread whose right page is left blank — as a
+  // printed catalogue would.
+  document.querySelectorAll("[data-spread][id^='plates-']").forEach(function (section) {
+    var titlePage = section.querySelector("[data-plate-range]");
+    var album = titlePage && titlePage.getAttribute("data-plate-album");
+    var rest = album ? platesIn(album).slice(1) : [];
+    var after = section;
+    for (var i = 0, n = 2; i < rest.length; i += 2, n++) {
+      var spread = el("section", "spread");
+      spread.id = section.id + "-" + n;
+      spread.setAttribute("data-spread", "");
+      spread.setAttribute("data-title", section.getAttribute("data-title") || album);
+      spread.appendChild(platePage("left", rest[i]));
+      if (rest[i + 1]) spread.appendChild(platePage("right", rest[i + 1]));
+      else {
+        var blank = el("article", "page page--right page--blank");
+        blank.setAttribute("data-page", "");
+        spread.appendChild(blank);
+      }
+      after.parentNode.insertBefore(spread, after.nextSibling);
+      after = spread;
     }
   });
 
