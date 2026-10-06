@@ -1265,9 +1265,11 @@ body.is-showcase-open .site-header {
   letter-spacing: 0.14em;
   white-space: nowrap;
   color: var(--color-text);
-  padding: 10px 18px;
+  /* 14px top and bottom makes the pill 44px tall: a comfortable tap target
+     (it was 36px). It still never moves or grows on hover. */
+  padding: 14px 18px;
   border: 1px solid rgba(44, 44, 44, 0.22);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: rgba(253, 253, 253, 0.4);
   cursor: pointer;
   transition: background-color 0.25s ease, border-color 0.25s ease;
