@@ -11,6 +11,7 @@
   --color-blush: #f1dfd6; /* the left-hand pages */
   --color-rose: #e6b8ab; /* the endpaper: the cover's rim around the pages */
   --color-tan: #f4efe4; /* the fore-edges, the tabs, the paper slips */
+  --paper-edge: #dcc7bb; /* the shade between the page edges of the block */
   --color-white: #fdfdfd; /* form fields */
   --color-text: #2c2c2c; /* all readable copy */
   /* The accent used to be #bb8b79. Measured against the pink backgrounds it
@@ -281,7 +282,7 @@ nav[tabindex]:focus-visible {
   position: relative;
   /* the cover's rim: rose endpaper showing all round the pages */
   background: var(--color-rose);
-  padding: 7px 9px 9px 7px;
+  padding: 7px 14px 14px 7px; /* more on the right and foot: the page block sits there, and the rim still shows past it */
   border-radius: 4px;
   box-shadow:
     0 40px 70px -24px rgba(0, 0, 0, 0.7),
@@ -298,8 +299,13 @@ nav[tabindex]:focus-visible {
   perspective-origin: 50% 50%;
 }
 
-/* The block of pages under the open ones: thin tan stripes along the
-   right fore-edge and the foot. */
+/* The block of pages under the open ones, showing along the right
+   fore-edge and the foot: tan page edges with a hair of shade between
+   them. The stripes fall on whole pixels (2px paper, 1px shade) so they
+   resolve as page lines on a 1x screen instead of blurring to one sliver,
+   and a second, offset set is laid over them at half strength so the
+   edges are not perfectly even — pages are not. The rose rim of the cover
+   still shows beyond them. */
 .book__pages::before,
 .book__pages::after {
   content: "";
@@ -309,25 +315,21 @@ nav[tabindex]:focus-visible {
 }
 .book__pages::before {
   top: 2px;
-  bottom: -5px;
-  right: -7px;
-  width: 7px;
-  background: repeating-linear-gradient(
-    to right,
-    var(--color-tan) 0 1.5px,
-    #dcc7bb 1.5px 2.4px
-  );
+  bottom: -7px;
+  right: -11px;
+  width: 11px;
+  background:
+    repeating-linear-gradient(to right, transparent 0 1px, rgba(220, 199, 187, 0.5) 1px 2px, transparent 2px 5px),
+    repeating-linear-gradient(to right, var(--color-tan) 0 2px, var(--paper-edge) 2px 3px);
 }
 .book__pages::after {
   left: 3px;
-  right: -7px;
-  bottom: -5px;
-  height: 5px;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--color-tan) 0 1.2px,
-    #dcc7bb 1.2px 1.9px
-  );
+  right: -11px;
+  bottom: -7px;
+  height: 7px;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 1px, rgba(220, 199, 187, 0.5) 1px 2px, transparent 2px 5px),
+    repeating-linear-gradient(to bottom, var(--color-tan) 0 2px, var(--paper-edge) 2px 3px);
 }
 
 /* ---------- a page ---------- */
@@ -1796,7 +1798,7 @@ nav[tabindex]:focus-visible {
     height: var(--book-h);
   }
   .book {
-    padding: 6px 6px 7px 6px;
+    padding: 6px 11px 10px 6px;
   }
   .book__pages {
     inset: 6px 6px 7px 6px;
@@ -1804,13 +1806,14 @@ nav[tabindex]:focus-visible {
     perspective-origin: 0% 50%; /* the eye at the coil edge */
   }
   .book__pages::before {
-    right: -5px;
-    width: 5px;
+    right: -8px;
+    width: 8px;
+    bottom: -5px;
   }
   .book__pages::after {
-    right: -5px;
-    bottom: -4px;
-    height: 4px;
+    right: -8px;
+    bottom: -5px;
+    height: 5px;
   }
 
   /* every page is the whole book, turning about the left (coil) edge */
