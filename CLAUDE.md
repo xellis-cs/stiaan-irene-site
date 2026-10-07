@@ -149,6 +149,12 @@ aliases (the `ALIASES` map in book.js).
   the corners and dates take clicks again while the page settles);
   `SWIPE_MIN` 48px; `WHEEL_MIN` 160 and `WHEEL_LOCK` 1100ms; the `ALIASES`
   map (an alias only applies when nothing on the page has that id).
+- The 3D eye's distance is a style.css token, `--turn-depth` (50, in book
+  widths, measured against `--book-w`; the phone block doubles it because
+  a page there is the whole book wide and turns about its left edge). A
+  page standing on its edge swells toward the eye by about 1% at 50, so
+  it stays inside the cover's rim; at the old fixed 3800px it reached
+  70px over the board. Lower it only if the turn must look nearer.
 - The phone/computer line is ONE media query written in two places and
   kept identical: `SINGLE` in book.js and the PHONES block in style.css:
   `(max-width: 720px), (max-width: 1024px) and (orientation: portrait)` —

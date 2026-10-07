@@ -132,8 +132,17 @@
     calc(100vh - var(--board-pad) - var(--board-foot)),
     calc((100vw - 2 * var(--board-side)) / var(--book-ratio))
   );
+  --book-w: calc(var(--book-h) * var(--book-ratio));
   --u: calc(var(--book-h) / 100);
   --page-pad: clamp(22px, calc(var(--u) * 5.6), 56px); /* a page's margin */
+  /* The turn's 3D eye, as a distance in book widths. A page standing on
+     its edge brings its far edge nearer the eye, and the nearer the eye
+     the more that edge swells past the cover: at 50 the swell is about
+     1% (4px on a 1440 screen, 7px on a 2560 one), so the standing page
+     stays inside the cover's rim; the old 3800px put it 70px over the
+     board. The turn still reads as a turn: the page narrows as it stands
+     and its shade and cast do the rest. */
+  --turn-depth: 50;
   --gutter-pad: 30px; /* extra room at the coil, so the rings never sit on words */
 
   /* --- Type scale --- measured in --u so it grows with the page */
@@ -329,7 +338,7 @@ nav[tabindex]:focus-visible {
 .index {
   grid-area: 1 / 1;
   height: var(--book-h);
-  width: calc(var(--book-h) * var(--book-ratio));
+  width: var(--book-w);
 }
 
 .book {
@@ -347,9 +356,10 @@ nav[tabindex]:focus-visible {
 .book__pages {
   position: absolute;
   inset: 7px 15px 12px 7px; /* more on the right and foot: the page block sits there (11px and 7px), and the rim shows past it */
-  /* the 3D stage for the turn: the eye sits at the gutter, so a page
-     standing on its edge there is exactly edge-on, and invisible */
-  perspective: 3800px;
+  /* the 3D stage for the turn: the eye sits over the gutter, so a page
+     standing on its edge there is exactly edge-on, and invisible; its
+     distance is --turn-depth book widths (see :root) */
+  perspective: calc(var(--book-w) * var(--turn-depth));
   perspective-origin: 50% 50%;
 }
 
@@ -1917,6 +1927,7 @@ nav[tabindex]:focus-visible {
     --board-foot: 64px; /* the index strip lives here */
     /* a single page fills the screen above the strip; --u follows its height */
     --book-h: calc(100vh - var(--board-pad) - var(--board-foot));
+    --book-w: calc(100vw - 2 * var(--board-side));
     --u: calc(var(--book-h) / 100);
     --page-pad: clamp(16px, 4vw, 22px); /* the outer margin; the coil side keeps its 38px */
     --gutter-pad: 38px;
@@ -1939,7 +1950,7 @@ nav[tabindex]:focus-visible {
   }
   .book,
   .index {
-    width: calc(100vw - 2 * var(--board-side));
+    width: var(--book-w);
     height: var(--book-h);
   }
   .book {
@@ -1947,7 +1958,9 @@ nav[tabindex]:focus-visible {
   }
   .book__pages {
     inset: 6px 11px 10px 6px; /* the block takes 8px and 5px of that; the rim shows past it */
-    perspective: 1800px;
+    /* here a page is the whole book wide and turns about its left edge,
+       so its far edge comes twice as near: the eye sits twice as far */
+    perspective: calc(var(--book-w) * var(--turn-depth) * 2);
     perspective-origin: 0% 50%; /* the eye at the coil edge */
   }
   .book__pages::before {
