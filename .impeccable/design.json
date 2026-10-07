@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T05:30:00Z",
+  "title": "Design System: Irene Ellis Art",
+  "extensions": {
+    "colorMeta": {
+      "pink-page": {
+        "role": "neutral",
+        "displayName": "Pink Page",
+        "canonical": "oklch(88.1% 0.036 35)",
+        "tonalRamp": [
+          "oklch(15.0% 0.036 35)",
+          "oklch(26.4% 0.036 35)",
+          "oklch(37.9% 0.036 35)",
+          "oklch(49.3% 0.036 35)",
+          "oklch(60.7% 0.036 35)",
+          "oklch(72.1% 0.036 35)",
+          "oklch(83.6% 0.036 35)",
+          "oklch(95.0% 0.036 35)"
+        ]
+      },
+      "blush-page": {
+        "role": "neutral",
+        "displayName": "Blush Page",
+        "canonical": "oklch(91.6% 0.023 48)",
+        "tonalRamp": [
+          "oklch(15.0% 0.023 48)",
+          "oklch(26.4% 0.023 48)",
+          "oklch(37.9% 0.023 48)",
+          "oklch(49.3% 0.023 48)",
+          "oklch(60.7% 0.023 48)",
+          "oklch(72.1% 0.023 48)",
+          "oklch(83.6% 0.023 48)",
+          "oklch(95.0% 0.023 48)"
+        ]
+      },
+      "rose-endpaper": {
+        "role": "neutral",
+        "displayName": "Rose Endpaper",
+        "canonical": "oklch(82.0% 0.057 36)",
+        "tonalRamp": [
+          "oklch(15.0% 0.057 36)",
+          "oklch(26.4% 0.057 36)",
+          "oklch(37.9% 0.057 36)",
+          "oklch(49.3% 0.057 36)",
+          "oklch(60.7% 0.057 36)",
+          "oklch(72.1% 0.057 36)",
+          "oklch(83.6% 0.057 36)",
+          "oklch(95.0% 0.057 36)"
+        ]
+      },
+      "tan-paper": {
+        "role": "neutral",
+        "displayName": "Tan Paper",
+        "canonical": "oklch(95.3% 0.016 86)",
+        "tonalRamp": [
+          "oklch(15.0% 0.016 86)",
+          "oklch(26.4% 0.016 86)",
+          "oklch(37.9% 0.016 86)",
+          "oklch(49.3% 0.016 86)",
+          "oklch(60.7% 0.016 86)",
+          "oklch(72.1% 0.016 86)",
+          "oklch(83.6% 0.016 86)",
+          "oklch(95.0% 0.016 86)"
+        ]
+      },
+      "paper-edge": {
+        "role": "neutral",
+        "displayName": "Paper Edge",
+        "canonical": "oklch(84.4% 0.029 52)",
+        "tonalRamp": [
+          "oklch(15.0% 0.029 52)",
+          "oklch(26.4% 0.029 52)",
+          "oklch(37.9% 0.029 52)",
+          "oklch(49.3% 0.029 52)",
+          "oklch(60.7% 0.029 52)",
+          "oklch(72.1% 0.029 52)",
+          "oklch(83.6% 0.029 52)",
+          "oklch(95.0% 0.029 52)"
+        ]
+      },
+      "field-white": {
+        "role": "neutral",
+        "displayName": "Field White",
+        "canonical": "oklch(99.4% 0.000 90)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 90)",
+          "oklch(26.4% 0.000 90)",
+          "oklch(37.9% 0.000 90)",
+          "oklch(49.3% 0.000 90)",
+          "oklch(60.7% 0.000 90)",
+          "oklch(72.1% 0.000 90)",
+          "oklch(83.6% 0.000 90)",
+          "oklch(95.0% 0.000 90)"
+        ]
+      },
+      "charcoal-ink": {
+        "role": "neutral",
+        "displayName": "Charcoal Ink",
+        "canonical": "oklch(29.3% 0.000 90)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 90)",
+          "oklch(26.4% 0.000 90)",
+          "oklch(37.9% 0.000 90)",
+          "oklch(49.3% 0.000 90)",
+          "oklch(60.7% 0.000 90)",
+          "oklch(72.1% 0.000 90)",
+          "oklch(83.6% 0.000 90)",
+          "oklch(95.0% 0.000 90)"
+        ]
+      },
+      "dusty-rose": {
+        "role": "primary",
+        "displayName": "Dusty Rose",
+        "canonical": "oklch(53.3% 0.067 38)",
+        "tonalRamp": [
+          "oklch(15.0% 0.067 38)",
+          "oklch(26.4% 0.067 38)",
+          "oklch(37.9% 0.067 38)",
+          "oklch(49.3% 0.067 38)",
+          "oklch(60.7% 0.067 38)",
+          "oklch(72.1% 0.067 38)",
+          "oklch(83.6% 0.067 38)",
+          "oklch(95.0% 0.067 38)"
+        ]
+      },
+      "rose-ink": {
+        "role": "primary",
+        "displayName": "Rose Ink",
+        "canonical": "oklch(43.0% 0.064 38)",
+        "tonalRamp": [
+          "oklch(15.0% 0.064 38)",
+          "oklch(26.4% 0.064 38)",
+          "oklch(37.9% 0.064 38)",
+          "oklch(49.3% 0.064 38)",
+          "oklch(60.7% 0.064 38)",
+          "oklch(72.1% 0.064 38)",
+          "oklch(83.6% 0.064 38)",
+          "oklch(95.0% 0.064 38)"
+        ]
+      },
+      "rose-red": {
+        "role": "secondary",
+        "displayName": "Rose-Red",
+        "canonical": "oklch(52.9% 0.130 10)",
+        "tonalRamp": [
+          "oklch(15.0% 0.130 10)",
+          "oklch(26.4% 0.130 10)",
+          "oklch(37.9% 0.130 10)",
+          "oklch(49.3% 0.130 10)",
+          "oklch(60.7% 0.130 10)",
+          "oklch(72.1% 0.130 10)",
+          "oklch(83.6% 0.130 10)",
+          "oklch(95.0% 0.130 10)"
+        ]
+      },
+      "error-rose": {
+        "role": "secondary",
+        "displayName": "Error Rose",
+        "canonical": "oklch(44.7% 0.126 12)",
+        "tonalRamp": [
+          "oklch(15.0% 0.126 12)",
+          "oklch(26.4% 0.126 12)",
+          "oklch(37.9% 0.126 12)",
+          "oklch(49.3% 0.126 12)",
+          "oklch(60.7% 0.126 12)",
+          "oklch(72.1% 0.126 12)",
+          "oklch(83.6% 0.126 12)",
+          "oklch(95.0% 0.126 12)"
+        ]
+      },
+      "placeholder": {
+        "role": "neutral",
+        "displayName": "Placeholder",
+        "canonical": "oklch(51.2% 0.015 41)",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 41)",
+          "oklch(26.4% 0.015 41)",
+          "oklch(37.9% 0.015 41)",
+          "oklch(49.3% 0.015 41)",
+          "oklch(60.7% 0.015 41)",
+          "oklch(72.1% 0.015 41)",
+          "oklch(83.6% 0.015 41)",
+          "oklch(95.0% 0.015 41)"
+        ]
+      },
+      "board-dark": {
+        "role": "neutral",
+        "displayName": "Board Dark",
+        "canonical": "oklch(27.8% 0.005 68)",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 68)",
+          "oklch(26.4% 0.005 68)",
+          "oklch(37.9% 0.005 68)",
+          "oklch(49.3% 0.005 68)",
+          "oklch(60.7% 0.005 68)",
+          "oklch(72.1% 0.005 68)",
+          "oklch(83.6% 0.005 68)",
+          "oklch(95.0% 0.005 68)"
+        ]
+      },
+      "light-on-board": {
+        "role": "neutral",
+        "displayName": "Light on Board",
+        "canonical": "oklch(91.6% 0.023 48)",
+        "tonalRamp": [
+          "oklch(15.0% 0.023 48)",
+          "oklch(26.4% 0.023 48)",
+          "oklch(37.9% 0.023 48)",
+          "oklch(49.3% 0.023 48)",
+          "oklch(60.7% 0.023 48)",
+          "oklch(72.1% 0.023 48)",
+          "oklch(83.6% 0.023 48)",
+          "oklch(95.0% 0.023 48)"
+        ]
+      },
+      "coil-wire": {
+        "role": "neutral",
+        "displayName": "Coil Wire",
+        "canonical": "oklch(32.4% 0.014 54)",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 54)",
+          "oklch(26.4% 0.014 54)",
+          "oklch(37.9% 0.014 54)",
+          "oklch(49.3% 0.014 54)",
+          "oklch(60.7% 0.014 54)",
+          "oklch(72.1% 0.014 54)",
+          "oklch(83.6% 0.014 54)",
+          "oklch(95.0% 0.014 54)"
+        ]
+      },
+      "coil-highlight": {
+        "role": "neutral",
+        "displayName": "Coil Highlight",
+        "canonical": "oklch(50.0% 0.016 53)",
+        "tonalRamp": [
+          "oklch(15.0% 0.016 53)",
+          "oklch(26.4% 0.016 53)",
+          "oklch(37.9% 0.016 53)",
+          "oklch(49.3% 0.016 53)",
+          "oklch(60.7% 0.016 53)",
+          "oklch(72.1% 0.016 53)",
+          "oklch(83.6% 0.016 53)",
+          "oklch(95.0% 0.016 53)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "The single h1, \"Irene Ellis Art\", in Pinyon Script; nowhere else."
+      },
+      "display": {
+        "displayName": "Spread Title",
+        "purpose": "The script titles on left pages: The artist, Programme, the album names, Get in touch."
+      },
+      "headline": {
+        "displayName": "Page Title",
+        "purpose": "Right-hand page titles: tracked Franklin caps over a strong hairline."
+      },
+      "title": {
+        "displayName": "Lead",
+        "purpose": "The offer line, the story's lead, the booking sheet's heading (at 500/1.2)."
+      },
+      "numeral": {
+        "displayName": "Day Numeral",
+        "purpose": "The day number on a workshop line and the signup chip, in Rose Ink, tabular."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Everything read: story, intro, dates, colophon. Never under 16px, always 1.5."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Captions and field labels in Caslon; italic for Untitled and for field labels."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Plate numbers, folios, index tabs, page count, chip topic: tracked Franklin caps at 0.14em."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Paper-tab buttons, the pinned slip and the skip link: Franklin 600 caps at 0.08em."
+      }
+    },
+    "shadows": [
+      {
+        "name": "paper",
+        "value": "0 6px 14px -4px rgba(0,0,0,0.38), 0 1px 2px rgba(0,0,0,0.16)",
+        "purpose": "The pinned slip at rest and the skip link."
+      },
+      {
+        "name": "paper-lift",
+        "value": "0 12px 22px -6px rgba(0,0,0,0.42), 0 2px 4px rgba(0,0,0,0.18)",
+        "purpose": "The slip on hover and focus."
+      },
+      {
+        "name": "plate",
+        "value": "0 10px 20px -10px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.18)",
+        "purpose": "A photograph laid on the page."
+      },
+      {
+        "name": "plate-hover",
+        "value": "0 16px 28px -12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.18)",
+        "purpose": "A plate under the hand before it lifts into the loose print."
+      },
+      {
+        "name": "tab",
+        "value": "3px 2px 6px -1px rgba(0,0,0,0.45), inset 1px 0 0 rgba(0,0,0,0.06)",
+        "purpose": "An index tab standing out of the fore-edge."
+      },
+      {
+        "name": "tab-current",
+        "value": "4px 3px 8px -1px rgba(0,0,0,0.5), inset 1px 0 0 rgba(0,0,0,0.06)",
+        "purpose": "The tab of the section on show."
+      },
+      {
+        "name": "sheet",
+        "value": "0 30px 60px -16px rgba(0,0,0,0.7), 0 6px 14px -4px rgba(0,0,0,0.4)",
+        "purpose": "The booking sheet over the book; the loose print uses the same fall as a drop-shadow filter."
+      },
+      {
+        "name": "book",
+        "value": "0 40px 70px -24px rgba(0,0,0,0.7), 0 14px 28px -8px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.08) inset",
+        "purpose": "The book on the board."
+      },
+      {
+        "name": "field-inset",
+        "value": "inset 0 1px 2px rgba(0,0,0,0.07)",
+        "purpose": "A form field's slight recess."
+      },
+      {
+        "name": "index-strip",
+        "value": "0 -4px 12px -4px rgba(0,0,0,0.5)",
+        "purpose": "The phone's tan index strip onto the page above it."
+      },
+      {
+        "name": "focus-halo",
+        "value": "0 0 0 5px rgba(253,253,253,0.85)",
+        "purpose": "The pale halo under the 2px rose-red focus outline, so the ring shows on the board as well as the paper."
+      },
+      {
+        "name": "backdrop",
+        "value": "rgba(20, 16, 14, 0.62)",
+        "purpose": "The dim over the book behind a dialog."
+      }
+    ],
+    "motion": [
+      {
+        "name": "turn-ease",
+        "value": "(1 - 2^(-k t)) / (1 - 2^(-k)), k = 3.5 (computer) / 3 (phone)",
+        "purpose": "The one curve the page turn is sampled from: lifting page, landing page, shades and casts all in step."
+      },
+      {
+        "name": "turn-duration",
+        "value": "720ms (computer) / 600ms (phone)",
+        "purpose": "A full turn: 0 to 90 degrees then 90 to 0 about the gutter, via element.animate()."
+      },
+      {
+        "name": "turn-depth",
+        "value": "perspective: calc(var(--book-w) * 50)",
+        "purpose": "The 3D eye at 50 book widths, so the standing page stays inside the cover's rim."
+      },
+      {
+        "name": "hover",
+        "value": "150ms–200ms ease-out",
+        "purpose": "Every hover shift: button grounds, tab slide, slip lift, arrow nudge, plate shadow."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "instant page change; transition: none on every control",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "single-page",
+        "value": "(max-width: 720px), (max-width: 1024px) and (orientation: portrait)"
+      },
+      {
+        "name": "short-book",
+        "value": "(max-height: 820px)"
+      },
+      {
+        "name": "very-short-book",
+        "value": "(max-height: 560px)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Paper-tab button",
+      "kind": "button",
+      "refersTo": "button-tab",
+      "description": "A submit button: a tan paper tab glued flat to the page with the field's hairline edge and a tracked Franklin label. No shadow in any state.",
+      "html": "<button type=\"button\" class=\"ds-btn-tab\">Send message</button>",
+      "css": ".ds-btn-tab{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 24px;border:1px solid var(--color-field-edge,#8f5f50);border-radius:var(--radius-field,3px);background:var(--color-tan,#f4efe4);color:var(--color-text,#2c2c2c);font:600 clamp(12.5px,1.6vh,15.5px)/1 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);letter-spacing:var(--track-button,0.08em);text-transform:uppercase;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out,transform 150ms ease-out}.ds-btn-tab:hover{background:var(--color-white,#fdfdfd);border-color:var(--color-accent-ink,#6e4336)}.ds-btn-tab:active{transform:translateY(1px)}.ds-btn-tab:focus-visible{outline:2px solid var(--color-red,#a8465a);outline-offset:3px;box-shadow:0 0 0 5px rgba(253,253,253,0.85)}.ds-btn-tab:disabled{opacity:.6;cursor:progress;transform:none}"
+    },
+    {
+      "name": "Quiet button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "The secondary action beside a paper tab: transparent with a strong hairline edge.",
+      "html": "<button type=\"button\" class=\"ds-btn-quiet\">Book another date</button>",
+      "css": ".ds-btn-quiet{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border:1px solid var(--rule-strong,rgba(44,44,44,0.4));border-radius:var(--radius-field,3px);background:transparent;color:var(--color-text,#2c2c2c);font:600 clamp(12.5px,1.6vh,15.5px)/1 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);letter-spacing:var(--track-button,0.08em);text-transform:uppercase;cursor:pointer;transition:background-color 150ms ease-out}.ds-btn-quiet:hover{background:rgba(44,44,44,0.06)}.ds-btn-quiet:focus-visible{outline:2px solid var(--color-red,#a8465a);outline-offset:3px;box-shadow:0 0 0 5px rgba(253,253,253,0.85)}"
+    },
+    {
+      "name": "Pinned slip",
+      "kind": "button",
+      "refersTo": "slip-pinned",
+      "description": "The primary action: a tan paper slip hung at -1.6 degrees from a rose-red pin. The only lifted control on a page.",
+      "html": "<a class=\"ds-slip\" href=\"#workshop-dates\"><svg class=\"ds-slip__pin\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"9\" r=\"5.5\" fill=\"#a8465a\"/><circle cx=\"10\" cy=\"7.2\" r=\"1.6\" fill=\"rgba(255,255,255,0.55)\"/><line x1=\"12\" y1=\"14.5\" x2=\"12\" y2=\"22\" stroke=\"#3a322d\" stroke-width=\"1.4\" stroke-linecap=\"round\"/></svg><span>Book a workshop</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" style=\"width:1.2em;height:1.2em;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-slip{position:relative;display:inline-flex;align-items:center;gap:.8em;min-height:clamp(52px,6.5vh,76px);padding:0 clamp(20px,2.8vh,36px);margin-top:1em;background:var(--color-tan,#f4efe4);color:var(--color-text,#2c2c2c);font:600 clamp(12.5px,1.6vh,18px)/1 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);letter-spacing:var(--track-button,0.08em);text-transform:uppercase;text-decoration:none;border-radius:1px;box-shadow:var(--shadow-paper,0 6px 14px -4px rgba(0,0,0,0.38),0 1px 2px rgba(0,0,0,0.16));transform:rotate(-1.6deg);transition:transform 180ms ease-out,box-shadow 180ms ease-out}.ds-slip__pin{position:absolute;top:-.75em;left:50%;width:1.6em;height:1.6em;overflow:visible;transform:translateX(-50%) rotate(1.6deg);transition:transform 180ms ease-out}.ds-slip svg:last-child{transition:transform 180ms ease-out}.ds-slip:hover,.ds-slip:focus-visible{transform:rotate(-1deg) translateY(-2px);box-shadow:var(--shadow-paper-lift,0 12px 22px -6px rgba(0,0,0,0.42),0 2px 4px rgba(0,0,0,0.18))}.ds-slip:hover svg:last-child{transform:translateX(3px)}.ds-slip:hover .ds-slip__pin,.ds-slip:focus-visible .ds-slip__pin{transform:translateX(-50%) rotate(1deg)}.ds-slip:focus-visible{outline:2px solid var(--color-red,#a8465a);outline-offset:3px}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A form field: white paper with the dusty-rose hairline edge and a Caslon italic label above it.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-f1\">Your email</label><input class=\"ds-field\" id=\"ds-f1\" type=\"email\" placeholder=\"name@example.com\">",
+      "css": ".ds-field-label{display:block;font:italic 400 clamp(12.5px,1.6vh,15.5px)/1.3 var(--font-serif,\"Libre Caslon Text\",Georgia,serif);color:var(--color-ink-soft,rgba(44,44,44,0.8));margin-bottom:8px}.ds-field{display:block;width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--color-field-edge,#8f5f50);border-radius:var(--radius-field,3px);background:var(--color-white,#fdfdfd);color:var(--color-text,#2c2c2c);font:400 16px/1.3 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);box-shadow:inset 0 1px 2px rgba(0,0,0,0.07)}.ds-field::placeholder{color:var(--color-placeholder,#6f6460);opacity:1}.ds-field:hover{border-color:var(--color-accent-ink,#6e4336)}.ds-field:focus-visible{border-color:var(--color-red,#a8465a);outline:2px solid var(--color-red,#a8465a);outline-offset:1px;box-shadow:0 0 0 5px rgba(253,253,253,0.85)}.ds-field[aria-invalid=\"true\"]{border-color:var(--color-error,#8c2f41);box-shadow:inset 0 0 0 1px var(--color-error,#8c2f41)}"
+    },
+    {
+      "name": "Index tabs",
+      "kind": "nav",
+      "refersTo": "index-tab",
+      "description": "The fore-edge index: four tan tabs standing out of the book's right edge, vertical text; the current section's tab is pink and stands further out.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Pages\"><a class=\"ds-tab\" href=\"#artist\">About</a><a class=\"ds-tab\" href=\"#programme\" aria-current=\"page\">Dates</a><a class=\"ds-tab\" href=\"#plates-1\">Plates</a><a class=\"ds-tab\" href=\"#contact\">Contact</a></nav>",
+      "css": ".ds-tabs{display:flex;flex-direction:column;gap:10px;padding:8px 0 8px 8px}.ds-tab{position:relative;display:flex;align-items:center;justify-content:center;width:44px;min-height:108px;padding:12px 0;writing-mode:vertical-rl;text-orientation:mixed;background:var(--color-tan,#f4efe4);color:var(--color-text,#2c2c2c);font:500 clamp(12px,1.35vh,13.5px)/1 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);letter-spacing:var(--track-label,0.14em);text-transform:uppercase;text-decoration:none;border-radius:0 5px 5px 0;box-shadow:3px 2px 6px -1px rgba(0,0,0,0.45),inset 1px 0 0 rgba(0,0,0,0.06);transition:transform 160ms ease-out,background-color 160ms ease-out}.ds-tab:hover{transform:translateX(3px);background:var(--color-white,#fdfdfd)}.ds-tab[aria-current=\"page\"]{background:var(--color-pink,#eed0c8);font-weight:600;transform:translateX(5px);box-shadow:4px 3px 8px -1px rgba(0,0,0,0.5),inset 1px 0 0 rgba(0,0,0,0.06)}.ds-tab:focus-visible{outline:2px solid var(--color-red,#a8465a);outline-offset:3px}"
+    },
+    {
+      "name": "Label block",
+      "kind": "custom",
+      "refersTo": "page-right",
+      "description": "The caption under every picture: a hairline, the plate number as the heading, Untitled in italic, and on the frontispiece the album name.",
+      "html": "<figure class=\"ds-plate\"><div class=\"ds-plate__img\" role=\"img\" aria-label=\"A plate\"></div><figcaption class=\"ds-label\"><span class=\"ds-label__num\">Plate I</span><span class=\"ds-label__title\">Untitled</span><span class=\"ds-label__quiet\">Pastel &amp; Gold</span></figcaption></figure>",
+      "css": ".ds-plate{display:inline-grid;justify-items:start;margin:0;padding:24px;background:var(--color-pink,#eed0c8)}.ds-plate__img{width:180px;height:240px;background:#e9dcd3;box-shadow:var(--shadow-plate,0 10px 20px -10px rgba(0,0,0,0.45),0 1px 2px rgba(0,0,0,0.18))}.ds-label{display:grid;gap:3px;justify-self:stretch;margin-top:12px;padding-top:8px;border-top:1px solid var(--rule,rgba(44,44,44,0.24));font:400 clamp(12.5px,1.6vh,15.5px)/1.35 var(--font-serif,\"Libre Caslon Text\",Georgia,serif);color:var(--color-text,#2c2c2c)}.ds-label__num{font:600 clamp(12px,1.35vh,13.5px)/1.3 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);letter-spacing:var(--track-label,0.14em);text-transform:uppercase;color:var(--color-accent-ink,#6e4336)}.ds-label__title{font-style:italic}.ds-label__quiet{font:400 clamp(12.5px,1.6vh,15.5px)/1.35 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);color:var(--color-ink-muted,rgba(44,44,44,0.72))}"
+    },
+    {
+      "name": "Workshop line",
+      "kind": "custom",
+      "refersTo": "workshop-line",
+      "description": "A bookable date drawn as a ruled catalogue line: big rose day number, weekday and time, topic beneath, a quiet arrow at the end.",
+      "html": "<button type=\"button\" class=\"ds-workshop\"><span class=\"ds-workshop__day\">18</span><span class=\"ds-workshop__main\"><span>Saturday</span><span class=\"ds-workshop__time\">14:00</span></span><span class=\"ds-workshop__topic\">Watercolour basics</span></button>",
+      "css": ".ds-workshop{position:relative;display:grid;grid-template-columns:2.1em minmax(0,1fr) 24px;grid-template-areas:\"day main arrow\" \"day topic arrow\";column-gap:8px;align-items:baseline;width:100%;min-width:260px;min-height:48px;padding:8px 4px 8px 0;border:0;border-bottom:1px solid var(--rule-soft,rgba(44,44,44,0.16));background:transparent;text-align:left;font:400 clamp(16px,2.05vh,21px)/1.3 var(--font-serif,\"Libre Caslon Text\",Georgia,serif);color:var(--color-text,#2c2c2c);cursor:pointer;transition:background-color 150ms ease-out}.ds-workshop:hover{background:rgba(253,253,253,0.42)}.ds-workshop__day{grid-area:day;align-self:start;font-size:clamp(22px,3.4vh,34px);line-height:1;font-weight:700;color:var(--color-accent-ink,#6e4336);font-variant-numeric:tabular-nums lining-nums}.ds-workshop__main{grid-area:main;display:flex;flex-wrap:wrap;column-gap:.5em;align-items:baseline}.ds-workshop__time{font:500 clamp(12.5px,1.6vh,15.5px)/1.3 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);color:var(--color-ink-soft,rgba(44,44,44,0.8))}.ds-workshop__topic{grid-area:topic;margin-top:2px;font:400 clamp(12.5px,1.6vh,15.5px)/1.3 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);color:var(--color-ink-muted,rgba(44,44,44,0.72))}.ds-workshop::after{content:\"\";grid-area:arrow;align-self:center;justify-self:end;width:18px;height:18px;background:currentColor;color:var(--color-accent-ink,#6e4336);opacity:.45;-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E\") center/contain no-repeat;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E\") center/contain no-repeat;transition:transform 150ms ease-out,opacity 150ms ease-out}.ds-workshop:hover::after,.ds-workshop:focus-visible::after{transform:translateX(3px);opacity:1}.ds-workshop:focus-visible{outline:2px solid var(--color-red,#a8465a);outline-offset:3px}"
+    },
+    {
+      "name": "Folio",
+      "kind": "custom",
+      "refersTo": "page-left",
+      "description": "The line at every page's foot: page number on the outer side, running title and wordmark link on the inner, in tracked Franklin caps.",
+      "html": "<div class=\"ds-folio\"><span>3</span><span class=\"ds-folio__group\"><span>Programme</span><a class=\"ds-folio__mark\" href=\"#title\">Irene Ellis Art</a></span></div>",
+      "css": ".ds-folio{display:flex;justify-content:space-between;align-items:baseline;gap:16px;min-width:320px;padding:16px 24px;background:var(--color-blush,#f1dfd6);font:400 clamp(12px,1.35vh,13.5px)/1 var(--font-ui,\"Libre Franklin\",Arial,sans-serif);letter-spacing:var(--track-label,0.14em);text-transform:uppercase;color:var(--color-ink-muted,rgba(44,44,44,0.72))}.ds-folio__group{display:flex;gap:16px}.ds-folio__mark{color:inherit;text-decoration:none}.ds-folio__mark:hover{color:var(--color-text,#2c2c2c)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Artist's Sketchbook, Paged Like a Catalogue",
+    "overview": "**Creative North Star: \"The Artist's Sketchbook, Paged Like a Catalogue\"**\n\nThe whole site is one object: a ring-bound sketchbook lying open on a dark board. There is no page that scrolls; the visitor turns pages, and anything longer than a page scrolls inside that page. The sketchbook supplies the materials (blush and pink paper, tan fore-edges, a rose endpaper, a charcoal wire coil, dandelion seeds in a margin) and the exhibition catalogue supplies the grammar: Roman plate numbers, small label blocks under every picture, hairline rules, wide margins, folios at every page foot, one picture to a page at full size.\n\nThe density is a printed page's, not a web page's. Every measurement on the paper is taken in `--u`, one hundredth of the book's height, so type, margins and pictures grow together like print, inside clamps that keep body text at 16px or more. The interface recedes into catalogue furniture: fore-edge tabs for the index, folio numbers, a lifted page corner that turns the page, and one pinned paper slip for the primary action. The paintings are the only strong colour on the paper.\n\nConfirmed rejections, from the build and the direction contract: the scrolling portfolio (hero, grid, form), card stacks and cards-in-cards, a dark showcase panel, drifting ornament, pill buttons, icon tiles, and dark slab buttons on the paper.",
+    "keyCharacteristics": [
+      "One book at one scale: an A4 landscape spread that fills what the board leaves, a single portrait page on phones",
+      "Three paper colours with jobs (blush left, pink right, tan for anything that is a separate piece of paper)",
+      "Three type roles with hard borders: script for titles, Caslon for everything read, Franklin for everything scanned",
+      "Hairline rules at exactly three strengths; tracked capitals at exactly two trackings",
+      "Depth is physical (paper over paper, light from above), never decorative",
+      "Motion is the page turn and small hover shifts; nothing drifts"
+    ],
+    "rules": [
+      {
+        "name": "The Two Roses Rule",
+        "body": "Dusty Rose draws lines and big numerals; Rose Ink sets small text. Never set a 12–16px word in Dusty Rose: it measures under 4.5:1 on every paper.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Hairlines Rule",
+        "body": "A rule is `rule-soft`, `rule`, or `rule-strong`, always 1px. A fourth strength is not added; six slightly different lines read as uneven, three read as a system.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper Is The Colour Rule",
+        "body": "Surfaces are paper colours only. The paintings are the only saturated colour on a page; no tint, gradient or coloured panel competes with them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Script Is For Titles Rule",
+        "body": "Pinyon Script sets the wordmark and the spread titles only. A form heading, a dialog heading, a label or a sentence is never in script.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two Trackings Rule",
+        "body": "Tracked capitals are 0.14em (`--track-label`); buttons are 0.08em (`--track-button`); sentence case is never tracked. The phone index strip's 0.02em is the recorded exception, forced by four words in 204px.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Leading Rule",
+        "body": "Everything read is set at 1.5; labels and titles at 1 to 1.3. No third body leading.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Lifted Thing Rule",
+        "body": "On a page, the pinned slip is the only lifted control. A button is a paper tab glued flat to the page and throws no shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Light From Above Rule",
+        "body": "Every shadow has a positive y-offset and a blur at least as large as its offset. No hard offset shadows, no glows, no inner shadows except the field's 1px recess.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do measure anything on the paper in `--u` (one hundredth of the book's height) inside a clamp, and anything that must not scale in the 4px spacing scale.",
+      "Do set every rule at 1px in one of the three hairline strengths, and every tracked line of capitals at 0.14em (labels) or 0.08em (buttons).",
+      "Do make a new control out of catalogue furniture: a ruled line, a paper tab, a folio, a label block, a pinned slip.",
+      "Do keep body text at 16px or more and check every small colour against the paper it sits on (Rose Ink, Ink Soft, Ink Muted and Error Rose are the four small-text colours that pass).",
+      "Do give every control a 44px hit area and the one shared rose-red focus ring.",
+      "Do caption every picture with the label block: hairline, plate number, \"Untitled\", nothing invented."
+    ],
+    "donts": [
+      "Don't set anything but the wordmark and the spread titles in Pinyon Script.",
+      "Don't put Dusty Rose on small text; it is for rules, field edges and numerals 22px and larger.",
+      "Don't lift a button. The pinned slip is the only lifted control on a page; submit buttons are flat paper tabs with no shadow.",
+      "Don't add a card, a panel, a pill, an icon tile, a coloured band or a gradient to a page; the paper colours are the only surfaces.",
+      "Don't add ornament that moves. The dandelion seeds are static and drawn in the title page's margin; the page turn and small hover shifts are the whole motion vocabulary.",
+      "Don't add a fourth hairline strength, a third tracking, a second body leading, or a dark-slab button.",
+      "Don't put an eyebrow or kicker line above a heading. The plate number under a picture is the page's heading, not a kicker."
+    ]
+  }
+}

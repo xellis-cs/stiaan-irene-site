@@ -1,8 +1,8 @@
-// Workshop sign-ups — the booking form inside the dark panel, wired to the
+// Workshop sign-ups — the booking form on the loose slip, wired to the
 // database.
 //
-// A visitor clicks a workshop date, the panel opens with that date restated
-// in a chip, they fill in their details and press "Book my place"; the
+// A visitor presses a workshop date, book.js lays the slip over the book
+// with that date restated in a chip, they fill in their details and press "Book my place"; the
 // booking lands in the `signups` table, where the admin page reads it. Only
 // inserting is allowed from here: the database's row rules let anyone add a
 // sign-up but let nobody read the list back without signing in, so one
@@ -25,6 +25,7 @@
   var done = form.querySelector("[data-signup-done]");
   var doneText = form.querySelector("[data-done-text]");
   var chip = form.querySelector("[data-signup-chip]");
+  var head = form.querySelector(".signup__head"); // hidden once booked, so the thank-you has one title
   var fields = {
     name: form.querySelector("#signup-name"),
     surname: form.querySelector("#signup-surname"),
@@ -35,9 +36,9 @@
 
   var MAX_PEOPLE = 6;
 
-  // Which date was clicked. The panel is opened by a workshop button, and the
-  // page stack copies those buttons into its title band, so this listens on the
-  // document rather than on the buttons themselves — a copy works like the
+  // Which date was clicked. content.js redraws the date buttons once the
+  // saved dates arrive from the database, so this listens on the document
+  // rather than on the buttons themselves — a redrawn button works like the
   // original. Read from the button's own text, which is what the visitor saw.
   var picked = null;
   document.addEventListener("click", function (e) {
@@ -55,6 +56,11 @@
       workshop_month: month ? (month.querySelector(".workshops__month-name") || {}).textContent.trim() : "",
       workshop_date: [day, weekday, time].filter(Boolean).join(" "),
       workshop_topic: text(".workshop__topic"),
+      // the parts on their own, for the thank-you's sentence (the row sent
+      // to the database keeps workshop_date exactly as above)
+      day: day,
+      weekday: weekday,
+      time: time,
     };
     showChip(day, [weekday, time, picked.workshop_month].filter(Boolean).join(" · "), picked.workshop_topic);
     reset(); // a fresh form for a fresh date
@@ -151,6 +157,9 @@
       ok = false;
     }
     if (!ok) {
+      // the hints are live regions, so each one is announced as it is
+      // written; the status line sums it up for whoever missed them
+      say("Please fill in the highlighted fields.", "error");
       var first = form.querySelector('[aria-invalid="true"]');
       if (first) first.focus();
     }
@@ -161,10 +170,14 @@
   function showDone(row) {
     if (fieldsWrap) fieldsWrap.hidden = true;
     if (foot) foot.hidden = true;
+    if (head) head.hidden = true;
     if (done) {
       if (doneText) {
         var who = row.attendees > 1 ? row.attendees + " people" : "one place";
-        var when = [row.workshop_date, row.workshop_month].filter(Boolean).join(", ");
+        // written the way a South African says a date: "Saturday 18 July, 14:00"
+        var when = picked
+          ? [[picked.weekday, picked.day, row.workshop_month].filter(Boolean).join(" "), picked.time].filter(Boolean).join(", ")
+          : [row.workshop_date, row.workshop_month].filter(Boolean).join(", ");
         doneText.innerHTML =
           "Thank you, <strong></strong> — " +
           who +
@@ -185,6 +198,7 @@
   function reset() {
     if (fieldsWrap) fieldsWrap.hidden = false;
     if (foot) foot.hidden = false;
+    if (head) head.hidden = false;
     if (done) done.hidden = true;
     say("");
     [fields.name, fields.surname, fields.phone].forEach(function (el) {
@@ -194,12 +208,13 @@
     setPeople(1);
     btn.disabled = false;
   }
-  // "Book another date": close the panel so they can pick one. The fold-X
-  // button is the one place that knows how to close, so press it.
+  // "Book another date": put the slip away so they can pick one. The slip's
+  // own close control is the one place that knows how to close it, so press
+  // it (book.js listens for it).
   var again = form.querySelector("[data-signup-again]");
   if (again) {
     again.addEventListener("click", function () {
-      var close = document.querySelector(".showcase__back");
+      var close = document.querySelector("[data-booking-close]");
       if (close) close.click();
       reset();
     });

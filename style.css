@@ -1,46 +1,166 @@
-/* Brand color palette */
+/* ============================================================
+   IRENE ELLIS ART — the sketchbook
+   The site is ONE ring-bound sketchbook, open flat on a dark board,
+   paged like an exhibition catalogue. index.html holds the pages;
+   book.js turns them; this file is the paper, the ink and the furniture.
+   ============================================================ */
+
+/* ---------- Fallback faces, matched to the web fonts' metrics ----------
+   While Caslon, Franklin and Pinyon are still arriving, the browser sets
+   the page in a local face. Left to itself that face is wider or narrower
+   and the lines wrap differently, so the roles and the offer jumped by
+   28px on every cold load as the real fonts landed. These three faces are
+   the local Times, Arial and Times Italic scaled so their lines run the
+   same length (size-adjust: the ratio of each pair's widths over the
+   offer sentence, measured with fontTools) and given the web fonts'
+   ascent and descent, so the lines sit where they will sit. On a machine
+   without those faces the next name in the stack is used, unadjusted. */
+@font-face {
+  font-family: "Caslon Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif");
+  size-adjust: 117.9%;
+  ascent-override: 97%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+/* The roles line is capitals, and Times' capitals run 5.6% wider than
+   Caslon's where its lower case runs 1% wider, so one adjustment cannot
+   serve both: the capitals get their own face, scaled for capitals. */
+@font-face {
+  font-family: "Caslon Caps Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif");
+  size-adjust: 111.7%;
+  ascent-override: 97%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Franklin Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans");
+  size-adjust: 102%;
+  ascent-override: 96.6%;
+  descent-override: 24.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Pinyon Fallback";
+  font-style: italic;
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic");
+  size-adjust: 94.6%;
+  ascent-override: 86.3%;
+  descent-override: 38.4%;
+  line-gap-override: 0%;
+}
+
+/* ---------- Brand palette and the few numbers everything shares ---------- */
 :root {
-  --color-pink: #eed0c8;
-  --color-blush: #f1dfd6; /* soft rose-cream — About section background */
-  --color-rose: #e6b8ab; /* deeper rose — Portfolio background */
-  --color-tan: #f4efe4;
-  --color-white: #fdfdfd;
-  --color-text: #2c2c2c;
+  --color-pink: #eed0c8; /* the right-hand pages */
+  --color-blush: #f1dfd6; /* the left-hand pages */
+  --color-rose: #e6b8ab; /* the endpaper: the cover's rim around the pages */
+  --color-tan: #f4efe4; /* the fore-edges, the tabs, the paper slips */
+  --paper-edge: #dcc7bb; /* the shade between the page edges of the block */
+  --color-white: #fdfdfd; /* form fields */
+  --color-text: #2c2c2c; /* all readable copy */
   /* The accent used to be #bb8b79. Measured against the pink backgrounds it
      only reached 1.7–2.3:1 — too faint to read as text (WCAG asks for 4.5:1
      for small text, 3:1 for lines and big text). Darkened along the same hue
-     so it still reads as "dusty rose", just deeper: 5.4:1 on white (the day
-     numbers), 3.0–4.2:1 on the pinks (where it only draws rules). */
+     so it still reads as "dusty rose", just deeper: 5.3:1 on white, 3.7–4.7:1
+     on the papers — enough for RULES and big numerals, not for small text. */
   --color-accent: #8f5f50;
-  /* Softer charcoals for small captions. Both are checked to pass 4.5:1 on
-     every background they sit on (eyebrows on the rose: 5.0:1; times and
-     topics on white/cream: 5.1–5.3:1). Lighter tints looked nicer but
-     failed; these are as light as the text can go and still be readable. */
-  --color-ink-soft: rgba(44, 44, 44, 0.8); /* eyebrows, small uppercase labels */
-  --color-ink-muted: rgba(44, 44, 44, 0.72); /* times, topics, helper text */
-  --color-dark: #2a2826; /* the dark end of the palette: showcase, contact boxes, footer */
+  /* The same rose, deep enough for SMALL text: plate numbers and labels.
+     Measured 5.8:1 on pink, 6.5:1 on blush, 7.3:1 on tan, 4.7:1 on rose. */
+  --color-accent-ink: #6e4336;
+  /* The edge of a form field and the stepper: the accent rose. A hairline
+     of charcoal at 0.3 alpha only reached 1.7:1 on the pink and 1.8:1 on
+     the tan slip — a low-vision visitor on a sunlit phone could not see
+     where a field was until they tapped it (WCAG 1.4.11 asks 3:1 for
+     control boundaries). Measured: 3.7:1 on pink, 4.2:1 on blush, 4.7:1
+     on tan, 5.3:1 against the field's own white. */
+  --color-field-edge: var(--color-accent);
+  /* Softer charcoals for small captions. Both checked to pass 4.5:1 on every
+     paper they sit on (soft: 5.7:1 on pink; muted: 4.6:1 on pink). */
+  --color-ink-soft: rgba(44, 44, 44, 0.8);
+  --color-ink-muted: rgba(44, 44, 44, 0.72);
+  --color-dark: #2a2826; /* the board the book lies on */
+  --color-red: #a8465a; /* the rose-red: focus rings, the pin, the close X */
+  --color-error: #8c2f41; /* the rose-red deep enough to READ: 5.6:1 on pink */
+  --color-placeholder: #6f6460; /* 5.6:1 on the white fields */
+  --color-light: #f1dfd6; /* text on the board */
+  --color-light-muted: rgba(241, 223, 214, 0.72); /* 6.7:1 on the board */
+
+  /* --- Rules --- the hairlines, at three strengths and no more: soft
+     between list items and dates, plain under headings and labels, strong
+     under a page heading and around a quiet button. Six slightly different
+     strengths read as uneven; three read as a system. */
+  --rule-soft: rgba(44, 44, 44, 0.16);
+  --rule: rgba(44, 44, 44, 0.24);
+  --rule-strong: rgba(44, 44, 44, 0.4);
+
+  /* --- The coil --- its colours live here, not in the SVG, so a palette
+     change reaches it (the geometry stays hand-tuned in index.html) */
+  --coil-wire: #3a322d;
+  --coil-hole: #2a2826; /* through the page to the board */
+  --coil-highlight: #6b615b;
 
   /* --- Type roles — three families, three jobs ---
-     display: the Pinyon script for the name and section titles
-     serif:   EB Garamond for everything that is read — the story, the
-              tagline, month names, small-caps pills
-     ui:      Inter for controls, captions, forms
-     (Cormorant Garamond and the never-loaded "Sabon" used to share these
-     jobs; that was five families for three roles.) */
-  --font-display: "Pinyon Script", cursive;
-  --font-serif: "EB Garamond", Georgia, "Times New Roman", serif;
-  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+     display: Pinyon Script, for the wordmark and the spread titles ONLY
+     serif:   Libre Caslon Text, for everything that is read: the story,
+              the offer, the dates, the catalogue "Untitled" lines. Caslon
+              is the book face: it has set gallery catalogues for a century.
+     ui:      Libre Franklin, for labels, folios, tabs, fields and buttons.
+              A Franklin Gothic is what museum wall labels are set in.
+     (EB Garamond and Inter did these jobs in the earlier, scrolling site.) */
+  --font-display: "Pinyon Script", "Pinyon Fallback", "Times New Roman", serif;
+  --font-serif: "Libre Caslon Text", "Caslon Fallback", Georgia, serif;
+  --font-serif-caps: "Libre Caslon Text", "Caslon Caps Fallback", Georgia, serif; /* the roles line only */
+  --font-ui: "Libre Franklin", "Franklin Fallback", "Helvetica Neue", Arial, sans-serif;
+  /* (the served Libre Franklin has no tabular figures — tnum — so only the
+     Caslon day numbers can be asked to line up; asking Franklin does nothing) */
 
-  /* --- Type scale --- a small ladder; most text sits on one of these */
-  --text-xs: 0.75rem; /* 12px — eyebrows */
-  --text-sm: 0.875rem; /* 14px — captions, date rows */
-  --text-md: 1rem; /* 16px — UI, forms */
-  --text-lg: 1.14rem; /* ~18px — reading text */
-  --text-xl: clamp(1.35rem, 2.8vw, 1.75rem); /* pull quotes */
-  --text-2xl: clamp(1.5rem, 3.3vw, 2.05rem); /* lead lines */
-  --text-title: clamp(3.4rem, 7vw, 5.5rem); /* the script section titles */
+  /* --- The book's size ---
+     The board keeps a margin all round (--board-pad) and room at the sides
+     for the tabs (--board-side) and at the foot for the arrows. The book is
+     an A4 landscape spread (two A4 pages: 1.414 wide for every 1 tall) that
+     fills whatever is left. --u is one hundredth of the book's height: type
+     and margins are measured in it, so the page scales like a printed page
+     and the type with it, within the clamps below. */
+  --board-pad: 28px;
+  --board-foot: 64px;
+  --board-side: 72px;
+  --book-ratio: 1.414;
+  --book-h: min(
+    calc(100vh - var(--board-pad) - var(--board-foot)),
+    calc((100vw - 2 * var(--board-side)) / var(--book-ratio))
+  );
+  --book-w: calc(var(--book-h) * var(--book-ratio));
+  --u: calc(var(--book-h) / 100);
+  --page-pad: clamp(22px, calc(var(--u) * 5.6), 56px); /* a page's margin */
+  /* The turn's 3D eye, as a distance in book widths. A page standing on
+     its edge brings its far edge nearer the eye, and the nearer the eye
+     the more that edge swells past the cover: at 50 the swell is about
+     1% (4px on a 1440 screen, 7px on a 2560 one), so the standing page
+     stays inside the cover's rim; the old 3800px put it 70px over the
+     board. The turn still reads as a turn: the page narrows as it stands
+     and its shade and cast do the rest. */
+  --turn-depth: 50;
+  --gutter-pad: 30px; /* extra room at the coil, so the rings never sit on words */
 
-  /* --- Spacing scale --- multiples of 4px, so gaps rhyme across sections */
+  /* --- Type scale --- measured in --u so it grows with the page */
+  --text-body: clamp(16px, calc(var(--u) * 2.05), 21px); /* never under 16px: the readers are beginners, some older */
+  --text-small: clamp(12.5px, calc(var(--u) * 1.6), 15.5px);
+  --text-label: clamp(12px, calc(var(--u) * 1.35), 13.5px); /* labels, folios, tabs: 12px floor */
+  --text-lead: clamp(19px, calc(var(--u) * 2.7), 28px);
+  --text-numeral: clamp(22px, calc(var(--u) * 3.4), 34px);
+  --text-spread-title: clamp(2.2rem, calc(var(--u) * 5.8), 4.2rem);
+  --text-wordmark: clamp(2.9rem, calc(var(--u) * 8.4), 6rem); /* never above 6rem */
+
+  /* --- Tracking --- two values, not nine: tracked capitals for labels and
+     headings in the sans, a lighter tracking for the buttons, and none at
+     all for anything in sentence case */
+  --track-label: 0.14em;
+  --track-button: 0.08em;
+
+  /* --- Spacing scale --- multiples of 4px, so gaps rhyme across pages */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -49,69 +169,111 @@
   --space-6: 32px;
   --space-7: 48px;
   --space-8: 64px;
-  --section-pad-y: clamp(56px, 10vh, 120px);
-  --section-pad-x: clamp(32px, 6vw, 100px);
 
-  /* --- Corners --- the site uses three: pills, cards, fields */
-  --radius-pill: 999px;
-  --radius-card: 18px;
-  --radius-field: 12px;
-  /* The contact foreground: the ground bank AND the border it flows into must
-     share one colour, or a seam appears between them. Matched exactly to the
-     bush/grass assets in the plants layer (#c68d77) — NOT the mid-hill contour
-     stroke (#cf9b8a), which is a different, lighter colour. */
-  --color-ground: #c68d77;
-}
-/* the drifting foreground bank at the bottom of the contact landscape */
-.contact__ground {
-  fill: var(--color-ground);
+  /* --- Corners --- paper is cut square; fields and buttons barely rounded */
+  --radius-field: 3px;
+
+  /* --- Shadows --- always an offset and a soft blur, like light from above */
+  --shadow-paper: 0 6px 14px -4px rgba(0, 0, 0, 0.38), 0 1px 2px rgba(0, 0, 0, 0.16);
+  --shadow-paper-lift: 0 12px 22px -6px rgba(0, 0, 0, 0.42), 0 2px 4px rgba(0, 0, 0, 0.18);
+  --shadow-plate: 0 10px 20px -10px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
+@supports (height: 100dvh) {
+  :root {
+    --book-h: min(
+      calc(100dvh - var(--board-pad) - var(--board-foot)),
+      calc((100vw - 2 * var(--board-side)) / var(--book-ratio))
+    );
+  }
+}
+
+/* ============================================================
+   BASE — the things the browser draws that still have to belong
+   ============================================================ */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+html {
+  background: var(--color-dark);
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
-  padding: 0;
-  font-family: var(--font-ui);
-  /* the page-edge strip below the last section carries the contact ground
-     colour, so the border runs unbroken to the very end of the page */
-  background-color: var(--color-ground);
-  color: #2c2c2c;
-  /* positioning context so the full-height ring binding can span the
-     whole document (top:0; bottom:0 resolves to the document's height) */
-  position: relative;
-  /* a slim page-edge strip below all content: the front page ends here,
-     just past the last ring, and the cascading page stack sits in it.
-     Trimmed by the 14px that used to sit empty beneath the cascade, so the
-     page now ends where the cascade ends. */
-  padding-bottom: 32px;
+  background: var(--color-dark);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: 1.5; /* the one leading for everything read: story, intro, lists */
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--color-red);
 }
 
-/* Native in-page jumps (JavaScript off, or a shared #link) land just below
-   the sticky header instead of under it. script.js does the same maths for
-   its smooth scroll. */
-html {
-  scroll-padding-top: 72px;
+::selection {
+  background: var(--color-rose);
+  color: var(--color-text);
 }
 
-/* ============================================================
-   SHARED BITS — focus rings, the skip link, the two pill buttons
-   ============================================================ */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* The hidden attribute always wins — otherwise a display rule (a grid, a
+   flex row) keeps a "hidden" block on screen. This is what makes the booking
+   form's fields go away once the thank-you shows. */
+[hidden] {
+  display: none !important;
+}
+
+p,
+h1,
+h2,
+h3,
+figure,
+blockquote,
+ul {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-color: var(--color-text);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
 /* One focus style for every control, shown only for keyboard focus
-   (:focus-visible), so mouse clicks never leave a ring behind. Deliberately
-   a rose-red double ring: visible on the pale pinks AND on the dark panels. */
+   (:focus-visible), so mouse clicks never leave a ring behind. A rose-red
+   double ring: visible on the pale papers AND on the dark board. */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 2px solid #a8465a;
+  outline: 2px solid var(--color-red);
   outline-offset: 3px;
   box-shadow: 0 0 0 5px rgba(253, 253, 253, 0.85);
 }
+/* headings only take focus from the script after a turn; no ring for that */
+h1[tabindex]:focus-visible,
+h2[tabindex]:focus-visible,
+nav[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
 
-/* Text that is only for screen readers (a field's label when the
-   placeholder carries the words on screen). Kept in the page, just not drawn. */
+/* Text that is only for screen readers (the live announcement of the page
+   turned to). Kept in the page, just not drawn. */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -121,2454 +283,2144 @@ html {
   white-space: nowrap;
 }
 
-/* Hidden off the top of the page until it is tabbed to, then it drops in. */
+/* The bot-trap field: off screen, out of the tab order, never seen */
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* Hidden off the top of the window until it is tabbed to, then it drops in. */
 .skip-link {
   position: fixed;
   top: var(--space-3);
   left: var(--space-3);
   z-index: 200;
   padding: 12px 20px;
-  border-radius: var(--radius-pill);
-  background: var(--color-dark);
-  color: var(--color-blush);
-  font: 600 var(--text-sm) / 1.2 var(--font-ui);
-  text-decoration: none;
+  background: var(--color-tan);
+  color: var(--color-text);
+  font: 600 var(--text-small) / 1.2 var(--font-ui);
+  text-decoration: none; /* sentence case, so no tracking */
+  box-shadow: var(--shadow-paper);
   transform: translateY(calc(-100% - 24px));
-  /* clipped as well as moved off: a clipped element draws nothing at all,
-     so it can't be hit by accident, yet it can still receive focus
-     (visibility:hidden would take it out of the tab order) */
   clip-path: inset(100%);
-  transition: transform 0.2s ease;
 }
-.skip-link:focus-visible {
+.skip-link:focus {
   transform: none;
   clip-path: none;
 }
 
-/* The two pill buttons used for calls to action: a solid dark one (the
-   thing we most want pressed) and a quiet outlined one. Both are at least
-   44px tall so they are easy to hit with a thumb. */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 12px 26px;
-  border-radius: var(--radius-pill);
-  border: 1px solid transparent;
-  font: 600 var(--text-sm) / 1.2 var(--font-ui);
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.25s ease, border-color 0.25s ease,
-    color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-}
-.btn--primary {
-  background: var(--color-dark);
-  border-color: var(--color-dark);
-  color: var(--color-blush);
-  box-shadow: 0 14px 28px -18px rgba(42, 40, 38, 0.7);
-}
-.btn--primary:hover {
-  background: #3a3532;
-  border-color: #3a3532;
-  transform: translateY(-2px);
-  box-shadow: 0 18px 30px -16px rgba(42, 40, 38, 0.7);
-}
-.btn--ghost {
-  background: rgba(253, 253, 253, 0.45);
-  border-color: rgba(44, 44, 44, 0.26);
-  color: var(--color-text);
-}
-.btn--ghost:hover {
-  background: var(--color-pink);
-  border-color: var(--color-pink);
-  transform: translateY(-2px);
-}
-.btn:active {
-  transform: translateY(0);
+.defs {
+  position: absolute;
 }
 
 /* ============================================================
-   SITE HEADER — the slim sticky bar (markup at the top of index.html)
+   THE BOARD AND THE BOOK
    ============================================================ */
-:root {
-  --site-header-h: 60px; /* stack.js reads the real height; this is the design size */
-}
-.site-header {
+.board {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  /* Under the binding coil (z 60) and the page-stack edges (z 55), so the
-     rings keep running over the top of it like a real spine — but above
-     every section and the sticky title band. */
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: var(--space-5);
-  min-height: var(--site-header-h);
-  /* the right padding is the binding's width plus a breath, so nothing
-     ever sits under the rings */
-  padding: 0 calc(104px + var(--space-3)) 0 clamp(28px, 4vw, 56px);
-  background: rgba(253, 251, 249, 0.93); /* near-solid: the page shows through only faintly */
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(70, 62, 58, 0.14);
-  box-shadow: 0 10px 30px -24px rgba(70, 62, 58, 0.5);
-  /* parked off the top of the screen; script.js adds .is-shown once the
-     hero has scrolled away */
-  transform: translateY(-100%);
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease;
-  opacity: 0;
-}
-.site-header.is-shown {
-  transform: none;
-  opacity: 1;
-}
-/* out of the way while the dark showcase is open — it is a dialog, and the
-   page behind it should go quiet */
-body.is-showcase-open .site-header {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-.site-header__brand {
-  font-family: var(--font-display);
-  font-size: 1.7rem;
-  line-height: 1;
-  color: #111;
-  text-decoration: none;
-  white-space: nowrap;
-  padding: 8px 6px 10px; /* a 44px-tall hit area around the script */
-  margin-left: -6px;
-}
-.site-header__nav {
-  display: flex;
-  align-items: center;
-  gap: clamp(4px, 1vw, 12px);
-  margin-left: auto;
-}
-.site-header__nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 10px 14px;
-  border-radius: var(--radius-pill);
-  font: 500 var(--text-sm) / 1.2 var(--font-ui);
-  letter-spacing: 0.02em;
-  color: var(--color-text);
-  text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.site-header__nav a:hover {
-  background: var(--color-blush);
-}
-/* the one solid pill in the bar */
-.site-header__nav .site-header__cta {
-  margin-left: var(--space-2);
-  padding: 10px 20px;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr;
+  place-items: center;
+  padding: var(--board-pad) var(--board-side) var(--board-foot);
   background: var(--color-dark);
-  color: var(--color-blush);
-  font-weight: 600;
+  /* the book's edges and the lifted pages may poke past the window; the
+     board swallows that rather than growing scrollbars */
+  overflow: hidden;
 }
-.site-header__nav .site-header__cta:hover {
-  background: #3a3532;
+
+/* The book and the index share the one grid cell, so the tabs (in .index)
+   can be placed against the book's edges without living inside the book. */
+.book,
+.index {
+  grid-area: 1 / 1;
+  height: var(--book-h);
+  width: var(--book-w);
 }
-/* the Menu button only exists on phones */
-.site-header__menu {
+
+.book {
+  position: relative;
+  /* the cover's rim: rose endpaper showing all round the pages */
+  background: var(--color-rose);
+  padding: 7px 14px 14px 7px; /* more on the right and foot: the page block sits there, and the rim still shows past it */
+  border-radius: 4px;
+  box-shadow:
+    0 40px 70px -24px rgba(0, 0, 0, 0.7),
+    0 14px 28px -8px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.book__pages {
+  position: absolute;
+  inset: 7px 15px 12px 7px; /* more on the right and foot: the page block sits there (11px and 7px), and the rim shows past it */
+  /* the 3D stage for the turn: the eye sits over the gutter, so a page
+     standing on its edge there is exactly edge-on, and invisible; its
+     distance is --turn-depth book widths (see :root) */
+  perspective: calc(var(--book-w) * var(--turn-depth));
+  perspective-origin: 50% 50%;
+}
+
+/* The block of pages under the open ones, showing along the right
+   fore-edge and the foot: tan page edges with a hair of shade between
+   them. The stripes fall on whole pixels (2px paper, 1px shade) so they
+   resolve as page lines on a 1x screen instead of blurring to one sliver,
+   and a second, offset set is laid over them at half strength so the
+   spacing is not perfectly even. Over both sits a small drawn tile (an
+   SVG, 11 by 61px) in which each page line steps a pixel sideways for a
+   stretch and back, at a different height for each line, so the edges
+   wander along their length as a block of torn-edged pages does, instead
+   of running as ruled lines. The rose rim of the cover still shows
+   beyond them: the block ends 4px short of the cover's edge. */
+.book__pages::before,
+.book__pages::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+.book__pages::before {
+  top: 2px;
+  bottom: -7px;
+  right: -11px;
+  width: 11px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='61'%3E%3Cpath fill='%23f4efe4' d='M2 9h1v14H2zM5 30h1v11H5zM8 47h1v11H8zM2 38h1v8H2z'/%3E%3Cpath fill='%23dcc7bb' d='M3 9h1v14H3zM4 30h1v11H4zM9 47h1v11H9zM1 38h1v8H1z'/%3E%3C/svg%3E") 0 0 / 11px 61px repeat-y,
+    repeating-linear-gradient(to right, transparent 0 1px, rgba(220, 199, 187, 0.5) 1px 2px, transparent 2px 5px),
+    repeating-linear-gradient(to right, var(--color-tan) 0 2px, var(--paper-edge) 2px 3px);
+}
+.book__pages::after {
+  left: 3px;
+  right: -11px;
+  bottom: -7px;
+  height: 7px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='61' height='7'%3E%3Cpath fill='%23f4efe4' d='M9 2h14v1H9zM30 5h11v1H30zM47 2h9v1H47z'/%3E%3Cpath fill='%23dcc7bb' d='M9 3h14v1H9zM30 4h11v1H30zM47 1h9v1H47z'/%3E%3C/svg%3E") 0 0 / 61px 7px repeat-x,
+    repeating-linear-gradient(to bottom, transparent 0 1px, rgba(220, 199, 187, 0.5) 1px 2px, transparent 2px 5px),
+    repeating-linear-gradient(to bottom, var(--color-tan) 0 2px, var(--paper-edge) 2px 3px);
+}
+
+/* ---------- a page ---------- */
+.spread {
+  display: contents; /* a spread is a grouping; its pages are placed directly */
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: var(--color-blush);
+  z-index: 1;
+  /* a swipe is horizontal; up and down is left to the page's own scrolling */
+  touch-action: pan-y;
+}
+.page--left {
+  left: 0;
+  --paper: var(--color-blush); /* this page's paper colour, for the fade at a scroller's foot */
+  transform-origin: 100% 50%; /* turns about the gutter, its right edge */
+  border-radius: 2px 0 0 2px;
+}
+.page--right {
+  left: 50%;
+  --paper: var(--color-pink);
+  background: var(--color-pink);
+  transform-origin: 0% 50%; /* turns about the gutter, its left edge */
+  border-radius: 0 2px 2px 0;
+}
+
+/* The paper's own shading: a touch darker where it curves into the coil */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.page--left::before {
+  background: linear-gradient(to right, rgba(60, 35, 25, 0) 86%, rgba(60, 35, 25, 0.12));
+}
+.page--right::before {
+  background: linear-gradient(to left, rgba(60, 35, 25, 0) 86%, rgba(60, 35, 25, 0.12));
+}
+
+/* Pages not on show. "staged" ones are laid out invisibly so that their
+   pictures load before they are turned to; "off" ones are not drawn. */
+.page[data-state="staged"] {
+  visibility: hidden;
+}
+.page[data-state="off"] {
   display: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .site-header,
-  .skip-link,
-  .btn {
-    transition: none;
-  }
+/* The two pages in motion sit above everything, and the browser is warned
+   only then, so no page carries the cost of a 3D layer while at rest. */
+.page.is-lifting,
+.page.is-landing {
+  z-index: 6;
+  will-change: transform, opacity;
+  /* no shadow on the moving page itself: the .cast layers and the page's
+     shade already throw the turn's shadow, with the light from above */
 }
-
-/* Cascading page-stack edges (left + bottom + rounded corner). Overlay
-   only, drawn by script.js at document size; below the binding, above
-   the content backgrounds. Never blocks clicks. */
-.page-stack {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 55;
-  overflow: visible;
+.is-turning .page,
+.is-turning .corner {
   pointer-events: none;
 }
+.is-turning .corner {
+  opacity: 0;
+}
 
-/* --- Ring binding down the right edge (whole page = a left book page) ---
-   Overlays the site's right margin; pointer-events:none so it never blocks
-   clicks. Sits above content but below the showcase overlay (z-index 100).
-   overflow:hidden clips each loop where it wraps off the page edge. */
-.binding {
+/* The shade a page wears as it stands up (book.js animates its opacity) */
+.page__shade {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.page--left .page__shade {
+  background: linear-gradient(to right, rgba(30, 20, 15, 0.2) 20%, rgba(30, 20, 15, 0.85));
+}
+.page--right .page__shade {
+  background: linear-gradient(to left, rgba(30, 20, 15, 0.2) 20%, rgba(30, 20, 15, 0.85));
+}
+
+/* The soft shadow a turning page throws across the pages beneath it */
+.cast {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
-  width: 104px;
-  z-index: 60;
-  overflow: hidden;
+  width: 50%;
+  opacity: 0;
   pointer-events: none;
+  z-index: 3;
 }
-.binding__svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.cast--left {
+  left: 0;
+  background: linear-gradient(to left, rgba(30, 20, 15, 0.8), rgba(30, 20, 15, 0) 72%);
 }
-/* Phones: the coil at half size, so it takes half the width. script.js draws
-   the rings at half scale to match (its PHONE check uses this breakpoint). */
-@media (max-width: 640px) {
-  .binding {
-    width: 52px;
-  }
+.cast--right {
+  right: 0;
+  background: linear-gradient(to right, rgba(30, 20, 15, 0.8), rgba(30, 20, 15, 0) 72%);
 }
 
-/* ============================================================
-   HERO / LANDING
-   A full-screen opening: a soft watercolour wash, the name
-   cascading down like a staircase, and nav pills along the base.
-   ============================================================ */
-#hero {
-  position: relative;
+/* ---------- inside a page ---------- */
+.page__body {
+  position: absolute;
+  top: var(--page-pad);
+  bottom: calc(var(--page-pad) * 1.5); /* the folio sits in this room */
+  left: var(--page-pad);
+  right: var(--page-pad);
+}
+.page--left .page__body {
+  right: calc(var(--page-pad) * 0.6 + var(--gutter-pad));
+}
+.page--right .page__body {
+  left: calc(var(--page-pad) * 0.6 + var(--gutter-pad));
+}
+
+/* Long pages scroll inside the page. The scrollbar is the book's: a thin
+   dusty-rose thumb on no track. */
+.page__body--scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
+.page__body--scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.page__body--scroll::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+.page__body--scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* when there IS more below (book.js adds the class), the last lines fade,
+   so the page visibly continues rather than looking cut off. The fade is
+   a wash of the paper's colour that sticks to the foot of the scroller
+   (not a mask on the scroller: a mask also cut away the focus ring the
+   story page wears when it is reached by keyboard) */
+.page__body--scroll::after {
+  content: "";
+  display: none;
+  position: sticky;
+  bottom: 0;
+  height: 44px;
+  margin-top: -44px; /* over the last lines, adding nothing to the scroll */
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+}
+.page__body--scroll.is-scrollable:not(.is-at-end)::after {
+  display: block;
+}
+
+/* A page that holds one plate lets it fill the room between title and label */
+.page__body--plate {
   display: flex;
   flex-direction: column;
-  min-height: 100svh; /* fill the screen; svh = stable on mobile */
-  padding: 0;
-  overflow: hidden;
-  /* Layered radial gradients = a soft, blooming watercolour ground.
-     The first layer melts the bottom into the About blush, so the two
-     sections dissolve into each other with no visible seam. */
-  background:
-    linear-gradient(to bottom, transparent 66%, var(--color-blush) 100%),
-    radial-gradient(circle at 18% 22%, rgba(238, 208, 200, 0.6), transparent 46%),
-    radial-gradient(circle at 82% 26%, rgba(244, 239, 228, 0.85), transparent 52%),
-    radial-gradient(circle at 50% 88%, rgba(238, 208, 200, 0.4), transparent 58%),
-    var(--color-white);
 }
-
-/* --- Decorative layer: dandelion seeds --- */
-.hero__bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero__seeds {
-  width: 100%;
-  height: 100%;
-}
-
-.seed {
-  /* The seed's fine filaments and stalk */
-  stroke: rgba(70, 62, 58, 0.45);
-  stroke-width: 0.7;
-  stroke-linecap: round;
-  fill: rgba(70, 62, 58, 0.5); /* the little seed body (ellipse) */
-  transform-box: fill-box;
-  transform-origin: center;
-  opacity: 0.5;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-/* Each seed wafts on its OWN path, speed and phase, so the field drifts
-   organically instead of bobbing in unison — three gentle paths (drift-a/b/c)
-   spread across the nine seeds at staggered durations and offsets. */
-.seed--1 { animation-name: drift-a; animation-duration: 11s; animation-delay: 0s; }
-.seed--2 { animation-name: drift-b; animation-duration: 14s; animation-delay: -4s;  opacity: 0.35; }
-.seed--3 { animation-name: drift-c; animation-duration: 12s; animation-delay: -7s;  opacity: 0.4; }
-.seed--4 { animation-name: drift-b; animation-duration: 16s; animation-delay: -11s; opacity: 0.3; }
-.seed--5 { animation-name: drift-a; animation-duration: 13s; animation-delay: -2s;  opacity: 0.45; }
-.seed--6 { animation-name: drift-c; animation-duration: 15s; animation-delay: -9s;  opacity: 0.38; }
-.seed--7 { animation-name: drift-b; animation-duration: 11s; animation-delay: -5s;  opacity: 0.4; }
-.seed--8 { animation-name: drift-a; animation-duration: 17s; animation-delay: -13s; opacity: 0.33; }
-.seed--9 { animation-name: drift-c; animation-duration: 13s; animation-delay: -3s;  opacity: 0.42; }
-
-/* Three slow, gentle wafting paths — small enough never to collide or leave the
-   scene, varied enough that no two seeds move alike. */
-@keyframes drift-a {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  30%  { transform: translate(28px, -40px) rotate(12deg); }
-  60%  { transform: translate(-16px, -22px) rotate(-8deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-@keyframes drift-b {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  35%  { transform: translate(-34px, -28px) rotate(-13deg); }
-  65%  { transform: translate(20px, -46px) rotate(10deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-@keyframes drift-c {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  50%  { transform: translate(42px, -18px) rotate(15deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-/* Stray ambient seeds threaded through the content sections — small, faint and
-   calm, so they enrich the OPEN space without ever pulling focus. Rules for
-   keeping them out of trouble: place each only in a section's empty margins
-   (never behind text, cards, or a control), and keep every one left of ~88% so
-   the ring binding on the right can never clip it. Each is a tiny <svg> holding
-   one #seed; it drifts (via its .seed animation) but smaller and quieter than
-   the hero because the svg is scaled down. */
-.stray-seed {
-  position: absolute;
-  width: 24px;
-  height: auto;
-  z-index: 0;
-  overflow: visible; /* let the seed drift a little past its own box, uncropped */
-  pointer-events: none;
-}
-.seed--meat {
-  opacity: 0.4; /* faint, but visible on the deeper pink/rose grounds (defined after .seed--N to win) */
-}
-/* Seeds that drift BEHIND the About text — an even fainter whisper (they sit at
-   z-index 0, under the z-index 1 story text, so the words always read clearly). */
-.seed--ghost {
-  opacity: 0.16;
-}
-
-/* --- Centrepiece: the cascading name --- */
-.hero__inner {
-  position: relative;
-  z-index: 1;
-  flex: 1; /* takes the free space so nav sits at the bottom */
+.page__body--plate .plate-slot {
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* centre the name + tagline across the hero */
-  text-align: center;
-  padding: clamp(32px, 8vh, 96px) clamp(24px, 8vw, 120px);
 }
-
-.hero__title {
-  margin: 0;
+/* The folio at the foot of every page: number and running title */
+.folio {
+  position: absolute;
+  left: var(--page-pad);
+  right: var(--page-pad);
+  bottom: calc(var(--page-pad) * 0.5);
   display: flex;
-  flex-direction: column;
-  font-family: var(--font-display);
-  font-weight: 400;
-  color: #111; /* the black script you asked for */
-  line-height: 0.92;
-  font-size: clamp(3.6rem, 15vw, 11rem);
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  font: 400 var(--text-label) / 1 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  pointer-events: none;
+  z-index: 2;
 }
-
-/* Each word steps a little further in — the staircase */
-.hero__word {
-  display: block;
+.page--left .folio {
+  left: calc(var(--page-pad) + 40px); /* clear of the lifted corner */
+  right: calc(var(--page-pad) * 0.6 + var(--gutter-pad));
 }
-.hero__word--1 { margin-left: 0; }
-.hero__word--2 { margin-left: 0.7em; }
-.hero__word--3 { margin-left: 1.4em; }
-
-.hero__tagline {
-  margin: clamp(20px, 4vh, 40px) 0 0;
-  font-family: var(--font-serif);
-  font-size: clamp(1rem, 2.4vw, 1.5rem);
-  font-style: italic;
-  letter-spacing: 0.04em;
-  color: var(--color-text);
+.page--right .folio {
+  left: calc(var(--page-pad) * 0.6 + var(--gutter-pad));
+  right: calc(var(--page-pad) + 40px);
 }
-.hero__dot {
-  margin: 0 0.35em;
-  color: var(--color-pink);
-  font-style: normal;
+.page--right .folio .folio__num {
+  margin-left: auto; /* the number stays at the outer edge; "Admin" sits after it */
 }
-/* The value line under the roles: what Irene offers, in the reading serif
-   so it sits quietly beneath the italic roles rather than competing. */
-.hero__intro {
-  max-width: 46em; /* wide enough for the line to sit on one row on a laptop */
-  margin: var(--space-4) 0 0;
-  font-family: var(--font-serif);
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-  line-height: 1.5;
+.folio__num {
   color: var(--color-ink-soft);
 }
-/* The two calls to action, side by side (wrapping on a narrow screen) */
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.folio__group {
+  display: inline-flex;
+  align-items: baseline;
   gap: var(--space-3);
-  margin-top: var(--space-6);
 }
-
-/* --- Navigation: spread along the bottom --- */
-.hero__nav {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(0.5rem, 4vw, 3rem);
-  padding: 0 clamp(24px, 8vw, 120px) clamp(32px, 6vh, 64px);
+/* "continues": only while the page beside it still has more below */
+.folio__more {
+  display: none;
+  color: var(--color-accent-ink);
 }
-
-.hero__nav a {
-  font-family: var(--font-serif);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--color-text);
+.folio__more::before {
+  content: "· ";
+}
+.page__body--scroll.is-scrollable:not(.is-at-end) ~ .folio .folio__more {
+  display: inline;
+}
+.folio__mark {
+  pointer-events: auto;
   text-decoration: none;
-  padding: 12px 26px;
-  border: 1px solid rgba(44, 44, 44, 0.22);
-  border-radius: 999px;
-  background-color: rgba(253, 253, 253, 0.4);
-  transition: background-color 0.25s ease, border-color 0.25s ease,
-    transform 0.25s ease;
+  padding: 12px 0; /* a 24px-tall target on an 11px line */
+  margin: -12px 0;
 }
-.hero__nav a:hover,
-.hero__nav a:focus-visible {
-  background-color: var(--color-pink);
-  border-color: var(--color-pink);
-  transform: translateY(-2px);
+.folio__mark:hover {
+  color: var(--color-text);
+  text-decoration: underline;
 }
-
-/* --- Reveal: the words rise in one by one every time the hero scrolls
-   into view. The shared .reveal system (script.js + the rule in the
-   Workshop section) supplies the hidden state and transition; these only
-   stagger the words. --- */
-@media (prefers-reduced-motion: no-preference) {
-  .js-reveal .hero__word--1.reveal { transition-delay: 0.1s; }
-  .js-reveal .hero__word--2.reveal { transition-delay: 0.3s; }
-  .js-reveal .hero__word--3.reveal { transition-delay: 0.5s; }
-  .js-reveal .hero__tagline.reveal { transition-delay: 0.7s; }
-  .js-reveal .hero__intro.reveal { transition-delay: 0.85s; }
-  .js-reveal .hero__actions.reveal { transition-delay: 1s; }
-}
-
-/* Respect people who prefer less motion: show everything, still. */
-@media (prefers-reduced-motion: reduce) {
-  .seed,
-  .hero__word,
-  .hero__tagline {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-  .seed--2 { opacity: 0.35; }
-  .seed--3 { opacity: 0.4; }
-  .seed--4 { opacity: 0.3; }
-  .seed--5 { opacity: 0.45; }
-  .seed--6 { opacity: 0.38; }
-  .seed--7 { opacity: 0.4; }
-  .seed--8 { opacity: 0.33; }
-  .seed--9 { opacity: 0.42; }
+.folio--title {
+  display: none; /* a title page carries no number */
 }
 
 /* ============================================================
-   ABOUT (section 2)
-   A calmer, shorter section than the hero. A blush "ribbon"
-   frame holds the (still empty) portrait, with the bio beside it.
-   Blush shades below are tints of the brand pink (#eed0c8).
+   THE WORDS — the catalogue's voices
    ============================================================ */
-:root {
-  --ribbon: #eed0c8;          /* brand pink — the ribbon face */
-  --ribbon-shade: #d9b3a9;    /* darker blush — folds & depth */
-  --ribbon-sheen: #f8e6e0;    /* lighter blush — satin highlight */
+/* The spread title: the one place besides the wordmark that uses the script.
+   (The italic fallback face is declared italic, so the script's stand-in
+   slants while Pinyon loads; the script itself is upright.) */
+.spread-title {
+  font: 400 var(--text-spread-title) / 1 var(--font-display);
+  color: var(--color-text);
+  margin: 0 0 calc(var(--u) * 1.6);
+  text-wrap: balance;
+}
+/* Pinyon's ampersand is drawn at lowercase height, a small knot between
+   two words; set a third larger it reaches just under the capitals.
+   line-height 0 keeps it from pushing the title's line box. */
+.spread-title .amp {
+  font-size: 1.35em;
+  line-height: 0;
+  vertical-align: -0.04em;
 }
 
-#about {
-  position: relative;
+/* A right-hand page's heading: tracked capitals over a rule. One step up
+   from the month names and sub-headings (a size larger, heavier, full ink,
+   a stronger rule), so the page has one entry point. */
+.page-title {
+  font: 600 var(--text-small) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-text);
+  padding: calc(var(--u) * 1.2) 0 var(--space-2);
+  margin: 0 0 calc(var(--u) * 2.4);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+/* A subheading inside a page */
+.small-title {
+  font: 500 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin: calc(var(--u) * 3.4) 0 var(--space-3);
+}
+
+.intro,
+.album-desc {
+  font-size: var(--text-body);
+  line-height: 1.5;
+  max-width: 66ch;
+}
+.album-desc {
+  font-style: italic;
+  color: var(--color-ink-soft);
+  margin: calc(var(--u) * -0.6) 0 calc(var(--u) * 1.8);
+}
+/* the venue-and-cost sentence: the intro's last, in italic */
+.note {
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* "Pick a date to book your place" only makes sense where the dates are
+   on the facing page; on a phone it stands down for .next-page below */
+.spread-only {
+  display: inline;
+}
+/* "The dates are on the next page": only a phone needs telling */
+.next-page {
+  display: none;
+  margin-top: var(--space-2);
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* "What to expect": a ruled list, no bullets */
+.expect {
+  list-style: none;
+  padding: 0;
+  max-width: 66ch;
+}
+.expect li {
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-soft);
+  line-height: 1.5;
+}
+.expect li:last-child {
+  border-bottom: 1px solid var(--rule-soft);
+}
+.expect strong {
+  font-weight: 700;
+}
+
+/* The story, in Irene's words */
+.story {
+  max-width: 68ch;
+}
+.story p {
+  margin: 0 0 0.9em;
+}
+/* the reading paragraphs: a tidier right edge, and hyphenation on the
+   28-character lines a phone page allows (html lang="en" is set) */
+.story p,
+.intro,
+.expect li,
+.notify__text,
+.workshops__empty {
+  text-wrap: pretty;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.story__lead {
+  font-size: var(--text-lead);
+  line-height: 1.3;
+  margin: 0 0 0.9em;
+  text-wrap: balance;
+}
+.story__quote {
+  margin: 1.1em 0 1.1em;
+  padding-left: 1em;
+  border-left: 1px solid var(--color-accent);
+  font-style: italic;
+  font-size: var(--text-body);
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
+/* ---------- the title page ---------- */
+.page--title .page__body {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start; /* top-align the frame with the heading */
-  justify-content: flex-start; /* frame sits to the left, not centred */
-  gap: clamp(32px, 6vw, 80px);
-  /* Smaller than the full-screen hero: sized to its content.
-     The left padding is the indent that keeps the frame off the edge. */
-  padding: clamp(56px, 10vh, 120px) clamp(40px, 8vw, 120px);
-  background-color: var(--color-blush);
+  flex-direction: column;
+  padding-top: calc(var(--u) * 7);
+  /* page__body--scroll in the HTML is only a safety net for SHORT windows
+     (200% zoom on a wide laptop: a 760x450 window still in the two-page
+     layout), where the offer and the slip would otherwise run off the
+     page. At any ordinary height the body stays open so the seeds drawn
+     in its margin are not clipped. */
+  overflow: visible;
+  padding-right: 0;
 }
-
-/* Smaller seeds near the top of About, behind the frame and bio.
-   The section no longer clips (no overflow:hidden), so their gentle
-   drift never gets cut off at the top edge. */
-.about__seeds {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+@media (max-height: 560px) {
+  .page--title .page__body {
+    overflow-y: auto;
+  }
 }
-.about__frame,
-.about__content {
-  position: relative;
-  z-index: 1;
-}
-
-/* --- The ribbon frame: an empty portrait with a flowing ornate rim --- */
-.about__frame {
-  position: relative;
-  flex: 0 0 auto;
-  width: clamp(220px, 34vw, 340px);
-  aspect-ratio: 4 / 5;
-  /* Sit lower than the heading block (eyebrow + script + rule) so the
-     story text begins near the frame's top line. */
-  margin-top: clamp(5rem, 8.5vw, 8rem);
-}
-
-/* On stacked (narrow) layouts the frame is on its own — no offset needed */
-@media (max-width: 640px) {
-  .about__frame {
+/* A short book (a laptop screen of 768px or less): the Programme's left
+   page closes its ranks a little, so the email form at its foot stays in
+   view beside the dates instead of a page-turn's scroll below the edge */
+@media (max-height: 820px) {
+  #programme .spread-title {
+    margin-bottom: var(--space-1);
+  }
+  #programme .intro,
+  #programme .expect li {
+    line-height: 1.38;
+  }
+  #programme .small-title {
+    margin: var(--u) 0 var(--space-2);
+  }
+  #programme .expect li {
+    padding: 4px 0;
+  }
+  #programme .notify {
     margin-top: 0;
   }
+  #programme .notify__text,
+  #programme .notify .field-label {
+    margin-bottom: var(--space-1);
+  }
 }
-
-/* The portrait area. It covers the WHOLE frame and is then cut to the
-   hand-drawn outline by #aboutPhotoClip (in index.html) — the very same path
-   the marker line is drawn from. So there are no insets or corner radii to
-   keep in step with the line: the photo's edge IS the line's centre, on every
-   side and at every size. The cream colour only shows if the photo fails to
-   load. */
-.about__photo {
-  position: absolute;
-  inset: 0;
-  background: #fbf7f3;
-  clip-path: url(#aboutPhotoClip);
-}
-/* The portrait itself, a little larger than the outline so it reaches under
-   the line everywhere (the cutter trims the spare). Positioned a little high
-   so the face stays in view when the tall photo is cropped. */
-.about__img {
-  position: absolute;
-  top: 8%;
-  left: 10%;
-  width: 80%;
-  height: 84%;
-  object-fit: cover;
-  object-position: center 20%;
-  display: block;
-}
-
-/* The drawn arabesque rim, overlaid around the portrait */
-.about__ornament {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-/* --- Bio column beside the frame --- */
-.about__content {
-  flex: 1 1 460px;
-  max-width: 720px;
-}
-/* Heading uses the hero's script face (no staircase — just the font) */
-.about__heading {
-  margin: 0 0 0.5em;
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.1;
-  font-size: var(--text-title);
+.wordmark {
+  font: 400 var(--text-wordmark) / 1.02 var(--font-display);
   color: var(--color-text);
+  margin: 0 0 calc(var(--u) * 2.6);
+  text-wrap: balance;
+  max-width: 7em;
 }
-
-/* Shared "section head" bits — a small uppercase kicker above the script
-   heading and a short accent rule below it, so the delicate script reads
-   as a deliberate section marker instead of floating decoration. */
-.section-eyebrow {
+/* The three roles: spaced serif CAPITALS with dots between them. Not small
+   caps — Libre Caslon Text has no small-cap glyphs, so a browser would
+   fake them by shrinking capitals, and the thin fake strokes showed next
+   to the real Caslon around them. Real capitals at 0.78 of the body size
+   weigh the same as the rest of the page. */
+.roles {
+  list-style: none;
+  padding: 0;
   display: flex;
-  align-items: center;
-  gap: 0.7em;
-  margin: 0 0 0.7em;
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 500;
+  flex-wrap: wrap;
+  column-gap: 0.6em;
+  row-gap: 0.1em;
+  font: 400 calc(var(--text-body) * 0.78) / 1.7 var(--font-serif-caps);
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--color-ink-soft); /* was rgba(.6): 3.1:1 on the rose — too faint */
-}
-.section-eyebrow::before {
-  content: "";
-  width: 30px;
-  height: 1px;
-  background: var(--color-accent);
-}
-.about__heading::after,
-.workshops__heading::after,
-.portfolio__heading::after,
-.contact__heading::after {
-  content: "";
-  display: block;
-  width: 72px;
-  height: 2px;
-  margin-top: 0.32em;
-  background: var(--color-accent);
-  border-radius: 2px;
-}
-/* Two columns keep the story wide and short — roughly the frame's
-   height — instead of running long. Collapses to one column when narrow. */
-/* The story reads as one flowing journal entry (single column, a comfortable
-   reading measure) rather than fragmented newspaper columns. */
-.about__story {
+  letter-spacing: 0.1em;
+  color: var(--color-ink-soft);
+  margin: 0 0 calc(var(--u) * 2.8);
   max-width: 34em;
 }
-/* Opening line — an italic lead that carries the emotion, set larger than the
-   body so the eye lands here first. */
-.about__lead {
-  margin: 0.1em 0 0.9em;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--text-2xl);
-  line-height: 1.3;
-  color: var(--color-text);
+.roles li:not(:last-child)::after {
+  content: "·"; /* after the word, so a wrapped line never starts with a dot */
+  margin-left: 0.6em;
+  color: var(--color-accent);
 }
-/* Story body — upright and readable (italic is reserved for the lead and the
-   quote), with generous leading so it breathes like a page in a journal. */
-.about__bio {
-  margin: 0 0 1.15em;
-  font-family: var(--font-serif);
-  font-style: normal;
-  font-size: var(--text-lg);
-  line-height: 1.78;
-  color: var(--color-text);
+.offer {
+  font-size: var(--text-lead);
+  line-height: 1.38;
+  /* measured in em, not ch: a ch is the width of the face's zero, and
+     Caslon's is 8% wider than the fallback's, so a ch measure wrapped the
+     offer differently while the fonts were still arriving (24ch of Caslon) */
+  max-width: 15.4em;
+  text-wrap: pretty;
 }
-/* Lifted pull-quote — one line in her voice, in italic, marked with the same
-   short accent rule the section headings use, so it reads as a deliberate
-   hand-set aside rather than a generic left-bar blockquote. */
-.about__quote {
-  margin: 1.5em 0;
-  padding: 0;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--text-xl);
-  line-height: 1.42;
-  color: var(--color-text);
+
+/* The seeds drawn in the title page's margin (#seed-1/2/3 in index.html) */
+.seed {
+  position: absolute;
+  width: calc(var(--u) * 3.6);
+  height: auto;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.85;
+  pointer-events: none;
 }
-.about__quote::before {
-  content: "";
-  display: block;
-  width: 48px;
-  height: 2px;
-  margin-bottom: 0.55em;
-  background: var(--color-accent);
-  border-radius: 2px;
+.seed path {
+  fill: none; /* the stem and filaments are lines; only the seed body fills */
+}
+.seed--a {
+  right: 6%;
+  top: -2%;
+  transform: rotate(14deg);
+}
+.seed--b {
+  right: 18%;
+  top: 11%;
+  width: calc(var(--u) * 2.4);
+  transform: rotate(-8deg);
+  opacity: 0.78; /* (at 0.6 the small one was a smudge on a 1x screen) */
+}
+.seed--c {
+  right: 8%;
+  bottom: 24%;
+  width: calc(var(--u) * 2.9);
+  transform: rotate(22deg);
+  opacity: 0.7;
+}
+
+/* THE SLIP — the primary action, a slip of paper pinned to the page foot */
+.slip {
+  position: relative;
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8em;
+  /* sized in the label's em, which follows the book: the 12.5px floor of
+     the small size on laptops, up to 18px on a 2560px screen where the
+     wordmark is 96px — so the primary action never shrinks relative to
+     the page around it */
+  min-height: clamp(52px, calc(var(--u) * 6.5), 76px);
+  padding: 0 clamp(20px, calc(var(--u) * 2.8), 36px);
+  background: var(--color-tan);
+  color: var(--color-text);
+  font: 600 clamp(12.5px, calc(var(--u) * 1.6), 18px) / 1 var(--font-ui);
+  letter-spacing: var(--track-button);
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 1px;
+  box-shadow: var(--shadow-paper);
+  transform: rotate(-1.6deg);
+  transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+}
+.slip:hover,
+.slip:focus-visible {
+  transform: rotate(-1deg) translateY(-2px);
+  box-shadow: var(--shadow-paper-lift);
+}
+/* The pin (the #pin symbol in index.html) on the title slip, the back
+   page's slip and the booking slip: one drawing, one set of colours */
+.slip__pin,
+.loose__pin {
+  position: absolute;
+  top: -0.75em;
+  left: 50%;
+  width: 1.6em;
+  height: 1.6em;
+  margin-left: -0.8em;
+  fill: var(--color-red);
+  stroke: #5a4f49;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  filter: drop-shadow(1px 2px 1.5px rgba(0, 0, 0, 0.38));
+  pointer-events: none;
+}
+.pin__head {
+  stroke: none;
+}
+.pin__light {
+  fill: rgba(255, 255, 255, 0.55);
+  stroke: none;
+}
+/* A pin pushed through paper stays upright while the paper hangs from it:
+   the slip is turned -1.6deg, so the pin turns back by the same amount,
+   and eases to match when the slip straightens on hover. */
+.slip__pin {
+  transform: rotate(1.6deg);
+  transform-origin: 12px 12px;
+  transition: transform 180ms ease-out;
+}
+.slip:hover .slip__pin,
+.slip:focus-visible .slip__pin {
+  transform: rotate(1deg);
+}
+.loose__pin {
+  z-index: 3; /* above the slip's paper */
+  font-size: 15px; /* the dialog has no label em to follow: a fixed 24px pin */
+}
+.slip__arrow {
+  width: 1.2em;
+  height: 1.2em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 180ms ease-out;
+}
+.slip:hover .slip__arrow {
+  transform: translateX(3px);
 }
 
 /* ============================================================
-   WORKSHOP DATES (section 3)
-   Heading top-left in the script face. Four month columns; each
-   month name sits above a rounded card holding its dates & times.
-   Background eases from the About blush into the deeper pink,
-   continuing the light-to-dark journey seamlessly.
+   THE PLATES
    ============================================================ */
-#workshop-dates {
-  position: relative;
-  padding: var(--section-pad-y) var(--section-pad-x);
-  background-color: var(--color-pink);
-}
-/* Accent hairlines top and bottom, fading out toward the edges. Frames
-   the section as a distinct band without hard-boxing it. No animation. */
-#workshop-dates::before,
-#workshop-dates::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-accent) 12%,
-    var(--color-accent) 88%,
-    transparent
-  );
-}
-#workshop-dates::before {
-  top: 0;
-}
-#workshop-dates::after {
-  bottom: 0;
-}
-.workshops__heading,
-.portfolio__heading {
-  margin: 0 0 0.55em;
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.1;
-  font-size: var(--text-title);
-  color: var(--color-text);
-}
-/* Heading block at the left, months in line with it on the right — the
-   same arrangement as .portfolio__row, so the two sections read alike.
-   Wraps to stacked on narrow screens. */
-.workshops__row {
-  display: flex;
-  flex-wrap: wrap;
-  /* top-aligned so the heading sits at the top of the row, not centred
-     against the month cards (the title band for the page stack) */
-  align-items: flex-start;
-  gap: clamp(32px, 5vw, 72px);
-}
-.workshops__head {
-  flex: 0 0 auto;
-  /* never wider than the row: the intro paragraph has a long measure, and a
-     flex item sized "auto" would otherwise take its full width and push the
-     page wider than the screen (it did, on a phone) */
+.plate {
+  display: inline-grid;
+  justify-items: start;
   max-width: 100%;
   min-width: 0;
 }
-/* Keep the two-word title on ONE line ("Workshop Dates", not stacked) */
-.workshops__heading {
-  white-space: nowrap;
+.plate__lift {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  cursor: zoom-in;
+  max-width: 100%;
+  box-shadow: var(--shadow-plate);
+  transition: box-shadow 200ms ease-out;
 }
-.workshops__intro {
-  margin: 0;
-  max-width: 30em;
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  line-height: 1.6;
-  color: var(--color-text);
+.plate__lift:hover {
+  box-shadow: 0 16px 28px -12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.18);
 }
-/* The venue/cost line: a quiet note with a seed in front, so the eye reads
-   it as an aside rather than a second paragraph. */
-.workshops__note {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: var(--space-4) 0 0;
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--color-ink-soft);
-}
-.workshops__note-icon {
-  flex: none;
-  width: 14px;
-  height: 20px;
-  margin-top: 1px;
-  stroke: var(--color-accent);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  fill: var(--color-accent);
+.plate__img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  background: #e9dcd3; /* the paper shows while the picture arrives */
 }
 
-/* --- Under the months: "What to expect" and the notify form ---
-   Two columns on a computer (the list takes the wider one), one under the
-   other on a phone. A hairline above sets it off from the month cards. */
-.workshops__extras {
+/* The big pictures size to the room they have. Two ceilings, the lower
+   wins: the DESIGN ceiling (a plate alone on its page may take 70
+   hundredths of the book's height; the portrait, which shares its page
+   with the spread title, 58) and the ROOM ceiling — the page body less the
+   words that must stay visible (the title and the label), worked out from
+   the same variables the type is set in. At ordinary sizes the design
+   ceiling is the lower one; on a laptop zoomed to 150% or 200% the words
+   keep their minimum size while the page shrinks, and then the room
+   ceiling takes over, so the picture gives way and the label never slides
+   under the folio. The picture pages do not scroll (WCAG 1.4.4). */
+:root {
+  --page-room: calc(var(--book-h) - var(--page-pad) * 2.5);
+  /* a three-line label (number, "Untitled", album) with its rule and gaps */
+  --label-room: calc(var(--text-label) * 1.3 + var(--text-small) * 1.35 * 2 + 27px);
+  /* the portrait's label: up to four lines of the small serif (the roles
+     line wraps once when the picture is narrow) */
+  --portrait-label-room: calc(var(--text-small) * 1.35 * 4 + 30px);
+  /* the lifted corner on the left page is a fixed 76px flap, outside the
+     page body; on a zoomed laptop the body's margins shrink under it and
+     its slope reaches the first letters of the portrait's last line, so
+     the room gives it up to 90px less two and a half margins (nothing at
+     ordinary sizes, 19px at 150% zoom on a 1440 screen) */
+  --corner-room: max(0px, 90px - var(--page-pad) * 2.5);
+  --plate-ceiling: 70;
+  --portrait-ceiling: 58;
+}
+.plate--hero .plate__img {
+  max-height: min(calc(var(--u) * var(--plate-ceiling)), calc(var(--page-room) - var(--label-room) - var(--space-4)));
+}
+.plate--portrait .plate__img {
+  max-height: min(
+    calc(var(--u) * var(--portrait-ceiling)),
+    calc(var(--page-room) - var(--text-spread-title) - var(--u) * 1.6 - var(--portrait-label-room) - var(--space-4) - var(--corner-room))
+  );
+}
+/* The portrait's label keeps a floor width of its own, as a wall label
+   does: otherwise a narrow picture (a zoomed laptop) would narrow the
+   label, wrap the roles onto more lines, and need the picture narrower
+   still. 220px holds the roles line to two lines. */
+.plate--portrait .label {
+  min-width: max(220px, 100%);
+}
+
+/* An album's title page: name, one line, "Plates I to V" — and room left
+   under them, as a catalogue's section opener has */
+.page__body--album {
+  display: flex;
+  flex-direction: column;
+}
+.album-cta {
+  margin-top: auto; /* at the foot of the album's title page */
+}
+.album-range {
+  font: 500 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+/* The label block under every plate: number, "Untitled", and the album on
+   the frontispiece and the loose print (no medium: it is not confirmed) */
+.label {
+  display: grid;
+  gap: 3px;
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
+  justify-self: stretch;
+  /* counts for nothing when the plate's width is worked out, then takes
+     the picture's full width — so a long line wraps under the picture
+     instead of pushing the hairline out past it */
+  width: 0;
+  min-width: 100%;
+  font-size: var(--text-small);
+  line-height: 1.35;
+}
+.label__line {
+  display: block;
+}
+.label__line--num {
+  font: 600 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  margin: 0;
+}
+.label__line--title {
+  font-style: italic;
+  color: var(--color-text);
+}
+.label__line--strong {
+  font-weight: 700;
+}
+.label__line--quiet {
+  font: 400 var(--text-small) / 1.35 var(--font-ui);
+  color: var(--color-ink-muted);
+}
+.plate-noscript {
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* ============================================================
+   FORMS — the catalogue's furniture: labels in tracked caps, fields in white
+   ============================================================ */
+.group {
+  margin-bottom: var(--space-4);
+}
+.field-label {
+  display: block;
+  /* the descriptor voice (the same italic serif as "Untitled" under a
+     plate), in sentence case: a form's labels are read, not scanned */
+  font: italic 400 var(--text-small) / 1.3 var(--font-serif);
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-2);
+}
+.field-label__opt {
+  color: var(--color-ink-muted);
+}
+.field {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-field-edge);
+  border-radius: var(--radius-field);
+  background: var(--color-white);
+  color: var(--color-text);
+  font: 400 max(16px, var(--text-small)) / 1.3 var(--font-ui);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+.field::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+.field:hover {
+  border-color: var(--color-accent-ink); /* a step darker than at rest */
+}
+.field:focus-visible {
+  border-color: var(--color-red);
+  outline-offset: 1px;
+}
+.field[aria-invalid="true"] {
+  border-color: var(--color-error);
+  box-shadow: inset 0 0 0 1px var(--color-error);
+}
+.field--message {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.45;
+}
+
+/* A submit button is a paper tab glued to the page: tan, with the same
+   hairline edge the fields wear, and a tracked label in the ink — the
+   index tabs' grammar, flat on the paper. Under the hand it lightens to
+   white as the tabs do and its edge deepens a step as a field's does;
+   pressed, it sits down a pixel. The pinned slip stays the only lifted
+   thing on a page: a button throws no shadow. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-field-edge);
+  border-radius: var(--radius-field);
+  background: var(--color-tan);
+  color: var(--color-text);
+  font: 600 var(--text-small) / 1 var(--font-ui);
+  letter-spacing: var(--track-button);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, transform 150ms ease-out;
+}
+.button:hover {
+  background: var(--color-white);
+  border-color: var(--color-accent-ink);
+}
+.button:active {
+  transform: translateY(1px);
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+/* On the tan booking slip a tan tab would vanish into the sheet, so there
+   the tab is cut from the page's pink paper and lightens to blush. */
+.loose .button {
+  background: var(--color-pink);
+}
+.loose .button:hover {
+  background: var(--color-blush);
+}
+/* the second choice ("Book another date"): the label and a hairline, no paper */
+.button--quiet,
+.loose .button--quiet {
+  background: transparent;
+  border-color: var(--rule-strong);
+}
+.button--quiet:hover,
+.loose .button--quiet:hover {
+  background: rgba(44, 44, 44, 0.06);
+  border-color: var(--rule-strong);
+}
+
+/* the line under a form that says what happened */
+.status {
+  min-height: 1.4em;
+  margin: 0;
+  font: 400 var(--text-small) / 1.4 var(--font-ui);
+  color: var(--color-ink-soft);
+}
+.status:empty {
+  display: none;
+}
+.notify__status--error,
+.contact__status--error,
+.signup__status--error {
+  color: var(--color-error);
+}
+.notify__status--ok,
+.contact__status--ok {
+  color: var(--color-text);
+}
+/* the line under a field: resting hint, or the error. The error is read
+   under stress, so it is set at the small size, never the label size. */
+.hint {
+  margin: var(--space-1) 0 0;
+  font: 400 var(--text-small) / 1.4 var(--font-ui);
+  color: var(--color-ink-muted);
+}
+.hint:empty {
+  display: none;
+}
+.hint.is-error {
+  color: var(--color-error);
+}
+
+/* ---------- the programme: dates as ruled catalogue lines ---------- */
+.workshops__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--space-5);
+  row-gap: var(--space-3);
+}
+/* No dates yet (or none could be loaded): one honest line over a hairline,
+   so the page still reads as a catalogue page and not a gap */
+.workshops__empty {
+  grid-column: 1 / -1;
+  max-width: 44ch;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+.workshops__month-name {
+  font: 500 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  padding-bottom: var(--space-1);
+  margin: var(--space-3) 0 0;
+  border-bottom: 1px solid var(--rule);
+}
+.workshops__dates {
+  display: grid;
+}
+/* One date = one button, drawn as a ruled line: day number, weekday and
+   time, the topic beneath, and a small arrow that says "press me" */
+.workshop {
   position: relative;
-  z-index: 1;
+  display: grid;
+  grid-template-columns: 2.1em minmax(0, 1fr) 24px;
+  grid-template-areas:
+    "day main arrow"
+    "day topic arrow";
+  column-gap: var(--space-2);
+  align-items: baseline;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-2) var(--space-1) var(--space-2) 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 150ms ease-out;
+}
+.workshop:hover {
+  background: rgba(253, 253, 253, 0.42);
+}
+.workshop:hover::after,
+.workshop:focus-visible::after {
+  transform: translateX(3px);
+  opacity: 1;
+}
+.workshop__day {
+  grid-area: day;
+  font-size: var(--text-numeral);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-accent-ink);
+  font-variant-numeric: tabular-nums lining-nums;
+  align-self: start;
+}
+.workshop__main {
+  grid-area: main;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: clamp(28px, 4vw, 64px);
-  margin-top: clamp(40px, 6vh, 72px);
-  padding-top: clamp(28px, 4vh, 44px);
-  border-top: 1px solid rgba(70, 62, 58, 0.14);
+  column-gap: 0.5em;
+  align-items: baseline;
 }
-.expect {
-  flex: 1 1 380px;
-  max-width: 620px;
-}
-.expect__title,
-.notify__title {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: clamp(1.3rem, 2vw, 1.6rem);
-  line-height: 1.2;
-  letter-spacing: 0.01em;
+.workshop__weekday {
   color: var(--color-text);
 }
-.expect__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: var(--space-4);
-}
-.expect__item {
-  display: flex;
-  gap: 14px;
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  line-height: 1.6;
+.workshop__time {
+  font: 500 var(--text-small) / 1.3 var(--font-ui);
   color: var(--color-ink-soft);
 }
-.expect__item strong {
-  display: block;
-  font-weight: 600;
-  color: var(--color-text);
+.workshop__topic {
+  grid-area: topic;
+  font: 400 var(--text-small) / 1.3 var(--font-ui);
+  color: var(--color-ink-muted);
+  margin-top: 2px;
 }
-/* a small rose dot instead of a bullet, lined up with the first line */
-.expect__dot {
-  flex: none;
-  width: 10px;
-  height: 10px;
-  margin-top: 0.45em;
-  border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow: 0 0 0 4px rgba(143, 95, 80, 0.14);
+/* the small arrow on every date: quiet at rest (eleven of them share a
+   page), full strength when the row is hovered or focused */
+.workshop::after {
+  content: "";
+  grid-area: arrow;
+  align-self: center;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+  background: currentColor;
+  color: var(--color-accent-ink);
+  opacity: 0.45;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 150ms ease-out, opacity 150ms ease-out;
 }
 
-/* The notify card: the same warm cream as the month cards, so it belongs
-   to the section rather than reading as an advert. */
+/* "Be the first to hear": one field and its button on one line, under
+   "What to expect" on the Programme's left page */
 .notify {
-  flex: 1 1 320px;
-  max-width: 440px;
-  margin: 0;
-  padding: clamp(20px, 2.4vw, 28px);
-  background: #faf5f0;
-  border: 1px solid rgba(70, 62, 58, 0.16);
-  border-radius: var(--radius-card);
-  box-shadow: 0 16px 34px -22px rgba(70, 62, 58, 0.45);
+  margin-top: var(--space-2);
+}
+.notify .small-title {
+  margin-top: calc(var(--u) * 2.4);
 }
 .notify__text {
-  margin: 0 0 var(--space-4);
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  line-height: 1.6;
+  max-width: 60ch;
+  margin-bottom: var(--space-4);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+.notify__controls {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.notify__controls .field {
+  flex: 1 1 200px;
+  width: auto;
+}
+.notify__status {
+  margin-top: var(--space-2);
+}
+
+/* ---------- contact: the message form ---------- */
+.message {
+  margin-top: calc(var(--u) * 2.4);
+  max-width: 66ch;
+}
+.message__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.message__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.message__foot .status {
+  flex: 1 1 200px;
+}
+
+/* ---------- contact: elsewhere, and the colophon ---------- */
+.social {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.social__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  text-decoration: none;
+}
+.social__link:hover .social__name {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.18em;
+}
+.social__pic {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.34);
+}
+.social__text {
+  display: grid;
+  gap: 2px;
+}
+.social__where {
+  font: italic 400 var(--text-small) / 1.3 var(--font-serif);
   color: var(--color-ink-soft);
 }
-.notify__row {
+.social__name {
+  font-size: var(--text-body);
+}
+.turn-back {
+  margin-top: calc(var(--u) * 3);
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+/* the slip again on the back page, under "Looking for a date?" */
+.slip--back {
+  margin-top: var(--space-3);
+  margin-bottom: calc(var(--u) * 4); /* the least room between the slip and the colophon */
+}
+/* the last page's body is a column, so the colophon rests at its foot
+   like a catalogue's small print, with at least four units above it */
+#contact .page--right .page__body {
   display: flex;
+  flex-direction: column;
+}
+#contact .page--right .page__body > * {
+  flex: none;
+}
+.colophon {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-3); /* a breath above the folio line */
+  border-top: 1px solid var(--rule);
+  font: 400 var(--text-small) / 1.5 var(--font-ui);
+  color: var(--color-ink-soft);
+  max-width: 52ch;
+}
+.colophon p {
+  margin: 0 0 var(--space-2);
+}
+/* the link to Irene's editor, on the last page's folio line */
+.folio__admin {
+  pointer-events: auto;
+  margin-left: var(--space-4);
+  color: var(--color-ink-muted);
+  text-decoration-color: var(--rule-strong);
+}
+.folio__admin:hover {
+  color: var(--color-text);
+}
+
+/* ============================================================
+   THE FURNITURE — coil, corners, tabs, arrows
+   ============================================================ */
+/* The wire coil down the gutter, above the pages. The ring drawings in
+   index.html carry fallback colours; these rules give them the tokens. */
+.coil-wire {
+  stroke: var(--coil-wire);
+}
+.coil-hole {
+  fill: var(--coil-hole);
+}
+.coil-light {
+  stroke: var(--coil-highlight);
+}
+.coil {
+  position: absolute;
+  top: 7px;
+  bottom: 12px;
+  left: 50%;
+  width: 120px;
+  margin-left: -64px; /* centred on the gutter: half the width, less the 4px the pages sit left of centre (7px rim, 15px block) */
+  pointer-events: none;
+  z-index: 8;
+}
+.coil__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* The lifted corners: a page corner curling back, inviting the turn */
+.corner {
+  position: absolute;
+  bottom: 12px; /* the pages' foot */
+  width: 76px;
+  height: 76px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  z-index: 9;
+  transition: transform 180ms ease-out, opacity 150ms ease-out;
+}
+.corner--next {
+  right: 15px; /* the pages' right edge */
+  transform-origin: 100% 100%;
+}
+.corner--prev {
+  left: 7px;
+  transform-origin: 0% 100%;
+}
+.corner svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.corner__under {
+  fill: #e4c5bb; /* the next page, in shadow under the lifted corner */
+}
+.corner--prev .corner__under {
+  fill: #e9d3c8;
+}
+.corner__flap {
+  fill: #f8ece6; /* the back of the lifted corner, catching the light */
+  filter: drop-shadow(-3px -3px 4px rgba(0, 0, 0, 0.3));
+}
+.corner--prev .corner__flap {
+  filter: drop-shadow(3px -3px 4px rgba(0, 0, 0, 0.3));
+}
+.corner__crease {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.16);
+  stroke-width: 1;
+}
+.corner:hover,
+.corner:focus-visible {
+  transform: scale(1.14);
+}
+.corner[hidden] {
+  display: none;
+}
+
+/* The index: fore-edge tabs down the right of the book */
+.index {
+  position: relative;
+  pointer-events: none;
+}
+.index > * {
+  pointer-events: auto;
+}
+.tabs {
+  position: absolute;
+  right: -38px;
+  top: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 4;
+}
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-height: 108px;
+  padding: var(--space-3) 0;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: var(--color-tan);
+  color: var(--color-text);
+  font: 500 var(--text-label) / 1 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0 5px 5px 0;
+  box-shadow: 3px 2px 6px -1px rgba(0, 0, 0, 0.45), inset 1px 0 0 rgba(0, 0, 0, 0.06);
+  transition: transform 160ms ease-out, background-color 160ms ease-out;
+}
+.tab:hover {
+  transform: translateX(3px);
+  background: var(--color-white);
+}
+.tab[aria-current="page"] {
+  background: var(--color-pink);
+  font-weight: 600;
+  transform: translateX(5px);
+  box-shadow: 4px 3px 8px -1px rgba(0, 0, 0, 0.5), inset 1px 0 0 rgba(0, 0, 0, 0.06);
+}
+
+/* The arrows under the book, with the page count between them */
+.turnbar {
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1 * var(--board-foot) + 10px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.turnbar__count {
+  min-width: 4.5em;
+  text-align: center;
+  font: 400 var(--text-label) / 1 var(--font-ui);
+  letter-spacing: var(--track-label);
+  color: var(--color-light-muted);
+}
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-light);
+  cursor: pointer;
+  transition: background-color 150ms ease-out, opacity 150ms ease-out;
+}
+.arrow svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.arrow:hover {
+  background: rgba(241, 223, 214, 0.12);
+}
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+  background: transparent;
+}
+
+/* ============================================================
+   THE LOOSE SHEETS — the booking slip and the lifted print (dialogs)
+   ============================================================ */
+.loose {
+  border: 0;
+  padding: 0;
+  margin: auto;
+  background: transparent;
+  color: var(--color-text);
+  max-width: min(92vw, 540px);
+  max-height: 94vh;
+  overflow: visible;
+}
+.loose::backdrop {
+  background: rgba(20, 16, 14, 0.62);
+}
+.loose[open] {
+  display: block;
+}
+/* The close control is a small rose-red X written IN the corner of the
+   sheet (the booking slip) or on the board above the print — not a black
+   disc floating off the corner, which is the one thing on a paper slip
+   that is not paper. 44px of it can be pressed. */
+.loose__close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-red);
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 150ms ease-out;
+}
+.loose__close svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.loose__close:hover {
+  background: rgba(44, 44, 44, 0.07);
+}
+/* over the print: on the board, above the mount's top-right corner */
+.loose__close--dark {
+  top: -50px;
+  right: 0;
+  color: var(--color-light);
+}
+.loose__close--dark:hover {
+  background: rgba(241, 223, 214, 0.12);
+}
+
+/* The booking slip: a sheet of tan paper laid over the book */
+.signup {
+  position: relative;
+  background: var(--color-tan);
+  padding: calc(var(--space-6) + 6px) var(--space-6) var(--space-6);
+  border-radius: 2px;
+  box-shadow: 0 30px 60px -16px rgba(0, 0, 0, 0.7), 0 6px 14px -4px rgba(0, 0, 0, 0.4);
+  max-height: 94vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
+.signup__head {
+  margin-bottom: var(--space-5);
+}
+/* The slip's headings are set in the reading serif, not the script: the
+   script is for the wordmark and the spread titles only, and a form is
+   read closely, not admired. One size shared with the story's lead. */
+.signup__title,
+.signup__done-title {
+  font: 500 var(--text-lead) / 1.2 var(--font-serif);
+  margin-bottom: var(--space-3);
+}
+/* Which date was picked, restated so nobody books the wrong day */
+.signup__chip {
+  display: none;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--text-body);
+}
+.signup__chip.is-set {
+  display: flex;
+}
+.signup__chip-day {
+  font-size: var(--text-numeral);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+.signup__chip-when {
+  color: var(--color-text);
+}
+.signup__chip-topic {
+  flex-basis: 100%;
+  font: 400 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+.signup__chip-topic:empty {
+  display: none;
+}
+.signup__fields {
+  display: grid;
+  gap: var(--space-2);
+}
+.signup__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+.signup__foot .status {
+  flex: 1 1 160px;
+}
+
+/* the stepper: minus, the number, plus */
+.stepper {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--color-field-edge);
+  border-radius: var(--radius-field);
+  background: var(--color-white);
+  overflow: hidden;
+}
+.stepper__btn {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+}
+.stepper__btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6; /* every 18–22px line icon in the book is 1.6 */
+  stroke-linecap: round;
+}
+.stepper__btn:hover {
+  background: var(--color-blush);
+}
+.stepper__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  background: transparent;
+}
+.stepper__btn:focus-visible {
+  outline-offset: -4px;
+  box-shadow: none;
+}
+.stepper__count {
+  width: 3.2em;
+  min-height: 44px;
+  text-align: center;
+  border: 0;
+  border-left: 1px solid var(--color-field-edge);
+  border-right: 1px solid var(--color-field-edge);
+  border-radius: 0;
+  box-shadow: none;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.stepper__count::-webkit-inner-spin-button,
+.stepper__count::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* once the booking has saved (the title shares .signup__title's rule) */
+.signup__done-text {
+  margin-bottom: var(--space-3);
+}
+.signup__done-next {
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-5);
+  line-height: 1.5;
+}
+.signup__done-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* The loose print: one plate lifted onto the board */
+.loose--print {
+  max-width: min(94vw, 920px);
+  width: fit-content; /* hugs the print, so the close control sits on its corner */
+}
+/* The print is ONE object: the picture on a white museum mount, with its
+   label written on the mount beneath it. (The label used to sit on the
+   dimmed page behind, where the pink paper and the running head showed
+   through at 1.9 to 3.6:1; on the mount it measures 8.2:1 and up.) */
+.print {
+  display: grid;
+  grid-template-columns: minmax(0, max-content); /* as wide as the picture */
+  justify-content: center;
+  justify-items: start;
+  gap: 0;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+}
+.print__img {
+  max-width: 100%;
+  max-height: calc(94vh - 256px); /* room below for the label, the count and the arrows, above for the close X */
+  width: auto;
+  height: auto;
+  padding: 10px 10px 0;
+  background: var(--color-white);
+}
+.print .label {
+  justify-self: stretch;
+  margin-top: 0;
+  padding: var(--space-2) 10px var(--space-2);
+  border-top: 0;
+  background: var(--color-white);
+  color: var(--color-text);
+}
+/* the hairline under the picture is drawn on the mount, inset like the picture */
+.print .label .label__line--num {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
+}
+/* "2 of 5 · Flora & Fauna": the last line on the mount, under the label
+   (on the board it fell across the dimmed page's running head) */
+.print__count {
+  justify-self: stretch;
+  margin: 0;
+  padding: 0 10px 10px;
+  background: var(--color-white);
+  font: 400 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+.print__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+}
+.arrow--print {
+  color: var(--color-light); /* (the base .arrow colour, kept for clarity) */
+}
+
+/* ============================================================
+   PHONES AND UPRIGHT TABLETS — one page at a time, the coil along the
+   left edge. The SAME media query is written in book.js (SINGLE): if one
+   changes, change the other, or the styles will show single pages while
+   the script turns spreads.
+   ============================================================ */
+@media (max-width: 720px), (max-width: 1024px) and (orientation: portrait) {
+  :root {
+    --board-pad: 10px;
+    --board-side: 10px;
+    --board-foot: 64px; /* the index strip lives here */
+    /* a single page fills the screen above the strip; --u follows its height */
+    --book-h: calc(100vh - var(--board-pad) - var(--board-foot));
+    --book-w: calc(100vw - 2 * var(--board-side));
+    --u: calc(var(--book-h) / 100);
+    --page-pad: clamp(16px, 4vw, 22px); /* the outer margin; the coil side keeps its 38px */
+    --gutter-pad: 38px;
+    /* the display type, a notch tighter on a small page */
+    --text-wordmark: clamp(2.8rem, 15vw, 4rem);
+    --text-spread-title: clamp(2.1rem, 11vw, 3rem);
+    /* a plate alone on a phone page may take more of the page's height */
+    --plate-ceiling: 74;
+    --portrait-ceiling: 62;
+    --corner-room: 0px; /* no back corner on a phone; the forward one is at the right, clear of the label */
+  }
+  @supports (height: 100dvh) {
+    :root {
+      --book-h: calc(100dvh - var(--board-pad) - var(--board-foot));
+    }
+  }
+
+  .board {
+    padding: var(--board-pad) var(--board-side) var(--board-foot);
+  }
+  .book,
+  .index {
+    width: var(--book-w);
+    height: var(--book-h);
+  }
+  .book {
+    padding: 6px 11px 10px 6px;
+  }
+  .book__pages {
+    inset: 6px 11px 10px 6px; /* the block takes 8px and 5px of that; the rim shows past it */
+    /* here a page is the whole book wide and turns about its left edge,
+       so its far edge comes twice as near: the eye sits twice as far */
+    perspective: calc(var(--book-w) * var(--turn-depth) * 2);
+    perspective-origin: 0% 50%; /* the eye at the coil edge */
+  }
+  .book__pages::before {
+    right: -8px;
+    width: 8px;
+    bottom: -5px;
+  }
+  .book__pages::after {
+    right: -8px;
+    bottom: -5px;
+    height: 5px;
+  }
+
+  /* every page is the whole book, turning about the left (coil) edge */
+  .page,
+  .page--left,
+  .page--right {
+    left: 0;
+    width: 100%;
+    transform-origin: 0% 50%;
+    border-radius: 0 2px 2px 0;
+  }
+  .page--left::before,
+  .page--right::before {
+    background: linear-gradient(to right, rgba(60, 35, 25, 0.14), rgba(60, 35, 25, 0) 12%);
+  }
+  .page--left .page__shade,
+  .page--right .page__shade {
+    background: linear-gradient(to right, rgba(30, 20, 15, 0.2) 20%, rgba(30, 20, 15, 0.85));
+  }
+  .cast {
+    width: 100%;
+  }
+  .cast--left {
+    background: linear-gradient(to right, rgba(30, 20, 15, 0.75), rgba(30, 20, 15, 0) 60%);
+  }
+  .cast--right {
+    display: none;
+  }
+
+  .page__body,
+  .page--left .page__body,
+  .page--right .page__body {
+    left: calc(var(--page-pad) * 0.5 + var(--gutter-pad));
+    right: var(--page-pad);
+  }
+  .page--left .folio,
+  .page--right .folio {
+    left: calc(var(--page-pad) * 0.5 + var(--gutter-pad));
+    right: calc(var(--page-pad) + 50px); /* clear of the lifted corner */
+  }
+  /* the folio is one line: on a left page "5 · continues" and the wordmark
+     do not both fit the foot, so the wordmark stands down while the page
+     has more below, and is back once it has been read to the end */
+  .folio__group,
+  .folio__mark {
+    white-space: nowrap;
+  }
+  .page__body--scroll.is-scrollable:not(.is-at-end) ~ .folio .folio__mark {
+    display: none;
+  }
+  .page__body--scroll {
+    padding-right: 4px;
+  }
+
+  /* the coil along the left edge */
+  .coil {
+    left: -6px;
+    top: 6px;
+    bottom: 10px;
+    width: 60px;
+    margin-left: 0;
+  }
+
+  /* the corners: only the forward one; back is the strip's arrow or a swipe */
+  .corner {
+    width: 64px;
+    height: 64px;
+    bottom: 10px;
+  }
+  .corner--next {
+    right: 11px;
+  }
+  .corner--prev {
+    display: none;
+  }
+
+  .page--title .page__body {
+    padding-top: calc(var(--u) * 5);
+  }
+  .wordmark {
+    max-width: 6.2em;
+  }
+  .offer {
+    max-width: 16.6em; /* 26ch of Caslon; em, for the reason given at .offer */
+  }
+  .workshops__grid,
+  .message__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .notify__controls .field {
+    flex-basis: 100%;
+  }
+  .spread-only {
+    display: none;
+  }
+  .next-page {
+    display: block;
+  }
+
+  /* the index collapses to a slim strip of paper along the bottom */
+  .index {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: auto;
+    height: var(--board-foot);
+    display: flex;
+    align-items: stretch;
+    padding: 4px 6px;
+    background: var(--color-tan);
+    box-shadow: 0 -4px 12px -4px rgba(0, 0, 0, 0.5);
+    z-index: 20;
+  }
+  .tabs {
+    position: static;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tab {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    height: 100%;
+    padding: 0 6px;
+    writing-mode: horizontal-tb;
+    border-radius: 2px;
+    box-shadow: none;
+    background: transparent;
+    /* Four words share the strip between the two arrows (204px at 320 wide,
+       274px at 390), so the labels stay short ("Dates", not "Programme")
+       rather than the type going under the 11px floor. Measured: every
+       label fits its cell at 360 and 390 with no clipping. */
+    letter-spacing: 0.02em; /* (the one exception to --track-label: four words in 204px) */
+    font-size: var(--text-label);
+    white-space: nowrap;
+    transition: none;
+  }
+  .tab:hover {
+    transform: none;
+    background: rgba(253, 253, 253, 0.5);
+  }
+  .tab[aria-current="page"] {
+    transform: none;
+    background: var(--color-pink);
+    box-shadow: none;
+  }
+  .turnbar {
+    position: static;
+    transform: none;
+    display: contents; /* its arrows become the strip's ends, its count hides */
+  }
+  .turnbar__count {
+    display: none;
+  }
+  /* only the page-turn arrows: the loose print's own arrows keep the
+     round, light base style on the dark board */
+  .turnbar .arrow {
+    width: 52px;
+    height: 100%;
+    border-radius: 0;
+    color: var(--color-text);
+    flex: none;
+  }
+  .turnbar .arrow--prev {
+    order: -1;
+    border-right: 1px solid var(--rule-soft);
+  }
+  .turnbar .arrow--next {
+    order: 1;
+    border-left: 1px solid var(--rule-soft);
+  }
+  .turnbar .arrow:hover {
+    background: rgba(253, 253, 253, 0.5);
+  }
+  /* the narrowest phones (320px): slimmer arrows give the four labels 16px
+     more; 44px is still a full tap target */
+  @media (max-width: 340px) {
+    .turnbar .arrow {
+      width: 44px;
+    }
+    .tab {
+      font-size: 11px; /* the floor; 12px clips "Contact" by 2px here */
+    }
+  }
+
+  .loose {
+    max-width: 94vw;
+  }
+  .loose__close {
+    top: 2px;
+    right: 2px;
+  }
+  .loose__close--dark {
+    top: -48px;
+    right: 0;
+  }
+  .signup {
+    padding: var(--space-6) var(--space-5) var(--space-5);
+  }
+  .print__img {
+    max-height: calc(94vh - 266px);
+  }
+}
+
+/* ============================================================
+   WITHOUT JAVASCRIPT — the same pages, stacked down the screen
+   ============================================================ */
+html:not(.js) .board {
+  position: static;
+  display: block;
+  padding: var(--space-5);
+  overflow: visible;
+}
+html:not(.js) .book,
+html:not(.js) .index {
+  width: auto;
+  height: auto;
+  max-width: 920px;
+  margin: 0 auto;
+}
+html:not(.js) .book {
+  padding: 8px;
+}
+html:not(.js) .book__pages {
+  position: static;
+  perspective: none;
+}
+html:not(.js) .book__pages::before,
+html:not(.js) .book__pages::after,
+html:not(.js) .coil,
+html:not(.js) .corner,
+html:not(.js) .turnbar,
+html:not(.js) .cast,
+html:not(.js) .page__shade,
+html:not(.js) .page::before {
+  display: none;
+}
+html:not(.js) .spread {
+  display: block;
+}
+html:not(.js) .page,
+html:not(.js) .page--left,
+html:not(.js) .page--right {
+  position: static;
+  width: auto;
+  padding: var(--space-6) var(--space-6) var(--space-7);
+  transform: none;
+}
+html:not(.js) .page__body,
+html:not(.js) .page--left .page__body,
+html:not(.js) .page--right .page__body {
+  position: static;
+  overflow: visible;
+}
+html:not(.js) .page--title .page__body {
+  padding-top: var(--space-6);
+}
+html:not(.js) .slip {
+  margin-top: var(--space-6);
+}
+html:not(.js) .index {
+  position: static;
+  pointer-events: auto;
+  margin-bottom: var(--space-4);
+}
+html:not(.js) .tabs {
+  position: static;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: var(--space-2);
 }
-/* the label is for screen readers and the field's accessible name; visually
-   the field's placeholder and the card title already say what it is */
-.notify__label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-.notify__field {
-  flex: 1 1 180px;
-  min-width: 0;
-  min-height: 46px;
-  padding: 10px 14px;
-  font: var(--text-md) / 1.3 var(--font-ui);
-  color: var(--color-text);
-  background: #fff;
-  border: 1.5px solid rgba(70, 62, 58, 0.22);
-  border-radius: var(--radius-field);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.notify__field::placeholder {
-  color: rgba(44, 44, 44, 0.5);
-}
-.notify__field:focus {
-  outline: none;
-  border-color: #a8465a;
-  box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.22);
-}
-.notify__field[aria-invalid="true"] {
-  border-color: #a8465a;
-}
-/* the bot trap is taken out of sight and out of the tab order */
-.notify__trap {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-.notify__submit {
-  flex: 0 0 auto;
-  min-height: 46px;
-  padding: 10px 22px;
-  font: 600 var(--text-sm) / 1.2 var(--font-ui);
-  letter-spacing: 0.04em;
-  color: var(--color-blush);
-  background: var(--color-dark);
-  border: none;
-  border-radius: var(--radius-field);
-  cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.2s ease;
-}
-.notify__submit:hover {
-  background: #3a3532;
-}
-.notify__submit:active {
-  transform: translateY(1px);
-}
-.notify__submit:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-.notify__status {
-  margin: var(--space-3) 0 0;
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--color-ink-soft);
-}
-.notify__status:empty {
-  display: none;
-}
-.notify__status--ok {
-  color: #5d7a4f; /* a soft leaf green: it worked */
-}
-.notify__status--error {
-  color: #a8465a;
-}
-@media (prefers-reduced-motion: reduce) {
-  .notify__field,
-  .notify__submit {
-    transition: none;
-  }
-}
-
-/* Months sit in a row, each sized to its own card (no stretched columns),
-   wrapping as the screen narrows. Top-aligned so cards start level. */
-.workshops__grid {
-  flex: 1 1 auto; /* takes the space beside the heading, like the card stacks */
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center; /* centred in that space -> sits right of centre */
-  gap: clamp(14px, 1.6vw, 28px);
-}
-/* Fixed, uniform width so the months form an evenly aligned row
-   (rather than each card sizing to its own longest date line). */
-/* Each month is now ONE titled card: a header band holding the month name,
-   with its dates in the body beneath — like a page in a planner. */
-.workshops__month {
-  flex: 0 0 200px;
-  display: flex;
-  flex-direction: column;
-  background: #faf5f0; /* warm cream, not stark white */
-  border: 1px solid rgba(70, 62, 58, 0.16);
-  border-radius: 18px;
-  overflow: hidden; /* clip the header band to the card's rounded corners */
-  box-shadow: 0 16px 34px -22px rgba(70, 62, 58, 0.45);
-}
-/* Month name — the card's title header (a soft band across the top) */
-.workshops__month-name {
-  margin: 0;
-  padding: 13px 10px;
-  background: transparent;
-  border-bottom: 1px solid rgba(70, 62, 58, 0.12);
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: clamp(1.3rem, 2vw, 1.7rem);
-  letter-spacing: 0.03em;
-  text-align: center;
-  color: var(--color-text);
-}
-
-/* The body of the titled card — holds the date buttons (the card frame and
-   shadow now live on .workshops__month). Generous padding gives the inner
-   boxes room to breathe inside the larger card. */
-.workshops__dates {
-  padding: 18px;
-}
-/* Each workshop line is a real <button> — a rounded-rectangle in deep rose,
-   fading to light pink on hover. Clicking one opens the (empty) showcase. */
-/* Each date is a two-tier button:
-   · P1 (.workshop__main) — the date row, in deep rose, fading to pink on hover.
-   · P2 (.workshop__topic) — a softer, lighter "lip" carrying a short name of
-     what that day's workshop is about.
-   The button itself is just the rounded frame both tiers are clipped into. */
-.workshop {
-  margin: 0 0 10px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid rgba(70, 62, 58, 0.14);
-  -webkit-appearance: none;
-  appearance: none;
-  text-align: left;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-  color: var(--color-text);
-  cursor: pointer;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-.workshop:last-child {
-  margin-bottom: 0;
-}
-/* Restrained hover — a whisper of warmth and a rose outline, no heavy fill */
-.workshop:hover {
-  border-color: rgba(168, 70, 90, 0.4);
-  background: #fdf6f3;
-}
-/* P1 — the date row: charcoal text on white, with the day number the single
-   touch of rose that anchors it against the pink section. */
-.workshop__main {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  line-height: 1.4;
-}
-.workshop__day {
-  font-weight: 700;
-  color: var(--color-accent);
-}
-/* time pushed to the right edge of the row */
-.workshop__time {
-  margin-left: auto;
-  color: var(--color-ink-muted); /* 5.3:1 on white; the old 0.6 was 3.95:1 */
-}
-/* P2 — the lip: a quiet caption for the workshop's short topic, split from the
-   date row by a hairline, in smaller muted text (no fill of its own). */
-.workshop__topic {
-  display: block;
-  padding: 5px 12px;
-  background: #f3e4dd; /* a soft blush caption strip — warmth, not a heavy fill */
-  border-top: 1px solid rgba(70, 62, 58, 0.08);
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  line-height: 1.3;
-  color: var(--color-ink-muted); /* 5.1:1 on the blush strip; was 3.8:1 */
-}
-
-/* ============================================================
-   PORTFOLIO (section 4)
-   Same heading treatment as Workshop Dates, on a deeper rose —
-   the next step down the light-to-dark journey.
-   ============================================================ */
-#portfolio {
-  position: relative;
-  padding: var(--section-pad-y) var(--section-pad-x);
-  background-color: var(--color-rose);
-}
-
-/* Heading block at the left, category objects level with it on the right */
-.portfolio__row {
-  display: flex;
-  flex-wrap: wrap;
-  /* top-aligned so the heading sits at the top of the row rather than being
-     centred against the card stacks (the title band for the page stack) */
-  align-items: flex-start;
-  gap: clamp(32px, 5vw, 72px);
-}
-.portfolio__head {
-  flex: 0 0 auto;
-}
-
-/* --- Section titles pinned to the top of their section ---
-   Workshop Dates, Portfolio and Get In Touch each sit their heading block just
-   under the section's top border, so the titles line up when the pages stack.
-   This is a PURELY VERTICAL shift: relative positioning moves them up through
-   the section's top padding without reflowing anything else, and the horizontal
-   alignment is untouched. The section's padding-top is what holds them down, so
-   the shift is that padding less a small 18px breathing gap.
-   About's "My Art Story" is deliberately left where it is. */
-.workshops__head,
-.portfolio__head,
-.contact__heading {
-  position: relative;
-  top: calc(18px - var(--section-pad-y));
-}
-.portfolio__objects {
-  flex: 1 1 auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  /* 1.2x the old gap, matching the 1.2x stack size, so the ratio holds */
-  gap: clamp(24px, 3.6vw, 62px);
-  /* room under the stacks for each album's one-line description, which
-     hangs below its square (see .category__desc) */
-  padding-bottom: 56px;
-}
-
-/* One category = a stack of cards with a pill button centred on it.
-   Sized up 1.2x from the original; the gap in .portfolio__objects is
-   scaled by the same 1.2x so the spacing-to-stack ratio is unchanged. */
-.category {
-  position: relative;
-  width: clamp(168px, 16.8vw, 240px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-}
-
-/* The stack. Its own z-index deliberately: that makes it a stacking
-   context, so the cards' z-indexes stay inside it and can't climb over
-   the button. */
-.cards {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  transition: transform 0.35s ease, opacity 0.3s ease;
-}
-.card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 58%;
-  aspect-ratio: 3 / 4;
-  margin: -38% 0 0 -29%; /* centre it before rotating */
-  border-radius: 10px;
-  background: var(--color-white);
-  border: 1px solid rgba(44, 44, 44, 0.16);
-  box-shadow: 0 10px 20px -12px rgba(70, 62, 58, 0.55);
-  /* Pivot low, like holding a hand of cards, so they fan from the base */
-  transform-origin: 50% 88%;
-  transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-/* At rest: a tight fan — front card upright, the rest peeking behind */
-.card--1 { z-index: 1; transform: rotate(-16deg); }
-.card--2 { z-index: 2; transform: rotate(-12deg); }
-.card--3 { z-index: 3; transform: rotate(-8deg); }
-.card--4 { z-index: 4; transform: rotate(-4deg); }
-.card--5 { z-index: 5; transform: rotate(0deg); }
-/* A card carrying an artwork — the image fills it, framed by the white rim */
-.card--filled {
-  background-size: cover;
-  background-position: center;
-}
-
-/* Hover: the stack grows a little AND twists further open, so more of
-   each card shows. The button never moves or grows. */
-.category:hover .cards {
-  transform: scale(1.08);
-}
-.category:hover .card--1 { transform: rotate(-38deg); }
-.category:hover .card--2 { transform: rotate(-28deg); }
-.category:hover .card--3 { transform: rotate(-18deg); }
-.category:hover .card--4 { transform: rotate(-9deg); }
-.category:hover .card--5 { transform: rotate(0deg); }
-
-/* Keyboard focus mirrors hover. Kept as its own rules on purpose:
-   · :focus-within would STICK — closing the showcase returns focus to
-     this button, which would leave the stack fanned open forever.
-   · :has() lives apart because one unsupported selector in a
-     comma-separated list would invalidate the :hover rules too. */
-.category:has(.category__button:focus-visible) .cards {
-  transform: scale(1.08);
-}
-.category:has(.category__button:focus-visible) .card--1 { transform: rotate(-38deg); }
-.category:has(.category__button:focus-visible) .card--2 { transform: rotate(-28deg); }
-.category:has(.category__button:focus-visible) .card--3 { transform: rotate(-18deg); }
-.category:has(.category__button:focus-visible) .card--4 { transform: rotate(-9deg); }
-.category__button {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-serif);
-  /* Tighter than the hero nav so the pill sits within the ball
-     rather than overhanging it, and never wraps to two lines */
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  white-space: nowrap;
-  color: var(--color-text);
-  /* 14px top and bottom makes the pill 44px tall: a comfortable tap target
-     (it was 36px). It still never moves or grows on hover. */
-  padding: 14px 18px;
-  border: 1px solid rgba(44, 44, 44, 0.22);
-  border-radius: var(--radius-pill);
-  background-color: rgba(253, 253, 253, 0.4);
-  cursor: pointer;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
-}
-.category__button:hover,
-.category__button:focus-visible {
-  background-color: var(--color-pink);
-  border-color: var(--color-pink);
-}
-/* The one-line description, hung just below the stack's square so the pill
-   can stay exactly centred on the cards. It fades with the stack while the
-   showcase opens, like the pill does. */
-.category__desc {
-  position: absolute;
-  top: 100%;
-  left: -10%;
-  right: -10%;
-  margin: 6px 0 0;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.02rem;
-  line-height: 1.35;
-  text-align: center;
-  color: var(--color-ink-soft);
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-.category.is-opening .category__desc {
-  opacity: 0;
-}
-
-/* Hand-off: while the showcase grows out of this stack, the stack itself
-   swells and fades, so the panel reads as the cards opening up.
-   Placed after the :hover rules so it wins at equal specificity. */
-.category.is-opening .cards {
-  opacity: 0;
-  transform: scale(1.3);
-}
-.category.is-opening .category__button {
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cards,
-  .card {
-    transition: none;
-  }
-  .category:hover .cards {
-    transform: none;
-  }
-  .category:has(.category__button:focus-visible) .cards {
-    transform: none;
-  }
-}
-
-/* ============================================================
-   CATEGORY SHOWCASE (full-screen takeover)
-   Blank on purpose — the artwork and the paper-unfold transition
-   land here later. The opacity fade below is a placeholder so the
-   thing is usable today; expect to replace it wholesale with the
-   real transition (three.js + GSAP).
-   ============================================================ */
-.showcase {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/* Must out-specify `display:flex` above, or the `hidden` attribute is
-   ignored and this invisible overlay swallows every click on the page. */
-.showcase[hidden] {
-  display: none;
-}
-.showcase__backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(44, 44, 44, 0.55);
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-.showcase[data-state="open"] .showcase__backdrop {
-  opacity: 1;
-}
-/* Paper-white surface. On open, script.js measures the clicked ball and
-   starts this panel transformed onto it, then releases it to its natural
-   size — so the page appears to grow out of the ball. */
-.showcase__panel {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(24px, 4vh, 48px);
-  width: min(1180px, 92vw);
-  height: min(860px, 88vh);
-  padding: clamp(24px, 4vh, 56px);
-  background: #2a2826;
-  /* other corners keep the slight 3px curve; the top-right is rounded to
-     roughly the curvature of the fold flap's curl (scaled to the smaller fold) */
-  border-radius: 3px 15px 3px 3px;
-  box-shadow: 0 40px 90px -40px rgba(44, 44, 44, 0.7);
-  transform-origin: center center;
-  /* Opening and closing run at the same pace (0.55s). The opacity leg is
-     only used on the way out — script.js sets opacity while closing, and
-     clears it (with transitions off) when opening, so there's no fade-in.
-     The delay keeps the panel solid for the first stretch of the return,
-     then fades it out just as it lands back on the stack. */
-  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
-    border-radius 0.55s ease, opacity 0.4s ease 0.15s;
-}
-/* Contents fade in only once the panel has grown, so they aren't
-   visibly squashed while it's still ball-shaped */
-.showcase__stage,
-.showcase__back {
-  opacity: 0;
-  transition: opacity 0.28s ease;
-}
-.showcase[data-state="open"] .showcase__stage,
-.showcase[data-state="open"] .showcase__back {
-  opacity: 1;
-  transition-delay: 0.34s;
-}
-/* The empty area the artwork (and the unfolding sheet) will occupy.
-   One per category; only the active one is shown. */
-.showcase__stage {
-  flex: 1;
-  width: 100%;
-  /* let the stage shrink so the gallery's image is capped to the panel
-     height instead of overflowing it (default min-height:auto would not) */
-  min-height: 0;
-}
-/* Explicit, so `hidden` can never be overridden the way it was on
-   .showcase (which silently covered the page in an invisible overlay) */
-.showcase__stage[hidden] {
-  display: none;
-}
-/* A flat 2D folded-corner button in the top-right: the dark panel's corner
-   folds away to reveal a pink (#eed0c8) triangle with black "back". No rim,
-   no hover effect — a plain illustrated fold. */
-.showcase__back {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  /* ~5% larger than the panel padding — tucked in the top-right corner, just
-     kissing the scroll track's edge. */
-  width: clamp(25.2px, 4.2vh, 58.8px);
-  height: clamp(25.2px, 4.2vh, 58.8px);
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  /* match the panel's rounded top-right corner */
-  border-top-right-radius: 15px;
-  overflow: hidden;
-}
-.showcase__fold {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-/* no outline on mouse/programmatic focus; keep a subtle one for keyboard */
-.showcase__back:focus:not(:focus-visible) {
-  outline: none;
-}
-.showcase__back:focus-visible {
-  outline: 2px solid #eed0c8;
-  outline-offset: 2px;
-}
-
-/* --- Artwork gallery inside the showcase ---
-   A scrollable masonry wall (built by script.js): images keep their own
-   aspect ratios and tile into columns, packing with no arrows or thumbnails. */
-.gallery {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.gallery__grid {
-  /* always two columns */
-  column-count: 2;
-  column-gap: 12px;
-}
-.gallery__item {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 0 12px;
-  border-radius: 6px; /* images keep their soft corners */
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-}
-/* Scrollbar (per the reference): a rounded dark channel with a soft blush
-   thumb inset inside it. Styled via the webkit pseudo-elements only — setting
-   the standard scrollbar-color/​width here made Chrome ignore the button-hide
-   below and draw the up/down arrows. */
-.gallery::-webkit-scrollbar {
-  width: 16px;
-}
-.gallery::-webkit-scrollbar-button {
-  /* no up/down arrows — just the clean pill */
-  display: none;
-  height: 0;
-  width: 0;
-}
-.gallery::-webkit-scrollbar-track {
-  background: #38332f; /* the dark bar */
-  border-radius: 999px; /* curved track ends */
-  margin: 0; /* no vacant space at the top/bottom — track sits tight */
-}
-.gallery::-webkit-scrollbar-thumb {
-  background: #f1dfd6; /* the scroll cursor */
-  border-radius: 999px;
-  /* transparent border reveals the dark track around the thumb, insetting it */
-  border: 4px solid transparent;
-  background-clip: padding-box;
-}
-.gallery::-webkit-scrollbar-thumb:hover {
-  background: #f7ece5;
-  background-clip: padding-box;
-}
-
-/* Stop the page behind from scrolling while the showcase is open */
-body.is-showcase-open {
-  overflow: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .showcase {
-    transition: none;
-  }
-}
-
-/* ============================================================
-   CONTACT (section 5)
-   Same section sizing and pink as Workshop Dates, and the same
-   heading treatment as every other section — but at half the
-   script size, so the closing note is quieter than the openers.
-   ============================================================ */
-#contact {
-  position: relative;
-  /* Keeps the drifting landscape strictly inside this section — it must never
-     appear anywhere else on the page. "clip" cuts exactly like "hidden" but
-     without turning the section into a scroll box, which would stop the
-     message box inside it from sticking to the screen (see .is-held). The
-     first line is the fallback for browsers too old to know "clip". */
-  overflow: hidden;
-  overflow: clip;
-  /* identical padding to #workshop-dates, and matched to its height */
-  padding: var(--section-pad-y) var(--section-pad-x);
-  min-height: 588px;
-  background-color: var(--color-pink);
-  /* divider separating Contact from Portfolio above — the same 2px dusty-rose
-     accent line used under the section headings (var(--color-accent)). */
-  border-top: 2px solid var(--color-accent);
-  /* and the matching line closing the section off at the bottom, where the
-     pink meets the white page-edge strip — 3x thicker, grown UPWARD: the
-     bottom padding is trimmed by the same 4px so the section's outer edge
-     (and the page height below it) stays exactly where it was. */
-  border-bottom: 6px solid var(--color-ground);
-  padding-bottom: calc(var(--section-pad-y) - 4px);
-}
-
-/* --- Drifting landscape (contact section only) ---
-   Each layer is ONE continuous SVG three periods (4800u) wide, NOT three
-   tiles side by side — butted tiles leave anti-aliased hairline seams.
-   Shifting by exactly one period (33.3333%) lands on identical artwork,
-   so the loop is invisible. Layers move at different speeds: distant hills
-   crawl, the foreground passes quicker — which is what reads as depth. */
-.contact__scene {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-/* Two nested elements per layer:
-   .contact__layer  — pinned to the section; the flora layers carry the
-                      left-fade MASK here (a non-drifting element, so the
-                      fade stays pinned to the left instead of sliding with
-                      the artwork).
-   .contact__drift  — the strip that actually drifts sideways. */
-.contact__layer {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.contact__drift {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  display: flex;
-  width: max-content;
-  will-change: transform;
-}
-.contact__drift > svg {
-  height: 100%;
-  width: auto;
-  flex: none;
-  display: block;
-}
-@keyframes contactDrift {
-  from {
-    transform: translateX(-33.3333%); /* exactly one period of the artwork */
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-.contact__drift--45s {
-  animation: contactDrift 45s linear infinite;
-}
-.contact__drift--68s {
-  animation: contactDrift 68s linear infinite;
-}
-.contact__drift--110s {
-  animation: contactDrift 110s linear infinite;
-}
-.contact__drift--165s {
-  animation: contactDrift 165s linear infinite;
-}
-
-/* The hills span the section full-width. The trees, plants and dandelion
-   seeds run full width too — but a small left INSET holds their entry back
-   so they only begin once the front page starts (just past the cascading
-   page edge), instead of touching the very left margin. This is an inset,
-   NOT a fade-out: past the first few percent the flora is fully opaque all
-   the way across. The mask sits on the pinned outer element so the inset
-   stays put while the flora drifts through it. */
-.contact__layer--masked {
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 0.5%);
-  mask-image: linear-gradient(to right, transparent 0, #000 0.5%);
-}
-.contact__layer--seeds {
-  opacity: 0.75;
-}
-
-/* Each seed hangs from its crown and swings, as though the wind were
-   dragging it by the fluffy top while the body trails behind and below.
-   fill-box + 50% 0% puts the pivot exactly at the crown (it sits at the
-   top-centre of the seed's bounding box). The lean is per-seed via --lean,
-   so one keyframe set serves them all. */
-.csd {
-  transform-box: fill-box;
-  transform-origin: 50% 0%;
-  /* per-seed base duration, sped up 15% (÷1.15) */
-  animation: seedSway calc(var(--dur, 6s) / 1.15) ease-in-out infinite;
-  animation-delay: var(--del, 0s);
-}
-/* Swing is a quarter wider than before (was -6deg / +7deg). A slight vertical
-   bob (±3 user units) rides along in the same keyframes — the seed lifts as it
-   swings one way and settles as it swings back, so it floats rather than
-   pivoting rigidly. It has to live here rather than in a second animation,
-   since two animations on one element would fight over `transform`. */
-@keyframes seedSway {
-  0%,
-  100% {
-    transform: translateY(3px) rotate(calc(var(--lean) - 7.5deg));
-  }
-  50% {
-    transform: translateY(-3px) rotate(calc(var(--lean) + 8.75deg));
-  }
-}
-
-/* Keep the heading above the landscape */
-#contact > .contact__heading {
-  position: relative;
-  z-index: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contact__drift {
-    animation: none;
-  }
-  /* Hold the lean, drop the swinging */
-  .csd {
-    animation: none;
-    transform: rotate(var(--lean));
-  }
-}
-.contact__heading {
-  margin: 0 0 0.7em;
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.1;
-  /* half of the clamp(3.4rem, 7vw, 5.5rem) used by the other headings */
-  font-size: clamp(1.7rem, 3.5vw, 2.75rem);
-  color: var(--color-text);
-}
-/* --- The three dark boxes ---
-   Under the heading: the big message box on the left, and the two small
-   social boxes right beside its top-right corner — one level with the big
-   box's top, the other directly underneath it. All three use the portfolio
-   showcase's dark "display" colour, so the dark end of the palette journey
-   shows up here too. */
-.contact__boxes {
-  position: relative;
-  z-index: 1; /* above the drifting landscape */
-  display: flex;
-  justify-content: flex-start; /* small boxes sit right next to the big one */
-  align-items: flex-start; /* tops level */
-  gap: clamp(12px, 1.4vw, 20px);
-  /* nudged in a little from the heading's left edge */
-  padding-left: clamp(0px, 3vw, 46px);
-  /* The whole group is raised by 7% of the SECTION's height. CSS can't
-     measure the section from in here, but a percentage in translate means "of
-     this element's own height", and this row is exactly as tall as the big
-     box — about half the section — so 13.3% of it comes to 7% of the section
-     (minus = up). On the row rather than the big box, so the small boxes rise
-     with it and stay level with its top. A translate moves only the picture:
-     the section's height is unchanged. */
-  translate: 0 -13.3%;
-}
-.contact__box {
-  background: var(--color-dark); /* exactly the portfolio showcase panel's dark */
-}
-.contact__box--message {
-  flex: 0 1 auto;
-  width: clamp(260px, 42%, 545px);
-  /* 3:2 is the box's shape when the fields fit; if they need more height
-     (a narrow box), it simply grows taller rather than cutting them off */
-  aspect-ratio: 3 / 2;
-  border-radius: 18px; /* the same curve as the Workshop Dates month cards */
-  /* the form inside: a column of rows, kept clear of the rounded corners */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-sizing: border-box;
-  padding: clamp(22px, 2.5vw, 34px);
-}
-/* Once the Get In Touch title sticks in the band, the boxes hold still under
-   it instead of sliding up into it. stack.js adds .is-held to the big box and
-   to the pair of small ones, and works out --hold-top for each (the title's
-   slot + its own distance down the section); the browser's position:sticky
-   does the holding. */
-.stack-on #contact .is-held {
-  position: sticky;
-  top: var(--hold-top);
-}
-
-/* --- The form fields ---
-   The same look as the workshop sign-up fields in showcase.css: a fill a
-   little greyer than the dark box, a deep-pink ring, soft 12px corners, and
-   a rose-red ring with a glow while a field is being typed in. */
-.contact__row {
-  display: flex;
-  gap: 10px;
-}
-.contact__field {
-  flex: 0 0 auto;
-  min-width: 0;
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-  /* a readable font, per the content rules (fields don't inherit one) */
-  font: 1rem/1.3 var(--font-ui);
-  color: #f1dfd6; /* light text, readable on the grey fill */
-  padding: 10px 12px;
-  background: #433e3a; /* slightly greyer than the #2a2826 box */
-  border: 2px solid #e6b8ab; /* deep-pink ring */
-  border-radius: 12px;
-  transition: border-color 0.35s ease, box-shadow 0.35s ease,
-    background-color 0.35s ease;
-}
-.contact__row .contact__group {
-  flex: 1 1 0; /* name and surname share the row equally */
-  min-width: 0;
-}
-/* each field sits in a group with its (unseen) label */
-.contact__group {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-/* the message takes whatever height is left between the email and Send */
-.contact__group--message {
-  flex: 1 1 64px;
-  min-height: 64px;
-}
-.contact__field--message {
-  flex: 1 1 auto;
-  min-height: 64px;
-  resize: none;
-}
-/* a field that failed its check wears the lighter rose ring until fixed */
-.contact__field[aria-invalid="true"] {
-  border-color: #e79aa8;
-}
-/* the bot trap is taken out of sight and out of the tab order */
-.contact__trap {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-/* status on the left, the Send button on the right */
-.contact__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px 16px;
-}
-.contact__status {
-  flex: 1 1 160px;
-  margin: 0;
-  font: var(--text-sm) / 1.4 var(--font-ui);
-  color: #d9cfc8;
-}
-.contact__status:empty {
-  display: none;
-}
-.contact__status--ok {
-  color: #eed0c8;
-}
-.contact__status--error {
-  color: #e79aa8;
-}
-.contact__field::placeholder {
-  color: #c9bdb6;
-}
-.contact__field:focus {
-  outline: none;
-  border-color: #a8465a;
-  box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.3);
-}
-/* Send, bottom-right — the same pink button as the workshop booking's */
-.contact__submit {
-  flex: 0 0 auto;
-  min-height: 46px;
-  font: 600 1rem/1.3 var(--font-ui);
-  letter-spacing: 0.04em;
-  color: #2a2826; /* the box's own dark, so the pink reads as the lit surface */
-  padding: 10px 26px;
-  background: #eed0c8; /* brand pink */
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.3s ease;
-}
-.contact__submit:hover {
-  background: #f1dfd6; /* lifts toward the lighter blush */
-  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6);
-}
-.contact__submit:active {
-  transform: translateY(1px);
-}
-.contact__submit:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.55);
-}
-.contact__submit:disabled {
-  opacity: 0.6;
-  cursor: default;
-  box-shadow: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .contact__field,
-  .contact__submit {
-    transition: none;
-  }
-}
-
-/* the two small boxes: one under the other, left edges in line */
-.contact__socials {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 1.4vw, 20px); /* same spacing as between them and the big box */
-}
-/* Each small box: a round profile picture on the left, the name on the right.
-   The box is as wide as its picture and name need (never narrower than the
-   min-width), and the column stretches both boxes to the wider one's width,
-   so the pair stays the same size. --pic is the picture's diameter; the box's
-   height follows from it, which is what keeps a still-empty box the same
-   height as a filled one. */
-.contact__box--social {
-  --pic: clamp(44px, 3.8vw, 54px);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-sizing: border-box;
-  min-width: clamp(110px, 12vw, 168px);
-  min-height: calc(var(--pic) + 22px);
-  padding: 11px 20px 11px 11px;
-  border-radius: 18px; /* matches the big box and the month cards */
-  text-decoration: none;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-/* only the filled boxes are links */
-a.contact__box--social:hover {
-  background: #38332f; /* a touch lighter: the showcase scrollbar's dark */
-}
-a.contact__box--social:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(168, 70, 90, 0.55);
-}
-/* border-radius:50% turns the square picture into a circle */
-.contact__social-pic {
-  flex: none;
-  width: var(--pic);
-  height: var(--pic);
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-}
-.contact__social-name {
-  /* A true bold (Inter 700 is loaded in index.html — asking for a weight that
-     isn't loaded makes the browser smear a lighter one to fake it), in the
-     brand white rather than the softer blush, so the name reads crisply. */
-  font: 700 1.05rem/1.2 var(--font-ui);
-  letter-spacing: 0.01em;
-  color: var(--color-white);
-  -webkit-font-smoothing: antialiased;
-  white-space: nowrap;
-}
-/* Narrow screens: no room side by side, so the small boxes drop underneath */
-@media (max-width: 640px) {
-  .contact__boxes {
-    flex-direction: column;
-    align-items: stretch;
-    padding-left: 0;
-    translate: none; /* stacked: lifting it would crowd the heading */
-  }
-  .contact__box--message {
-    width: 100%;
-  }
-  .contact__socials {
-    flex-direction: row; /* side by side under the big box... */
-    flex-wrap: wrap; /* ...or one under the other if both names can't fit */
-  }
-  .contact__box--social {
-    flex: 1 1 auto; /* share the row, but never squeeze a name */
-  }
-}
-
-/* Readable font for the details, per the brand's content rules */
-.contact__line {
-  margin: 0 0 0.6em;
-  font-family: var(--font-ui);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: var(--color-text);
-}
-.contact__line:last-child {
-  margin-bottom: 0;
-}
-.contact__line a {
-  color: var(--color-text);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(44, 44, 44, 0.28);
-  padding-bottom: 2px;
-  transition: border-color 0.25s ease, color 0.25s ease;
-}
-.contact__line a:hover,
-.contact__line a:focus-visible {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-/* --- Scroll reveal ---
-   Targets start lowered & faded, then rise in as they scroll into view.
-   IntersectionObserver (script.js) adds .is-visible; this works in every
-   browser, Safari included. The .js-reveal guard (added by the script)
-   means that if JavaScript is off, nothing is ever hidden. Disabled for
-   reduced-motion users. */
-@media (prefers-reduced-motion: no-preference) {
-  .js-reveal .reveal {
-    opacity: 0;
-    transform: translateY(44px) scale(0.98);
-    transition: opacity 0.75s ease, transform 0.75s ease;
-  }
-  .js-reveal .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-  /* Gentle cascade when a row of cards enters together */
-  .workshops__month.reveal:nth-child(2) { transition-delay: 0.08s; }
-  .workshops__month.reveal:nth-child(3) { transition-delay: 0.16s; }
-  .workshops__month.reveal:nth-child(4) { transition-delay: 0.24s; }
-}
-
-/* ============================================================
-   FOOTER
-   One slim row in the landscape's ground colour (see the note in
-   index.html on why it stays slim): wordmark and copyright on the
-   left, the section links in the middle, the socials and a quiet
-   Admin link on the right. Stacks into rows on a phone.
-   ============================================================ */
-.site-footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3) var(--space-6);
-  /* the right padding clears the binding coil; the vertical padding is as
-     small as it can be — see the note on height in index.html */
-  padding: var(--space-2) calc(104px + var(--space-3)) var(--space-2) var(--section-pad-x);
-  background: var(--color-ground);
-  color: var(--color-text);
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-}
-.site-footer a {
-  color: var(--color-text);
-  text-decoration: none;
-}
-.site-footer__brand {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px var(--space-4);
-}
-.site-footer__wordmark {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  line-height: 1;
-  color: var(--color-dark);
-  padding: 8px 4px 10px; /* a 44px-tall hit area */
-  margin-left: -4px;
-}
-.site-footer__copy {
-  color: rgba(44, 44, 44, 0.9);
-}
-.site-footer__nav,
-.site-footer__social {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2px;
-}
-.site-footer__nav a,
-.site-footer__social a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+html:not(.js) .tab {
+  writing-mode: horizontal-tb;
   min-height: 44px;
-  padding: 10px 12px;
-  border-radius: var(--radius-pill);
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  width: auto;
+  padding: 0 var(--space-4);
+  border-radius: 3px;
+  transform: none;
 }
-.site-footer__nav a:hover,
-.site-footer__social a:hover {
-  background: rgba(253, 253, 253, 0.22);
+html:not(.js) .seed {
+  display: none;
 }
-.site-footer__social svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
-}
-/* Irene's way in: present but quiet, set a step smaller */
-.site-footer__admin {
-  font-size: var(--text-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-left: var(--space-2);
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-footer a {
-    transition: none;
-  }
-}
-
-/* ============================================================
-   PAGE STACK (stack.js)
-   Workshop Dates, Portfolio and Get In Touch pin and slide over one
-   another at full size, their title strips stacking in a band at the
-   top. All of the movement is the browser's own position:sticky, so it
-   never lags the scroll; stack.js only measures, sets each --stick
-   offset, and fades the strip backgrounds. Everything is scoped to
-   .stack-on, which stack.js puts on <html> only while the effect is
-   active — otherwise the page scrolls exactly as before.
-   ============================================================ */
-.stack-on .stack-page {
-  position: sticky;
-  top: var(--stick, 0px);
-  /* its own layer: later parts paint over earlier ones, and z-indexes
-     inside a part can never leak above the part that comes after it */
-  z-index: 0;
-}
-.stack-on .stack-page--last {
-  position: relative; /* nothing comes after it, so it never pins */
-  top: auto;
-}
-/* A copy of a part's title strip (seam border + eyebrow + title), laid
-   exactly over the real one. It sticks at its slot while the page
-   carries on scrolling underneath. */
-.stack-strip {
-  position: sticky;
-  top: var(--stick, 0px);
-  z-index: 1; /* above every page */
-  pointer-events: none;
-}
-.stack-strip__bg,
-.stack-strip__edge {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-}
-.stack-strip__bg {
-  bottom: 0;
-}
-/* The copied eyebrow + title, held together so they can shrink as one. On a
-   narrow screen each title docks — shrinks into the top of its slot — as its
-   strip sticks, because three full-size script titles would otherwise take
-   nearly two thirds of a phone screen. The eyebrow goes with it. */
-.stack-strip__title {
-  transition: transform 0.28s ease;
-}
-.stack-strip.is-docked .stack-strip__title {
-  transform: var(--dock);
-}
-.stack-strip .section-eyebrow {
-  transition: opacity 0.2s ease;
-}
-.stack-strip.is-docked .section-eyebrow {
-  opacity: 0;
-}
-
-/* Holds the copies that hang below their strip (Portfolio's card stacks).
-   stack.js sets its height every frame to end exactly at the next part's top
-   border, and the overflow cuts them there — so the artwork sticks out only
-   as far as Get In Touch, and tucks under it from that line down. */
-.stack-strip__hang {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  overflow: hidden;
-  pointer-events: none; /* the copies inside switch it back on */
-}
-/* The layer holding the copied title (and Portfolio's card stacks). Only this
-   fades as parts stack on top of it — the strip's background and its border
-   stay at full strength, so the seams stay crisp and nothing shows through. */
-.stack-strip__face {
-  position: absolute;
-  inset: 0;
-  transition: opacity 0.35s ease;
-}
-
-/* ============================================================
-   PHONE LAYOUT (640px wide and narrower)
-   Everything that makes the site work on a phone, in one place.
-   The desktop layout above is untouched; these rules only take over
-   on narrow screens. Same palette, script headings, ring binding and
-   card stacks — just arranged for a thumb:
-   · one shared set of side gutters, clear of the rings on the right
-   · the long parts made shorter: About folds its last paragraphs
-     away, Workshop Dates and Portfolio become rows you swipe sideways
-   · tap targets at least 44px tall, and a gentle press effect
-   The page stack (stack.js) is switched off at this width, so the
-   spacing it needed under the headings is taken back out here.
-   ============================================================ */
-
-/* Phone-only pieces: hidden on bigger screens */
-.about__toggle,
-.swipe-dots {
+html:not(.js) .folio {
   display: none;
 }
 
-@media (max-width: 640px) {
-  :root {
-    /* Side gutters. The right one clears the half-size rings, which begin
-       44px in from the right edge on every phone — so text stops 12px short
-       of them. The left one clears the cascading page edges. */
-    --phone-pad-l: 26px;
-    --phone-pad-r: 56px;
-    --phone-pad-y: 48px;
+/* ============================================================
+   PRINT — the whole book, page after page, on white paper
+   The board, the coil, the corners and the index are screen furniture;
+   on paper every page is laid out in order, nothing hidden, the plates
+   printed in their colours. (The rules mirror the no-JavaScript block
+   above, which lays the pages out the same way; keep the two in step.)
+   ============================================================ */
+@media print {
+  html,
+  body,
+  .board {
+    background: #fff;
+    color: #000;
   }
-
-  /* --- Shared section spacing --- */
-  #about,
-  #workshop-dates,
-  #portfolio,
-  #contact {
-    padding: var(--phone-pad-y) var(--phone-pad-r) var(--phone-pad-y) var(--phone-pad-l);
-  }
-  #contact {
-    padding-bottom: calc(var(--phone-pad-y) - 4px); /* its thicker bottom border */
-  }
-  /* The titles were lifted to line up when pages stack; no stacking here, so
-     they sit in their natural place and the gap they left behind closes. */
-  .workshops__head,
-  .portfolio__head,
-  .contact__heading {
-    top: 0;
-  }
-  /* Script headings a touch smaller, so "Workshop Dates" fits on one line
-     between the page edge and the rings on even a small phone */
-  .about__heading,
-  .workshops__heading,
-  .portfolio__heading {
-    font-size: clamp(2.6rem, 12.5vw, 3.4rem);
-  }
-
-  /* No grey flash when something is tapped; each control has its own press
-     effect instead (below) */
-  a,
-  button {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  /* --- Hero --- */
-  .hero__inner {
-    padding: 64px var(--phone-pad-r) 24px var(--phone-pad-l);
-  }
-  /* The name at twice its usual phone size (30% of the screen width instead
-     of 15%), so it fills the open space at the top of the screen */
-  .hero__title {
-    font-size: 30vw;
-    /* the name is centred; this nudges it a few pixels left, into the open
-       space by the page edge and away from the rings */
-    margin-right: 0.16em;
-  }
-  /* ...with a slightly shallower staircase (each word steps in a little less
-     than on desktop), so at that size "Art" stays clear of the rings */
-  .hero__word--2 {
-    margin-left: 0.5em;
-  }
-  .hero__word--3 {
-    margin-left: 1em;
-  }
-  /* The three roles on three lines: each dot becomes a line break (a block
-     with no height) instead of wrapping "Master of / Ceremony" awkwardly */
-  .hero__tagline {
-    font-size: 1.4rem; /* 25% larger than the first phone size (1.12rem) */
-    line-height: 1.55;
-  }
-  .hero__dot {
+  .board {
+    position: static;
     display: block;
-    height: 0;
-    overflow: hidden;
+    padding: 0;
+    overflow: visible;
   }
-  /* The four pills along the base of the hero used to wrap into a 2 x 2
-     grid here. Now that the sticky header carries a Menu on phones, and
-     the hero has its two calls to action, the pills come off the phone
-     hero — the title gets its room back. */
-  .hero__nav {
-    display: none;
-  }
-  .hero__intro {
-    font-size: 1.1rem;
-    margin-top: 14px;
-  }
-  .hero__actions {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    max-width: 320px;
-    margin-top: 28px;
-    padding-bottom: 36px;
-  }
-
-  /* --- Site header on a phone: brand + Menu; the links drop down --- */
-  .site-header {
-    --site-header-h: 56px;
-    gap: 12px;
-    /* clear of the half-size coil (52px) on the right */
-    padding: 0 calc(52px + 8px) 0 var(--phone-pad-l);
-  }
-  .site-header__brand {
-    font-size: 1.5rem;
-  }
-  .site-header__menu {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    margin-left: auto;
-    padding: 8px 14px;
-    border: 1px solid rgba(44, 44, 44, 0.22);
-    border-radius: var(--radius-pill);
-    background: rgba(253, 253, 253, 0.5);
-    font: 600 0.82rem/1 var(--font-ui);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-text);
-    cursor: pointer;
-  }
-  /* three little bars, drawn with borders and a shadow — no icon file */
-  .site-header__menu-bars {
-    position: relative;
-    display: block;
-    width: 16px;
-    height: 2px;
-    background: currentColor;
-    border-radius: 2px;
-    box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor;
-  }
-  .site-header__menu[aria-expanded="true"] {
-    background: var(--color-pink);
-    border-color: var(--color-pink);
-  }
-  /* The links become a sheet hanging under the bar. It is "hidden" with
-     visibility + opacity + a small slide rather than display:none, so it
-     can animate in. */
-  .site-header__nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 4px;
-    margin: 0;
-    padding: 12px var(--phone-pad-r) 16px var(--phone-pad-l);
-    background: rgba(253, 251, 249, 0.97);
-    border-bottom: 1px solid rgba(70, 62, 58, 0.14);
-    box-shadow: 0 24px 40px -28px rgba(70, 62, 58, 0.5);
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(-8px);
-    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
-  }
-  .site-header.is-menu-open .site-header__nav {
-    visibility: visible;
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s;
-  }
-  .site-header__nav a {
-    min-height: 48px;
-    padding: 12px 14px;
-    font-size: 1rem;
-  }
-  .site-header__nav .site-header__cta {
-    margin: 8px 0 0;
-    justify-content: center;
-  }
-
-  /* --- About --- */
-  #about {
-    gap: 28px;
-  }
-  .about__frame {
-    width: 210px;
-    margin: 0 auto; /* centred on its own line, above the story */
-  }
-  .about__lead {
-    font-size: 1.45rem;
-  }
-  .about__bio {
-    font-size: 1.06rem;
-    line-height: 1.68;
-  }
-  .about__quote {
-    font-size: 1.3rem;
-  }
-  /* "Continue reading": the last two paragraphs fold down to their first few
-     lines, fading out. The grid row animating from 0fr to 1fr is what lets
-     the text open smoothly to its real height. */
-  .about__more {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.6s ease;
-  }
-  .about__more.is-open {
-    grid-template-rows: 1fr;
-  }
-  .about__more-inner {
-    overflow: hidden;
-    min-height: 5.4em; /* the teaser: about three lines */
-    -webkit-mask-image: linear-gradient(to bottom, #000 25%, transparent);
-    mask-image: linear-gradient(to bottom, #000 25%, transparent);
-  }
-  .about__more.is-open .about__more-inner {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  /* the same pill as the hero buttons */
-  .about__toggle {
-    display: block;
-    margin: 6px 0 0;
-    padding: 14px 24px;
-    font-family: var(--font-serif);
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--color-text);
-    background-color: rgba(253, 253, 253, 0.4);
-    border: 1px solid rgba(44, 44, 44, 0.22);
-    border-radius: 999px;
-    cursor: pointer;
-  }
-
-  /* --- Swipe rows (Workshop Dates months, Portfolio stacks) ---
-     The row runs edge to edge (the negative margins undo the section's
-     gutters) so cards slide in from the page edge and out under the rings,
-     like pages in the book. Snap points land each card neatly. */
-  .workshops__row,
-  .portfolio__row {
-    gap: 22px;
-  }
-  .workshops__grid,
-  .portfolio__objects {
-    flex: 0 0 calc(100% + var(--phone-pad-l) + var(--phone-pad-r));
-    margin: 0 calc(-1 * var(--phone-pad-r)) 0 calc(-1 * var(--phone-pad-l));
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    /* sideways only: nothing inside can be dragged up and down, and an
-       up-down swipe that starts on a card simply scrolls the page */
-    overflow-y: hidden;
-    overscroll-behavior-x: contain; /* a sideways swipe never drags the page */
-    scroll-snap-type: x mandatory;
-    scroll-padding: 0 var(--phone-pad-r) 0 var(--phone-pad-l);
-    scrollbar-width: none;
-  }
-  .workshops__grid::-webkit-scrollbar,
-  .portfolio__objects::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Months: one card per swipe, with the next one peeking in on the right */
-  .workshops__grid {
-    align-items: flex-start; /* each card only as tall as its dates, as on desktop */
-    gap: 14px;
-    padding: 4px var(--phone-pad-r) 22px var(--phone-pad-l); /* room for shadows */
-  }
-  .workshops__month {
-    flex: 0 0 min(78%, 270px);
-    scroll-snap-align: start;
-  }
-  /* The cards are already in view as one row, so they don't rise in one by
-     one (inside a sideways row that would replay on every swipe) */
-  .js-reveal .workshops__month.reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .workshop__topic {
-    font-size: 0.8rem;
-  }
-  .workshops__intro {
-    font-size: 1.06rem;
-  }
-  .workshops__extras {
-    margin-top: 28px;
-    padding-top: 28px;
-    gap: 28px;
-  }
-  .notify {
+  .book,
+  .index {
+    width: auto;
+    height: auto;
     max-width: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
   }
-  .notify__field {
-    font-size: 16px; /* 16px or more stops an iPhone zooming in on tap */
+  .book__pages {
+    position: static;
+    perspective: none;
   }
-
-  /* Portfolio: the stack in view sits centred between the page edge and the
-     rings, with its neighbours peeking in either side. The padding lets the
-     first and last stack reach the centre too. */
-  .portfolio__objects {
-    --cat: 214px;
-    --mid: calc((var(--phone-pad-l) + 100vw - var(--phone-pad-r)) / 2);
-    gap: 4px;
-    /* the bottom padding is room for the fanned cards, which reach a little
-       below the stack, and for the description under it (the row cuts off
-       anything past its edge) */
-    padding: 12px calc(100vw - var(--mid) - var(--cat) / 2) 64px
-      calc(var(--mid) - var(--cat) / 2);
+  .book__pages::before,
+  .book__pages::after,
+  .coil,
+  .corner,
+  .index,
+  .cast,
+  .page__shade,
+  .page::before,
+  .seed,
+  .skip-link,
+  .loose,
+  .next-page {
+    display: none !important;
   }
-  .category {
-    flex: 0 0 var(--cat);
-    width: var(--cat);
-    scroll-snap-align: center;
+  .spread {
+    display: block;
   }
-  /* No hover on a touch screen, so the stack in view (marked by script.js)
-     fans open instead — the same twist a mouse gives it on a computer */
-  .category.is-current .cards {
-    transform: scale(1.06);
+  .page,
+  .page[data-state] {
+    display: block !important;
+    visibility: visible !important;
+    position: static;
+    width: auto;
+    padding: 0 0 var(--space-6);
+    transform: none;
+    opacity: 1 !important;
+    background: #fff;
+    break-inside: avoid;
   }
-  .category.is-current .card--1 { transform: rotate(-38deg); }
-  .category.is-current .card--2 { transform: rotate(-28deg); }
-  .category.is-current .card--3 { transform: rotate(-18deg); }
-  .category.is-current .card--4 { transform: rotate(-9deg); }
-  /* ...but tapping it still swells and fades the stack as the panel opens */
-  .category.is-current.is-opening .cards {
-    transform: scale(1.3);
+  .page--right {
+    break-after: page; /* each spread ends a printed sheet */
   }
-  .category__button {
-    padding: 14px 20px;
-    font-size: 0.78rem;
+  .page__body,
+  .page--left .page__body,
+  .page--right .page__body,
+  .page__body--scroll {
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding: 0;
   }
-  /* The stacks sit almost touching in the swipe row, so only the stack in
-     view shows its description; the neighbours' lines would run into it. */
-  .category__desc {
-    left: 0;
-    right: 0;
-    font-size: 0.98rem;
-    opacity: 0;
+  .page__body--scroll::after {
+    display: none; /* no fade on paper */
   }
-  .category.is-current .category__desc {
-    opacity: 1;
+  .folio {
+    position: static;
+    margin-top: var(--space-4);
+    color: #000;
   }
-
-  /* The dots under each row: which card you are on (script.js keeps them
-     in step). The current one stretches into a short rose dash. */
-  .swipe-dots {
-    flex: 1 1 100%;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: -8px;
+  .folio__more,
+  .folio__admin {
+    display: none !important;
   }
-  .swipe-dots[hidden] {
+  .page--title .page__body {
+    padding-top: 0;
+  }
+  .slip {
+    transform: none;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  .plate__img,
+  .social__pic {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact; /* the paintings in their colours */
+  }
+  .plate__lift {
+    box-shadow: none;
+  }
+  .plate--hero .plate__img,
+  .plate--portrait .plate__img {
+    max-height: 60vh;
+  }
+  .workshop::after {
+    display: none; /* the arrows mean nothing on paper */
+  }
+  .field,
+  .button,
+  .stepper {
+    display: none; /* nor do the forms */
+  }
+  .notify,
+  .message {
     display: none;
   }
-  .swipe-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(44, 44, 44, 0.22);
-    transition: width 0.3s ease, background-color 0.3s ease;
-  }
-  .swipe-dots span.is-on {
-    width: 18px;
-    background: var(--color-accent);
-  }
-
-  /* --- Get In Touch --- */
-  /* The title at double its size (3.4rem instead of 1.7rem). It grows UP
-     into the empty space at the top of the section: the negative top margin
-     is exactly how much taller it got, so the form below stays where it was.
-     The gap under it is kept at its old size rather than doubling with it. */
-  .contact__heading {
-    font-size: 3.4rem;
-    line-height: 1;
-    margin: -26px 0 19px;
-  }
-  .contact__heading::after {
-    margin-top: 10px;
-  }
-  .contact__group--message,
-  .contact__field--message {
-    min-height: 104px;
-  }
-  .contact__submit {
-    padding: 13px 28px;
-  }
-  .contact__foot {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  /* in a column, a flex-basis would become a HEIGHT and leave a gap */
-  .contact__status {
-    flex: none;
-  }
-
-  /* --- Footer: rows, clear of the half-size coil --- */
-  .site-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 24px var(--phone-pad-r) 28px var(--phone-pad-l);
-  }
-  .site-footer__nav,
-  .site-footer__social {
-    margin-left: -10px; /* the links' own padding lines their text up with the edge */
-  }
-  .site-footer__nav a,
-  .site-footer__social a {
-    padding: 10px;
-    font-size: 0.85rem;
-  }
-
-  /* --- Press effect: a small give under the thumb --- */
-  .hero__nav a,
-  .about__toggle,
-  .workshop,
-  .category__button,
-  .contact__submit,
-  a.contact__box--social {
-    transition: transform 0.15s ease, background-color 0.25s ease,
-      border-color 0.25s ease;
-  }
-  .hero__nav a:active,
-  .about__toggle:active,
-  .workshop:active,
-  .category__button:active,
-  .contact__submit:active,
-  a.contact__box--social:active {
-    transform: scale(0.97);
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 }
 
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
-  .about__more,
-  .swipe-dots span {
+/* ============================================================
+   REDUCED MOTION — the pages still change; nothing slides or lifts
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .slip,
+  .slip__arrow,
+  .tab,
+  .corner,
+  .arrow,
+  .button,
+  .workshop,
+  .workshop::after,
+  .plate__lift {
     transition: none;
+  }
+  .slip:hover,
+  .slip:focus-visible {
+    transform: rotate(-1.6deg);
+  }
+  .slip__pin {
+    transition: none;
+  }
+  .slip:hover .slip__pin,
+  .slip:focus-visible .slip__pin {
+    transform: rotate(1.6deg);
+  }
+  .corner:hover,
+  .corner:focus-visible {
+    transform: none;
   }
 }

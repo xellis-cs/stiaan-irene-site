@@ -41,6 +41,7 @@
     if (!fields[k]) return;
     fields[k].addEventListener("input", function () {
       fields[k].removeAttribute("aria-invalid");
+      fields[k].removeAttribute("aria-describedby");
       if (statusEl && statusEl.classList.contains("contact__status--error")) say("");
     });
   });
@@ -62,10 +63,20 @@
     if (!looksLikeEmail(row.email)) bad.push([fields.email, "Please check the email address."]);
     if (!row.message) bad.push([fields.message, "The message is still empty."]);
     if (bad.length) {
+      // every problem is named in the status line, and each flagged field is
+      // tied to that line, so a screen reader hears what is wrong with it
       bad.forEach(function (b) {
         b[0].setAttribute("aria-invalid", "true");
+        if (statusEl && statusEl.id) b[0].setAttribute("aria-describedby", statusEl.id);
       });
-      say(bad[0][1], "error");
+      say(
+        bad
+          .map(function (b) {
+            return b[1];
+          })
+          .join(" "),
+        "error"
+      );
       bad[0][0].focus();
       return;
     }

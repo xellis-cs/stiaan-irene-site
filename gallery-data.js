@@ -50,9 +50,9 @@ window.GALLERY = {
 // missing from here still shows — it just reserves no space up front.
 window.GALLERY_SIZES = {
   "Category 1/download.jpg": [750, 1000],
-  "Category 1/download2.jpg": [641, 827],
-  "Category 1/download 3.jpg": [562, 1000],
-  "Category 1/download 5.jpg": [670, 805],
+  "Category 1/download2.jpg": [641, 817],
+  "Category 1/download 3.jpg": [562, 950],
+  "Category 1/download 5.jpg": [666, 803],
   "Category 1/download6.jpg": [669, 1000],
   "Category 2/download (1).jpg": [721, 1000],
   "Category 2/download2.jpg": [791, 1000],
@@ -60,10 +60,10 @@ window.GALLERY_SIZES = {
   "Category 2/download4.jpg": [453, 1000],
   "Category 2/download5.jpg": [699, 1000],
   "Category 2/download6.jpg": [669, 1000],
-  "Category 3/download1.jpg": [492, 752],
-  "Category 3/download2.jpg": [744, 1000],
-  "Category 3/download3.jpg": [528, 960],
-  "Category 3/download4.jpg": [621, 1000],
+  "Category 3/download1.jpg": [482, 752],
+  "Category 3/download2.jpg": [664, 965],
+  "Category 3/download3.jpg": [528, 840],
+  "Category 3/download4.jpg": [614, 1000],
   "Category 3/download 4.jpg": [678, 1000],
 };
 
