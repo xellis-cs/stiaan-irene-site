@@ -1828,6 +1828,9 @@ nav[tabindex]:focus-visible {
     /* the display type, a notch tighter on a small page */
     --text-wordmark: clamp(2.8rem, 15vw, 4rem);
     --text-spread-title: clamp(2.1rem, 11vw, 3rem);
+    /* a plate alone on a phone page may take more of the page's height */
+    --plate-ceiling: 74;
+    --portrait-ceiling: 62;
   }
   @supports (height: 100dvh) {
     :root {
@@ -1938,10 +1941,6 @@ nav[tabindex]:focus-visible {
   .workshops__grid,
   .message__row {
     grid-template-columns: minmax(0, 1fr);
-  }
-  :root {
-    --plate-ceiling: 74;
-    --portrait-ceiling: 62;
   }
   .notify__controls .field {
     flex-basis: 100%;
