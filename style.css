@@ -347,7 +347,7 @@ nav[tabindex]:focus-visible {
 
 .book__pages {
   position: absolute;
-  inset: 7px 9px 9px 7px;
+  inset: 7px 15px 12px 7px; /* more on the right and foot: the page block sits there (11px and 7px), and the rim shows past it */
   /* the 3D stage for the turn: the eye sits at the gutter, so a page
      standing on its edge there is exactly edge-on, and invisible */
   perspective: 3800px;
@@ -359,8 +359,12 @@ nav[tabindex]:focus-visible {
    them. The stripes fall on whole pixels (2px paper, 1px shade) so they
    resolve as page lines on a 1x screen instead of blurring to one sliver,
    and a second, offset set is laid over them at half strength so the
-   edges are not perfectly even — pages are not. The rose rim of the cover
-   still shows beyond them. */
+   spacing is not perfectly even. Over both sits a small drawn tile (an
+   SVG, 11 by 61px) in which each page line steps a pixel sideways for a
+   stretch and back, at a different height for each line, so the edges
+   wander along their length as a block of torn-edged pages does, instead
+   of running as ruled lines. The rose rim of the cover still shows
+   beyond them: the block ends 4px short of the cover's edge. */
 .book__pages::before,
 .book__pages::after {
   content: "";
@@ -374,6 +378,7 @@ nav[tabindex]:focus-visible {
   right: -11px;
   width: 11px;
   background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='61'%3E%3Cpath fill='%23f4efe4' d='M2 9h1v14H2zM5 30h1v11H5zM8 47h1v11H8zM2 38h1v8H2z'/%3E%3Cpath fill='%23dcc7bb' d='M3 9h1v14H3zM4 30h1v11H4zM9 47h1v11H9zM1 38h1v8H1z'/%3E%3C/svg%3E") 0 0 / 11px 61px repeat-y,
     repeating-linear-gradient(to right, transparent 0 1px, rgba(220, 199, 187, 0.5) 1px 2px, transparent 2px 5px),
     repeating-linear-gradient(to right, var(--color-tan) 0 2px, var(--paper-edge) 2px 3px);
 }
@@ -383,6 +388,7 @@ nav[tabindex]:focus-visible {
   bottom: -7px;
   height: 7px;
   background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='61' height='7'%3E%3Cpath fill='%23f4efe4' d='M9 2h14v1H9zM30 5h11v1H30zM47 2h9v1H47z'/%3E%3Cpath fill='%23dcc7bb' d='M9 3h14v1H9zM30 4h11v1H30zM47 1h9v1H47z'/%3E%3C/svg%3E") 0 0 / 61px 7px repeat-x,
     repeating-linear-gradient(to bottom, transparent 0 1px, rgba(220, 199, 187, 0.5) 1px 2px, transparent 2px 5px),
     repeating-linear-gradient(to bottom, var(--color-tan) 0 2px, var(--paper-edge) 2px 3px);
 }
@@ -1406,10 +1412,10 @@ nav[tabindex]:focus-visible {
 .coil {
   position: absolute;
   top: 7px;
-  bottom: 9px;
+  bottom: 12px;
   left: 50%;
   width: 120px;
-  margin-left: -61px; /* centred on the gutter (half the width, less the rim's offset) */
+  margin-left: -64px; /* centred on the gutter: half the width, less the 4px the pages sit left of centre (7px rim, 15px block) */
   pointer-events: none;
   z-index: 8;
 }
@@ -1423,7 +1429,7 @@ nav[tabindex]:focus-visible {
 /* The lifted corners: a page corner curling back, inviting the turn */
 .corner {
   position: absolute;
-  bottom: 9px;
+  bottom: 12px; /* the pages' foot */
   width: 76px;
   height: 76px;
   padding: 0;
@@ -1434,7 +1440,7 @@ nav[tabindex]:focus-visible {
   transition: transform 180ms ease-out, opacity 150ms ease-out;
 }
 .corner--next {
-  right: 9px;
+  right: 15px; /* the pages' right edge */
   transform-origin: 100% 100%;
 }
 .corner--prev {
@@ -1873,7 +1879,7 @@ nav[tabindex]:focus-visible {
     padding: 6px 11px 10px 6px;
   }
   .book__pages {
-    inset: 6px 6px 7px 6px;
+    inset: 6px 11px 10px 6px; /* the block takes 8px and 5px of that; the rim shows past it */
     perspective: 1800px;
     perspective-origin: 0% 50%; /* the eye at the coil edge */
   }
@@ -1934,7 +1940,7 @@ nav[tabindex]:focus-visible {
   .coil {
     left: -6px;
     top: 6px;
-    bottom: 7px;
+    bottom: 10px;
     width: 60px;
     margin-left: 0;
   }
@@ -1943,10 +1949,10 @@ nav[tabindex]:focus-visible {
   .corner {
     width: 64px;
     height: 64px;
-    bottom: 7px;
+    bottom: 10px;
   }
   .corner--next {
-    right: 6px;
+    right: 11px;
   }
   .corner--prev {
     display: none;
