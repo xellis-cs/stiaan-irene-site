@@ -677,11 +677,10 @@ nav[tabindex]:focus-visible {
   color: var(--color-ink-soft);
   margin: calc(var(--u) * -0.6) 0 calc(var(--u) * 1.8);
 }
+/* the venue-and-cost sentence: the intro's last, in italic */
 .note {
-  margin-top: calc(var(--u) * 1.8);
   font-style: italic;
   color: var(--color-ink-soft);
-  font-size: var(--text-body);
 }
 
 /* "The dates are on the next page": only a phone needs telling */
@@ -760,6 +759,31 @@ nav[tabindex]:focus-visible {
 @media (max-height: 560px) {
   .page--title .page__body {
     overflow-y: auto;
+  }
+}
+/* A short book (a laptop screen of 768px or less): the Programme's left
+   page closes its ranks a little, so the email form at its foot stays in
+   view beside the dates instead of a page-turn's scroll below the edge */
+@media (max-height: 820px) {
+  #programme .spread-title {
+    margin-bottom: var(--space-1);
+  }
+  #programme .intro,
+  #programme .expect li {
+    line-height: 1.38;
+  }
+  #programme .small-title {
+    margin: var(--u) 0 var(--space-2);
+  }
+  #programme .expect li {
+    padding: 4px 0;
+  }
+  #programme .notify {
+    margin-top: 0;
+  }
+  #programme .notify__text,
+  #programme .notify .field-label {
+    margin-bottom: var(--space-1);
   }
 }
 .wordmark {
