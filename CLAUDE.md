@@ -51,8 +51,11 @@ emails (all saved to Supabase — see "Database tables"). No e-commerce.
   4.5:1: `--color-ink-soft` and `--color-ink-muted`. `--color-error` #8c2f41
   is the rose-red deep enough to read (the brighter #a8465a `--color-red` is
   only for focus rings, the pin and the close X).
-- Dark #2A2826 — the board the book lies on (`--color-dark`); #38332f is its
-  lighter tone for hover on dark buttons. Text on the board is blush.
+- Dark #2A2826 — the board the book lies on (`--color-dark`). Text on the
+  board is blush. The submit buttons are NOT dark: a `.button` is a paper
+  tab (tan with the fields' hairline edge, tracked caps in the ink; cut
+  from pink on the tan booking slip), so the pinned slip stays the only
+  lifted thing on a page.
 Aesthetic: soft watercolour, dandelion motif, feminine, calm — and now an
 exhibition catalogue's grammar: plate numbers, small label blocks, hairline
 rules, wide margins.

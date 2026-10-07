@@ -82,7 +82,6 @@
   --color-ink-soft: rgba(44, 44, 44, 0.8);
   --color-ink-muted: rgba(44, 44, 44, 0.72);
   --color-dark: #2a2826; /* the board the book lies on */
-  --color-dark-2: #38332f; /* a lighter board tone: hover on dark buttons */
   --color-red: #a8465a; /* the rose-red: focus rings, the pin, the close X */
   --color-error: #8c2f41; /* the rose-red deep enough to READ: 5.6:1 on pink */
   --color-placeholder: #6f6460; /* 5.6:1 on the white fields */
@@ -1128,6 +1127,12 @@ nav[tabindex]:focus-visible {
   line-height: 1.45;
 }
 
+/* A submit button is a paper tab glued to the page: tan, with the same
+   hairline edge the fields wear, and a tracked label in the ink — the
+   index tabs' grammar, flat on the paper. Under the hand it lightens to
+   white as the tabs do and its edge deepens a step as a field's does;
+   pressed, it sits down a pixel. The pinned slip stays the only lifted
+   thing on a page: a button throws no shadow. */
 .button {
   display: inline-flex;
   align-items: center;
@@ -1135,19 +1140,19 @@ nav[tabindex]:focus-visible {
   gap: var(--space-2);
   min-height: 44px;
   padding: 0 var(--space-5);
-  border: 0;
+  border: 1px solid var(--color-field-edge);
   border-radius: var(--radius-field);
-  background: var(--color-dark);
-  color: var(--color-light);
+  background: var(--color-tan);
+  color: var(--color-text);
   font: 600 var(--text-small) / 1 var(--font-ui);
   letter-spacing: var(--track-button);
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 2px 6px -1px rgba(42, 40, 38, 0.4);
-  transition: background-color 150ms ease-out, transform 150ms ease-out;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, transform 150ms ease-out;
 }
 .button:hover {
-  background: var(--color-dark-2);
+  background: var(--color-white);
+  border-color: var(--color-accent-ink);
 }
 .button:active {
   transform: translateY(1px);
@@ -1157,13 +1162,24 @@ nav[tabindex]:focus-visible {
   cursor: progress;
   transform: none;
 }
-.button--quiet {
-  background: transparent;
-  color: var(--color-text);
-  box-shadow: inset 0 0 0 1px var(--rule-strong);
+/* On the tan booking slip a tan tab would vanish into the sheet, so there
+   the tab is cut from the page's pink paper and lightens to blush. */
+.loose .button {
+  background: var(--color-pink);
 }
-.button--quiet:hover {
+.loose .button:hover {
+  background: var(--color-blush);
+}
+/* the second choice ("Book another date"): the label and a hairline, no paper */
+.button--quiet,
+.loose .button--quiet {
+  background: transparent;
+  border-color: var(--rule-strong);
+}
+.button--quiet:hover,
+.loose .button--quiet:hover {
   background: rgba(44, 44, 44, 0.06);
+  border-color: var(--rule-strong);
 }
 
 /* the line under a form that says what happened */
