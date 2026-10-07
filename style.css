@@ -1932,6 +1932,16 @@ nav[tabindex]:focus-visible {
     left: calc(var(--page-pad) * 0.5 + var(--gutter-pad));
     right: calc(var(--page-pad) + 50px); /* clear of the lifted corner */
   }
+  /* the folio is one line: on a left page "5 · continues" and the wordmark
+     do not both fit the foot, so the wordmark stands down while the page
+     has more below, and is back once it has been read to the end */
+  .folio__group,
+  .folio__mark {
+    white-space: nowrap;
+  }
+  .page__body--scroll.is-scrollable:not(.is-at-end) ~ .folio .folio__mark {
+    display: none;
+  }
   .page__body--scroll {
     padding-right: 4px;
   }
