@@ -860,4 +860,24 @@
     fillCoil();
     markScrollers();
   });
+
+  // ---- printing ----------------------------------------------------------------------
+  // The print stylesheet lays every page out in order, but the plates on
+  // pages not yet turned to are lazy images that have never been fetched,
+  // and the browser does not fetch them for the printer: Plates II to XV
+  // came out as a label over blank paper. Before printing, every lazy
+  // picture is made eager, so the sheets carry the plates. (Safari fires
+  // no beforeprint; the print media query's change event covers it.)
+  function loadEverything() {
+    [].forEach.call(document.querySelectorAll('img[loading="lazy"]'), function (img) {
+      img.loading = "eager";
+    });
+  }
+  window.addEventListener("beforeprint", loadEverything);
+  var PRINT = window.matchMedia("print");
+  if (PRINT.addEventListener) {
+    PRINT.addEventListener("change", function (e) {
+      if (e.matches) loadEverything();
+    });
+  }
 })();
