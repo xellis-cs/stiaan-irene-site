@@ -993,6 +993,12 @@ nav[tabindex]:focus-visible {
   /* the portrait's label: up to four lines of the small serif (the roles
      line wraps once when the picture is narrow) */
   --portrait-label-room: calc(var(--text-small) * 1.35 * 4 + 30px);
+  /* the lifted corner on the left page is a fixed 76px flap, outside the
+     page body; on a zoomed laptop the body's margins shrink under it and
+     its slope reaches the first letters of the portrait's last line, so
+     the room gives it up to 90px less two and a half margins (nothing at
+     ordinary sizes, 19px at 150% zoom on a 1440 screen) */
+  --corner-room: max(0px, 90px - var(--page-pad) * 2.5);
   --plate-ceiling: 70;
   --portrait-ceiling: 58;
 }
@@ -1002,7 +1008,7 @@ nav[tabindex]:focus-visible {
 .plate--portrait .plate__img {
   max-height: min(
     calc(var(--u) * var(--portrait-ceiling)),
-    calc(var(--page-room) - var(--text-spread-title) - var(--u) * 1.6 - var(--portrait-label-room) - var(--space-4))
+    calc(var(--page-room) - var(--text-spread-title) - var(--u) * 1.6 - var(--portrait-label-room) - var(--space-4) - var(--corner-room))
   );
 }
 /* The portrait's label keeps a floor width of its own, as a wall label
@@ -1884,6 +1890,7 @@ nav[tabindex]:focus-visible {
     /* a plate alone on a phone page may take more of the page's height */
     --plate-ceiling: 74;
     --portrait-ceiling: 62;
+    --corner-room: 0px; /* no back corner on a phone; the forward one is at the right, clear of the label */
   }
   @supports (height: 100dvh) {
     :root {
