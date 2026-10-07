@@ -70,7 +70,7 @@
 
   // One page at a time on phones and on tablets held upright. The same
   // query is written in style.css (the PHONES block): keep them identical.
-  var SINGLE = window.matchMedia("(max-width: 720px), (max-width: 1000px) and (orientation: portrait)");
+  var SINGLE = window.matchMedia("(max-width: 720px), (max-width: 1024px) and (orientation: portrait)");
   var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   var announce = document.querySelector("[data-announce]");

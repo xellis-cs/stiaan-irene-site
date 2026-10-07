@@ -1815,7 +1815,7 @@ nav[tabindex]:focus-visible {
    changes, change the other, or the styles will show single pages while
    the script turns spreads.
    ============================================================ */
-@media (max-width: 720px), (max-width: 1000px) and (orientation: portrait) {
+@media (max-width: 720px), (max-width: 1024px) and (orientation: portrait) {
   :root {
     --board-pad: 10px;
     --board-side: 10px;

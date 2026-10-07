@@ -144,7 +144,7 @@ aliases (the `ALIASES` map in book.js).
   map (an alias only applies when nothing on the page has that id).
 - The phone/computer line is ONE media query written in two places and
   kept identical: `SINGLE` in book.js and the PHONES block in style.css:
-  `(max-width: 720px), (max-width: 1000px) and (orientation: portrait)` —
+  `(max-width: 720px), (max-width: 1024px) and (orientation: portrait)` —
   so a tablet held upright reads one page at a time.
 - The wheel: a gesture that scrolled a page's text stays with the text —
   every wheel event within 200ms of the last belongs to the same gesture
