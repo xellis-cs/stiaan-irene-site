@@ -1402,10 +1402,21 @@ nav[tabindex]:focus-visible {
 /* the slip again on the back page, under "Looking for a date?" */
 .slip--back {
   margin-top: var(--space-3);
+  margin-bottom: calc(var(--u) * 4); /* the least room between the slip and the colophon */
+}
+/* the last page's body is a column, so the colophon rests at its foot
+   like a catalogue's small print, with at least four units above it */
+#contact .page--right .page__body {
+  display: flex;
+  flex-direction: column;
+}
+#contact .page--right .page__body > * {
+  flex: none;
 }
 .colophon {
-  margin-top: calc(var(--u) * 4);
+  margin-top: auto;
   padding-top: var(--space-4);
+  padding-bottom: var(--space-3); /* a breath above the folio line */
   border-top: 1px solid var(--rule);
   font: 400 var(--text-small) / 1.5 var(--font-ui);
   color: var(--color-ink-soft);
