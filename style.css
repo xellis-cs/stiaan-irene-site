@@ -256,12 +256,6 @@ button {
   outline-offset: 3px;
   box-shadow: 0 0 0 5px rgba(253, 253, 253, 0.85);
 }
-/* a scrolling page that takes focus as a whole draws its ring inside its
-   edge, where the fade at its foot cannot cut it */
-.page__body--scroll:focus-visible {
-  outline-offset: -3px;
-  box-shadow: none;
-}
 /* headings only take focus from the script after a turn; no ring for that */
 h1[tabindex]:focus-visible,
 h2[tabindex]:focus-visible,
@@ -410,11 +404,13 @@ nav[tabindex]:focus-visible {
 }
 .page--left {
   left: 0;
+  --paper: var(--color-blush); /* this page's paper colour, for the fade at a scroller's foot */
   transform-origin: 100% 50%; /* turns about the gutter, its right edge */
   border-radius: 2px 0 0 2px;
 }
 .page--right {
   left: 50%;
+  --paper: var(--color-pink);
   background: var(--color-pink);
   transform-origin: 0% 50%; /* turns about the gutter, its left edge */
   border-radius: 0 2px 2px 0;
@@ -530,10 +526,22 @@ nav[tabindex]:focus-visible {
   background: transparent;
 }
 /* when there IS more below (book.js adds the class), the last lines fade,
-   so the page visibly continues rather than looking cut off */
-.page__body--scroll.is-scrollable:not(.is-at-end) {
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+   so the page visibly continues rather than looking cut off. The fade is
+   a wash of the paper's colour that sticks to the foot of the scroller
+   (not a mask on the scroller: a mask also cut away the focus ring the
+   story page wears when it is reached by keyboard) */
+.page__body--scroll::after {
+  content: "";
+  display: none;
+  position: sticky;
+  bottom: 0;
+  height: 44px;
+  margin-top: -44px; /* over the last lines, adding nothing to the scroll */
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+}
+.page__body--scroll.is-scrollable:not(.is-at-end)::after {
+  display: block;
 }
 
 /* A page that holds one plate lets it fill the room between title and label */
@@ -2234,9 +2242,10 @@ html:not(.js) .folio {
     position: static;
     height: auto;
     overflow: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
     padding: 0;
+  }
+  .page__body--scroll::after {
+    display: none; /* no fade on paper */
   }
   .folio {
     position: static;
