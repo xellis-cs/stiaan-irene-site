@@ -23,6 +23,17 @@
   descent-override: 26%;
   line-gap-override: 0%;
 }
+/* The roles line is capitals, and Times' capitals run 5.6% wider than
+   Caslon's where its lower case runs 1% wider, so one adjustment cannot
+   serve both: the capitals get their own face, scaled for capitals. */
+@font-face {
+  font-family: "Caslon Caps Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif");
+  size-adjust: 111.7%;
+  ascent-override: 97%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
 @font-face {
   font-family: "Franklin Fallback";
   src: local("Arial"), local("ArialMT"), local("Liberation Sans");
@@ -102,6 +113,7 @@
      (EB Garamond and Inter did these jobs in the earlier, scrolling site.) */
   --font-display: "Pinyon Script", "Pinyon Fallback", "Times New Roman", serif;
   --font-serif: "Libre Caslon Text", "Caslon Fallback", Georgia, serif;
+  --font-serif-caps: "Libre Caslon Text", "Caslon Caps Fallback", Georgia, serif; /* the roles line only */
   --font-ui: "Libre Franklin", "Franklin Fallback", "Helvetica Neue", Arial, sans-serif;
   /* (the served Libre Franklin has no tabular figures — tnum — so only the
      Caslon day numbers can be asked to line up; asking Franklin does nothing) */
@@ -755,7 +767,7 @@ nav[tabindex]:focus-visible {
   flex-wrap: wrap;
   column-gap: 0.6em;
   row-gap: 0.1em;
-  font: 400 calc(var(--text-body) * 0.78) / 1.7 var(--font-serif);
+  font: 400 calc(var(--text-body) * 0.78) / 1.7 var(--font-serif-caps);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--color-ink-soft);
@@ -770,7 +782,10 @@ nav[tabindex]:focus-visible {
 .offer {
   font-size: var(--text-lead);
   line-height: 1.38;
-  max-width: 24ch;
+  /* measured in em, not ch: a ch is the width of the face's zero, and
+     Caslon's is 8% wider than the fallback's, so a ch measure wrapped the
+     offer differently while the fonts were still arriving (24ch of Caslon) */
+  max-width: 15.4em;
   text-wrap: pretty;
 }
 
@@ -1936,7 +1951,7 @@ nav[tabindex]:focus-visible {
     max-width: 6.2em;
   }
   .offer {
-    max-width: 26ch;
+    max-width: 16.6em; /* 26ch of Caslon; em, for the reason given at .offer */
   }
   .workshops__grid,
   .message__row {
