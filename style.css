@@ -682,6 +682,11 @@ nav[tabindex]:focus-visible {
   color: var(--color-ink-soft);
 }
 
+/* "Pick a date to book your place" only makes sense where the dates are
+   on the facing page; on a phone it stands down for .next-page below */
+.spread-only {
+  display: inline;
+}
 /* "The dates are on the next page": only a phone needs telling */
 .next-page {
   display: none;
@@ -2045,6 +2050,9 @@ nav[tabindex]:focus-visible {
   }
   .notify__controls .field {
     flex-basis: 100%;
+  }
+  .spread-only {
+    display: none;
   }
   .next-page {
     display: block;
