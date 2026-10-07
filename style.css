@@ -1324,24 +1324,6 @@ nav[tabindex]:focus-visible {
   object-fit: cover;
   box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.34);
 }
-/* The Facebook picture is a business card (two panels, a QR code) inside
-   a story ring; whole, at 52px, it is grey smudges with a blue halo. The
-   circle shows the card's left panel — the lettering over the portrait —
-   which is the recognisable half and matches the Instagram roundel. */
-.social__pic--card {
-  display: block;
-  overflow: hidden;
-  position: relative;
-}
-.social__pic--card img {
-  position: absolute;
-  width: 118px;
-  height: 118px;
-  max-width: none;
-  left: -10px;
-  top: -22px;
-  border-radius: 0;
-}
 .social__text {
   display: grid;
   gap: 2px;

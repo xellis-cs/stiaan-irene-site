@@ -572,13 +572,12 @@
                 <ul class="social">
                   <li>
                     <a class="social__link" href="https://www.facebook.com/ireneellisart613" target="_blank" rel="noopener">
-                      <!-- the Facebook picture is a two-panel card: the circle
-                           shows its left panel (the "Irene Ellis Art" lettering
-                           over her portrait), not the whole card shrunk to a
-                           smudge; see .social__pic--card in style.css -->
-                      <span class="social__pic social__pic--card">
-                        <img src="images/facebook-profile.png" alt="" width="147" height="147" loading="lazy" decoding="async" />
-                      </span>
+                      <!-- Irene's Facebook picture is a two-panel business
+                           card; the file is cropped to its left panel (the
+                           "Irene Ellis Art" lettering over her portrait), so
+                           the circle shows that and not the whole card shrunk
+                           to a smudge. 64px is all the source has. -->
+                      <img class="social__pic" src="images/facebook-profile.png" alt="" width="64" height="64" loading="lazy" decoding="async" />
                       <span class="social__text">
                         <span class="social__where">Facebook</span>
                         <span class="social__name">Irene Ellis ART</span>
@@ -587,7 +586,7 @@
                   </li>
                   <li>
                     <a class="social__link" href="https://www.instagram.com/ireneellisart/" target="_blank" rel="noopener">
-                      <img class="social__pic" src="images/instagram-profile.png" alt="" width="147" height="147" loading="lazy" decoding="async" />
+                      <img class="social__pic" src="images/instagram-profile.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
                       <span class="social__text">
                         <span class="social__where">Instagram</span>
                         <span class="social__name">ireneellisart</span>
