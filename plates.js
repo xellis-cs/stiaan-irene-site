@@ -208,7 +208,7 @@
     var inAlbum = plates.filter(function (p) {
       return p.album === plate.album;
     });
-    count.textContent = plate.inAlbum + 1 + " of " + inAlbum.length + " · " + plate.album;
+    count.textContent = plate.inAlbum + 1 + " of " + inAlbum.length; // the label above already names the album
     steps.forEach(function (b) {
       var d = parseInt(b.getAttribute("data-print-step"), 10);
       b.disabled = plate.inAlbum + d < 0 || plate.inAlbum + d >= inAlbum.length;
