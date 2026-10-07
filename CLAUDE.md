@@ -105,7 +105,11 @@ aliases (the `ALIASES` map in book.js).
   what is on show a "view": a spread on a computer, a page on a phone.
 - Inside a page: `.page__body` holds the content (add `page__body--scroll`
   for a page that may run long: it scrolls inside the page, its last lines
-  fade while there is more below, and the scrollbar is themed);
+  fade while there is more below, and the scrollbar is themed). The fade
+  is a wash of the page's paper colour (`--paper`, set on `.page--left` /
+  `.page--right`) that sticks to the scroller's foot as a `::after`, not a
+  mask on the scroller, so the keyboard focus ring the story page wears is
+  never cut by it; print switches the wash off;
   `page__body--plate` centres a single picture. book.js adds the folio
   (`.folio`: number, running title) and the turn shade to every page.
 - Headings: the title page's h1; every other page has one h2 (`.spread-title`
@@ -162,7 +166,13 @@ aliases (the `ALIASES` map in book.js).
   `.is-scrollable:not(.is-at-end)`), and puts the quiet Admin link on the
   LAST page's folio line (`.folio__admin`), out of the reading column. A
   text-only scrolling page (the story) gets `tabindex="0"` from
-  `markScrollers()` so Safari can reach it by keyboard.
+  `markScrollers()` so Safari can reach it by keyboard. On a phone the
+  folio is one line: while a left page still has more below, the wordmark
+  stands down for "· continues" and is back at the end.
+- Printing: the print stylesheet lays every page out, and book.js makes
+  every lazy picture eager on `beforeprint` (and the print media query's
+  change, for Safari), or the plates on pages never turned to would print
+  as a label over blank paper.
 - During a turn the departing pages are made inert (they still paint) so
   Tab cannot land on a page about to vanish; a layout change mid-turn
   (rotating a phone) lands on the spread that was asked for.
@@ -201,6 +211,9 @@ aliases (the `ALIASES` map in book.js).
   turns back by the slip's 1.6° so it stands upright.
 - The phone's index strip reads About · Dates · Plates · Contact ("Dates",
   not "Programme": four words must fit a 204–274px strip at 11–12px).
+  The tabs are deliberately short index labels and need not repeat the
+  spread titles the running heads use ("The artist", "Programme"): a
+  catalogue's thumb index is terse where its running heads are full.
 
 ## Tokens worth knowing (style.css :root)
 - Tracking: `--track-label` 0.14em for every tracked-caps line,
@@ -215,10 +228,23 @@ aliases (the `ALIASES` map in book.js).
 - Picture ceilings: `--plate-ceiling` 70 / `--portrait-ceiling` 58
   (hundredths of the book height) and the room formula (`--page-room`,
   `--label-room`) that shrinks a picture before its label can slide under
-  the folio at 150–200% zoom.
-- Fallback faces (`Caslon Fallback`, `Franklin Fallback`, `Pinyon
-  Fallback`) are the local Times/Arial/Times Italic scaled to the web
-  fonts' widths so the title page does not jump as the fonts arrive.
+  the folio at 150–200% zoom. `--corner-room` (90px less two and a half
+  page margins, 0 at ordinary sizes and on phones) is what the portrait
+  also gives up so its caption clears the lifted corner's slope at zoom.
+- Fallback faces (`Caslon Fallback`, `Caslon Caps Fallback`, `Franklin
+  Fallback`, `Pinyon Fallback`) are the local Times/Arial/Times Italic
+  scaled to the web fonts' widths so the title page does not jump as the
+  fonts arrive. The roles line is capitals and uses `--font-serif-caps`
+  (the caps face is scaled for Times' wider capitals); the offer's measure
+  is in em, not ch, because a ch (the zero's width) differs between faces.
+- A short book: under 820px tall, the Programme's left page tightens its
+  rhythm (`@media (max-height: 820px)`, scoped to `#programme`) so the
+  email form stays in view at 1366×768 and 1280×800.
+- The cover's geometry: `.book__pages` is inset 7px 15px 12px 7px (phones
+  6px 11px 10px 6px); the page block drawn by its `::before/::after` (11px
+  and 7px; a data-URI SVG tile over the stripes makes the page lines
+  wander) ends 4–5px inside the rose rim; the coil's `margin-left` and the
+  corners' `bottom`/`right` follow those insets, so change them together.
 - There is a print stylesheet (every page in order on white, one spread
   per sheet) that mirrors the no-JavaScript block: keep the two in step.
 
@@ -226,6 +252,16 @@ aliases (the `ALIASES` map in book.js).
 - All images live in `images/`, referenced with relative paths.
 - Portrait: `images/irene-ellis.jpg` (562×1000), shown whole on the artist
   spread. The file must be placed there by hand.
+- RESOLUTION: the 482–791px "download" files are the only resolution of
+  the plates there is; they render at about 1.5× on a 1440 screen and 2×
+  on a phone, so a 2× (retina) desktop shows them a little soft. Sharper
+  plates need Irene's original photographs or scans (≥1500px on the long
+  edge); never upscale or synthesise them. The two profile pictures are
+  the size they are shown at (Instagram 104px for its 52px circle,
+  Facebook 64px: the card's left panel, all the source has). Plates II, IV
+  (Instagram screenshots, glyph removed), III, XI, XII and XIII are
+  cropped or retouched copies; each file says so in its embedded
+  provenance note (`impeccable embed-prompt --read <file>`).
 - Portfolio artwork: `images/portfolio/Category 1/`, `Category 2/`,
   `Category 3/` — the FOLDERS keep those names; the albums are named for what
   is in them: "Pastel & Gold" (1), "Flora & Fauna" (2), "Graphite Studies"
@@ -280,15 +316,18 @@ aliases (the `ALIASES` map in book.js).
   honest line (`.workshops__empty`, "Irene has not announced the next dates
   yet") that stays when nothing is saved and is reworded to "could not be
   loaded" when the request fails. Never type sample dates into index.html.
-- The intro copy is written; VENUE AND COST are not known yet. The line
-  "Venue and cost are confirmed with you when you book" has an HTML comment
-  above it marking where to fill them in once Irene decides.
+- The intro copy is written; VENUE AND COST are not known yet. The sentence
+  "Venue and cost are confirmed with you when you book" closes the intro
+  paragraph (a `span.note`, italic) and has an HTML comment above it
+  marking where to fill them in once Irene decides.
 
 ## Contact spread
 - Left page: the message form (`[data-contact-form]`, contact.js) with
   visible labels. Right page: Facebook and Instagram with the profile
-  pictures, "Turn to the Programme", and the colophon with © 2026 Irene
-  Ellis Art, the typefaces and the quiet Admin link.
+  pictures, "Looking for a date?" with the pinned slip, and the colophon
+  (© 2026 Irene Ellis Art, fifteen plates, the typefaces) resting at the
+  foot of the page: the body is a flex column and the colophon takes
+  `margin-top: auto`. The quiet Admin link is on the folio line.
 - The drifting landscape SVG that used to sit here is gone (it was 256 KB
   of hand-tuned paths the new world has no use for).
 

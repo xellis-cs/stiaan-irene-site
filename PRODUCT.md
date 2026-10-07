@@ -83,9 +83,13 @@ her story and stays.
 
 ## Evidence on Hand
 
-- 16 artworks in images/portfolio/Category 1–3 (JPEG, ~450–800 × 750–1000 px),
-  listed in gallery-data.js; one portrait images/irene-ellis.jpg (562 × 1000);
-  Facebook and Instagram profile pictures in images/.
+- 16 artwork files in images/portfolio/Category 1–3 (JPEG, ~450–800 ×
+  750–1000 px), listed in gallery-data.js; two are the same picture (the gold
+  mermaid, Category 1/download6.jpg and Category 2/download6.jpg), so the
+  book shows 15 plates. Those files are the only resolution there is: a
+  sharper plate needs Irene's original photograph or scan, never an upscale.
+  One portrait images/irene-ellis.jpg (562 × 1000); Facebook and Instagram
+  profile pictures in images/ (64 and 104 px, the size they are shown at).
 - Irene's bio text and the three roles (Artist, Motivational Speaker, Master of
   Ceremony) in index.html.
 - Absent, never to be fabricated: testimonials, student work, photographs of a
