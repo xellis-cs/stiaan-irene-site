@@ -1841,7 +1841,7 @@ nav[tabindex]:focus-visible {
 }
 .print__img {
   max-width: 100%;
-  max-height: calc(94vh - 240px); /* room below for the label and arrows, above for the close X */
+  max-height: calc(94vh - 256px); /* room below for the label, the count and the arrows, above for the close X */
   width: auto;
   height: auto;
   padding: 10px 10px 0;
@@ -1850,7 +1850,7 @@ nav[tabindex]:focus-visible {
 .print .label {
   justify-self: stretch;
   margin-top: 0;
-  padding: var(--space-2) 10px 10px;
+  padding: var(--space-2) 10px var(--space-2);
   border-top: 0;
   background: var(--color-white);
   color: var(--color-text);
@@ -1860,20 +1860,24 @@ nav[tabindex]:focus-visible {
   padding-top: var(--space-2);
   border-top: 1px solid var(--rule);
 }
+/* "2 of 5 · Flora & Fauna": the last line on the mount, under the label
+   (on the board it fell across the dimmed page's running head) */
+.print__count {
+  justify-self: stretch;
+  margin: 0;
+  padding: 0 10px 10px;
+  background: var(--color-white);
+  font: 400 var(--text-label) / 1.3 var(--font-ui);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
 .print__nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-6);
   margin-top: var(--space-4);
-}
-.print__count {
-  min-width: 10em;
-  text-align: center;
-  font: 400 var(--text-label) / 1.3 var(--font-ui);
-  letter-spacing: var(--track-label);
-  text-transform: uppercase;
-  color: var(--color-light-muted);
 }
 .arrow--print {
   color: var(--color-light); /* (the base .arrow colour, kept for clarity) */
@@ -2140,7 +2144,7 @@ nav[tabindex]:focus-visible {
     padding: var(--space-6) var(--space-5) var(--space-5);
   }
   .print__img {
-    max-height: calc(94vh - 250px);
+    max-height: calc(94vh - 266px);
   }
 }
 
