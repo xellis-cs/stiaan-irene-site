@@ -61,7 +61,7 @@ window.GALLERY_SIZES = {
   "Category 2/download5.jpg": [699, 1000],
   "Category 2/download6.jpg": [669, 1000],
   "Category 3/download1.jpg": [482, 752],
-  "Category 3/download2.jpg": [703, 965],
+  "Category 3/download2.jpg": [664, 965],
   "Category 3/download3.jpg": [528, 840],
   "Category 3/download4.jpg": [621, 1000],
   "Category 3/download 4.jpg": [678, 1000],
